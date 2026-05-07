@@ -1,0 +1,76 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "User account details including role and student identification.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "studentId": { "type": "string" },
+        "className": { "type": "string" },
+        "motherName": { "type": "string" },
+        "mobileNumber": { "type": "string" },
+        "whatsappNumber": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "role": { "type": "string", "enum": ["student", "admin"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "name", "email", "studentId", "className", "motherName", "mobileNumber", "whatsappNumber", "role"]
+    },
+    "Counter": {
+      "title": "System Counter",
+      "description": "Used for auto-generating sequential IDs.",
+      "type": "object",
+      "properties": {
+        "lastId": { "type": "integer" }
+      },
+      "required": ["lastId"]
+    },
+    "AttendanceRecord": {
+      "title": "Attendance Record",
+      "description": "Individual attendance log for a student.",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string" },
+        "uid": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["present", "absent", "late", "excused"] },
+        "importedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["studentId", "date", "status"]
+    },
+    "AcademicDocument": {
+      "title": "Academic Document",
+      "description": "Study materials, test papers, and syllabus PDFs.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "category": { "type": "string", "enum": ["test", "notes", "syllabus", "other"] },
+        "type": { "type": "string", "enum": ["pdf", "link"] },
+        "url": { "type": "string" },
+        "uploadedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "category", "url"]
+    }
+  },
+  "firestore": {
+    "/users/{uid}": {
+      "schema": "UserProfile",
+      "description": "User profiles indexed by Firebase Auth UID."
+    },
+    "/counters/{counterId}": {
+      "schema": "Counter",
+      "description": "Numeric counters for ID generation."
+    },
+    "/attendance/{recordId}": {
+      "schema": "AttendanceRecord",
+      "description": "Attendance history records, often imported via Excel."
+    },
+    "/documents/{docId}": {
+      "schema": "AcademicDocument",
+      "description": "Repository of academic resources accessible to students."
+    }
+  }
+}

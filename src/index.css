@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-orange: #F59B1E;
+  --color-brand-navy: #002D42;
+  --color-brand-navy-light: #004261;
+}
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-900 font-sans selection:bg-brand-orange/30;
+  }
+}
+
+.auth-card {
+  @apply bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden;
+}
+
+.input-field {
+  @apply w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 outline-none transition-all;
+}
+
+.btn-primary {
+  @apply px-6 py-2.5 bg-brand-orange text-white font-semibold rounded-lg hover:bg-brand-orange/90 active:scale-[0.98] transition-all disabled:opacity-50 disabled:pointer-events-none;
+}
+
+.btn-secondary {
+  @apply px-6 py-2.5 bg-brand-navy text-white font-semibold rounded-lg hover:bg-brand-navy-light active:scale-[0.98] transition-all disabled:opacity-50 disabled:pointer-events-none;
+}
+
+.btn-outline {
+  @apply px-6 py-2.5 border-2 border-brand-navy text-brand-navy font-semibold rounded-lg hover:bg-brand-navy hover:text-white active:scale-[0.98] transition-all;
+}

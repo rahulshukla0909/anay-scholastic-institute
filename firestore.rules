@@ -1,0 +1,95 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 0. Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Primitives
+    function isValidId(id) { 
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); 
+    }
+    function isSignedIn() { return request.auth != null; }
+    
+    function isAdmin() { 
+      return isSignedIn() && 
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin'; 
+    }
+    
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+
+    // Validation Blueprints
+    function isValidUser(data) {
+      return data.keys().hasAll(['uid', 'name', 'email', 'studentId', 'className', 'motherName', 'mobileNumber', 'whatsappNumber', 'role', 'createdAt']) &&
+             data.keys().size() >= 10 && data.keys().size() <= 11 &&
+             data.uid == request.auth.uid &&
+             data.name is string && data.name.size() > 0 && data.name.size() <= 100 &&
+             data.email is string && data.email.size() <= 100 &&
+             data.studentId is string && data.studentId.matches('^ASI-2025-[0-9]{3}$') &&
+             data.className is string && data.className.size() > 0 && data.className.size() <= 50 &&
+             data.motherName is string && data.motherName.size() > 0 && data.motherName.size() <= 100 &&
+             data.mobileNumber is string && data.mobileNumber.matches('^[0-9+ ]{10,20}$') &&
+             data.whatsappNumber is string && data.whatsappNumber.matches('^[0-9+ ]{10,20}$') &&
+             (!data.keys().hasAll(['photoURL']) || (data.photoURL == null || (data.photoURL is string && data.photoURL.size() < 2000))) &&
+             data.role in ['student', 'admin'] &&
+             data.createdAt is timestamp;
+    }
+
+    function isValidCounter(data) {
+      return data.keys().hasAll(['lastId']) && data.keys().size() == 1 &&
+             data.lastId is int && data.lastId >= 0;
+    }
+
+    function isValidAttendance(data) {
+      return data.keys().hasAll(['studentId', 'date', 'status']) &&
+             data.studentId is string && data.studentId.size() > 0 && data.studentId.size() <= 32 &&
+             data.date is timestamp &&
+             data.status in ['present', 'absent', 'late', 'excused'] &&
+             (!data.keys().hasAll(['uid']) || (data.uid is string || data.uid == null));
+    }
+
+    // Users Collection
+    match /users/{uid} {
+      allow get: if isSignedIn() && (request.auth.uid == uid || isAdmin());
+      allow list: if isSignedIn() && (resource.data.uid == request.auth.uid || isAdmin()); 
+      allow create: if isSignedIn() && request.auth.uid == uid && isValidUser(incoming());
+      allow update: if isSignedIn() && (
+        isAdmin() || 
+        (request.auth.uid == uid && 
+         incoming().diff(existing()).affectedKeys().hasOnly(['name', 'className', 'mobileNumber', 'whatsappNumber', 'photoURL']) && 
+         isValidUser(incoming()))
+      );
+    }
+
+    // Counters Collection
+    match /counters/{counterId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn() && isValidCounter(incoming());
+    }
+
+    // Attendance Collection
+    match /attendance/{recordId} {
+      allow get: if isSignedIn() && (
+        isAdmin() || 
+        resource.data.uid == request.auth.uid
+      );
+      
+      allow list: if isSignedIn() && (
+        isAdmin() || 
+        resource.data.uid == request.auth.uid
+      );
+      
+      allow write: if isAdmin() && isValidAttendance(incoming());
+      allow delete: if isAdmin();
+    }
+
+    // Documents Collection
+    match /documents/{docId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+      allow delete: if isAdmin();
+    }
+  }
+}
