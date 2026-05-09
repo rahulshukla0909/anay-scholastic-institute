@@ -448,15 +448,15 @@ const DashboardOverview: React.FC<{ profile: UserProfile, attendance: Attendance
 const CoursesSection: React.FC<{ profile: UserProfile }> = ({ profile }) => {
   const courses: Course[] = [
     { 
-      id: '1', title: 'Mathematics Foundation CGL', thumbnail: '/images/course_school.png', 
+      id: '1', title: 'Mathematics Foundation CGL', thumbnail: 'https://images.unsplash.com/photo-1509228468518-180dd482195e?auto=format&fit=crop&q=80&w=800', 
       progress: 45, totalLessons: 120, completedLessons: 54, lastAccessed: new Date() 
     },
     { 
-      id: '2', title: 'Banking Special English', thumbnail: '/images/course_spoken.png', 
+      id: '2', title: 'Banking Special English', thumbnail: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&q=80&w=800', 
       progress: 12, totalLessons: 80, completedLessons: 10, lastAccessed: new Date() 
     },
     { 
-      id: '3', title: 'GK/GS Marathon Batch', thumbnail: '/images/course_ssc.png', 
+      id: '3', title: 'Class 10th Science & Math', thumbnail: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&q=80&w=800', 
       progress: 78, totalLessons: 45, completedLessons: 35, lastAccessed: new Date() 
     },
   ];

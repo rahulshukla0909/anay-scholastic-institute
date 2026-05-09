@@ -76,7 +76,7 @@ export const Hero: React.FC<HeroProps> = ({ onStart, onScrollToCourses, onScroll
         >
           <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl border-8 border-white">
             <img 
-              src="/images/hero_students.png" 
+              src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=1600" 
               alt="Students Studying"
               className="w-full aspect-[4/3] object-cover"
               referrerPolicy="no-referrer"
