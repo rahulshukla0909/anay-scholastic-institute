@@ -18,13 +18,13 @@ const posters: Poster[] = [
   },
   {
     id: 2,
-    url: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&q=80&w=800',
+    url: '/images/p2.png',
     title: 'English Spoken Classes',
     category: 'Language Skills'
   },
   {
     id: 3,
-    url: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&q=80&w=800',
+    url: '/images/p3.png',
     title: 'Class 10th MP Board',
     category: 'School Education'
   }
