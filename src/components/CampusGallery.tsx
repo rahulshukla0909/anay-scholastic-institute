@@ -9,7 +9,7 @@ const campusImages = [
     description: 'Safe and accessible location in Tikamgarh'
   },
   {
-    url: 'https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80&w=800',
+    url: 'images/class.png',
     title: 'Modern Classroom',
     description: 'Comfortable seating and conducive learning environment'
   },
