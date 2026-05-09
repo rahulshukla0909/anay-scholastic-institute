@@ -12,7 +12,7 @@ interface Poster {
 const posters: Poster[] = [
   {
     id: 1,
-    url: 'https://images.unsplash.com/photo-1509228468518-180dd482195e?auto=format&fit=crop&q=80&w=800',
+    url: '/images/p1.png',
     title: 'SSC & Banking Special',
     category: 'Competitive Exams'
   },
