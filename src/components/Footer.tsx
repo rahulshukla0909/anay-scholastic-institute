@@ -40,14 +40,6 @@ export const Footer: React.FC<FooterProps> = ({ onAboutClick, onResultsClick, on
                 onClick={onAboutClick}
                 className="hover:text-brand-orange transition-colors cursor-pointer text-left w-full"
               >
-                Our Story
-              </button>
-            </li>
-            <li>
-              <button 
-                onClick={onAboutClick}
-                className="hover:text-brand-orange transition-colors cursor-pointer text-left w-full"
-              >
                 Meet Our Founder
               </button>
             </li>

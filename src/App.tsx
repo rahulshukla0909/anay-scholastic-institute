@@ -95,7 +95,6 @@ export default function App() {
         return (
           <>
             <Hero onStart={openAuth} onScrollToCourses={() => setView('courses')} onScrollToAbout={() => setView('about')} />
-            <Founder />
             <PosterGallery />
             <CampusGallery />
             <Features />
