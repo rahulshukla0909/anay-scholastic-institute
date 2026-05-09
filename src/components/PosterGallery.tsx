@@ -18,13 +18,13 @@ const posters: Poster[] = [
   },
   {
     id: 2,
-    url: '/posters/poster2.png',
+    url: '/posters/poster1.png',
     title: 'English Spoken Classes',
     category: 'Language Skills'
   },
   {
     id: 3,
-    url: '/posters/poster3.png',
+    url: '/posters/poster1.png',
     title: 'Class 10th MP Board',
     category: 'School Education'
   }
