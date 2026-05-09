@@ -4,32 +4,32 @@ import { Camera, MapPin, Star } from 'lucide-react';
 
 const campusImages = [
   {
-    url: 'https://images.unsplash.com/photo-1541339907198-e08759dfc3ef?auto=format&fit=crop&q=80&w=800',
+    url: '/images/campus_1.png',
     title: 'Our Institute Exterior',
     description: 'Safe and accessible location in Tikamgarh'
   },
   {
-    url: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=800',
+    url: '/images/campus_2.png',
     title: 'Modern Classroom',
     description: 'Comfortable seating and conducive learning environment'
   },
   {
-    url: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&q=80&w=800',
+    url: '/images/campus_3.png',
     title: 'Digital Library',
     description: 'Self-study area with high-speed internet access'
   },
   {
-    url: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800',
+    url: '/images/campus_4.png',
     title: 'Reception & Counseling',
     description: 'Dedicated space for student guidance'
   },
   {
-    url: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&q=80&w=800',
+    url: '/images/campus_5.png',
     title: 'Visual Learning',
     description: 'Well-equipped classrooms with modern teaching aids'
   },
   {
-    url: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80&w=800',
+    url: '/images/campus_6.png',
     title: 'Resource Center',
     description: 'Extensive collection of books and practice materials'
   }

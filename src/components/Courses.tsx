@@ -9,7 +9,7 @@ const courses = [
     subtitle: "Class 6th, 7th, 8th, 9th & 10th",
     description: "Foundation building and concept-focused learning for school students. We cover all major subjects with a focus on board exam preparation.",
     icon: <BookOpen />,
-    image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=2070&auto=format&fit=crop",
+    image: "/images/course_school.png",
     features: ["Subject Wise Experts", "Weekly Unit Tests", "NTSE/Olympiad Prep", "Parent-Teacher Meetings"]
   },
   {
@@ -18,7 +18,7 @@ const courses = [
     subtitle: "Master the Art of Communication",
     description: "Build confidence and fluency in English. Our sessions focus on pronunciation, vocabulary expansion, and real-life conversation practice.",
     icon: <Languages />,
-    image: "https://images.unsplash.com/photo-1543269664-76bc3997d9ea?q=80&w=2070&auto=format&fit=crop",
+    image: "/images/course_spoken.png",
     features: ["Group Discussions", "Personality Development", "Audio-Visual Learning", "Confidence Building"]
   },
   {
@@ -27,7 +27,7 @@ const courses = [
     subtitle: "Specialized for SSC & BANKING",
     description: "Targeted English language preparation for competitive exams. Master grammar, comprehension, and vocabulary required specifically for SSC and Banking sectors.",
     icon: <Landmark />,
-    image: "https://images.unsplash.com/photo-1454165833762-0204b2876797?q=80&w=2070&auto=format&fit=crop",
+    image: "/images/course_ssc.png",
     features: ["Previous Year Paper Analysis", "Short-cut Methods", "Mock Tests", "Strategy Sessions"]
   },
   {
@@ -36,7 +36,7 @@ const courses = [
     subtitle: "Digital Literacy & Skills",
     description: "From basic operations to advanced software skills. We provide hands-on training for MS Office, Programming Basics, and Digital Tools.",
     icon: <Monitor />,
-    image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop",
+    image: "/images/course_computer.png",
     features: ["1:1 Computer Access", "Modern Lab Facility", "Project Based Learning", "Certificate of Completion"]
   },
   {
@@ -45,7 +45,7 @@ const courses = [
     subtitle: "Scholar's Hub & Silent Zone",
     description: "A peaceful environment dedicated to self-study. Equipped with reference books, high-speed internet, and comfortable seating.",
     icon: <Library />,
-    image: "https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=2070&auto=format&fit=crop",
+    image: "/images/course_library.png",
     features: ["Silent Study Environment", "Vast Book Collection", "High Speed WiFi", "In-Lab Power Backup"]
   }
 ];

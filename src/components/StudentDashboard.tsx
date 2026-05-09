@@ -19,6 +19,7 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { signOut, updateProfile, updatePassword } from 'firebase/auth';
 import { UserProfile, AttendanceRecord, AcademicDocument, Course, PerformanceStats, Notification } from '../types';
 import { handleFirestoreError, Operation } from '../lib/errorHandlers';
+import { InstituteLogo } from './Logo';
 import { cn } from '../lib/utils';
 import * as XLSX from 'xlsx';
 import { 
@@ -166,14 +167,12 @@ export const StudentDashboard: React.FC = () => {
         <div className="p-6 flex items-center justify-between">
           {isSidebarOpen ? (
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-brand-orange rounded-xl flex items-center justify-center">
-                <Library className="text-white" size={24} />
-              </div>
+              <InstituteLogo useImage className="w-10 h-10" />
               <span className="font-black text-xl tracking-tight">ASI PORTAL</span>
             </div>
           ) : (
-            <div className="w-10 h-10 bg-brand-orange rounded-xl flex items-center justify-center mx-auto">
-              <Library className="text-white" size={24} />
+            <div className="mx-auto">
+              <InstituteLogo useImage className="w-10 h-10" />
             </div>
           )}
         </div>
@@ -449,15 +448,15 @@ const DashboardOverview: React.FC<{ profile: UserProfile, attendance: Attendance
 const CoursesSection: React.FC<{ profile: UserProfile }> = ({ profile }) => {
   const courses: Course[] = [
     { 
-      id: '1', title: 'Mathematics Foundation CGL', thumbnail: 'https://images.unsplash.com/photo-1543269664-7eef42226a21?w=400', 
+      id: '1', title: 'Mathematics Foundation CGL', thumbnail: '/images/course_school.png', 
       progress: 45, totalLessons: 120, completedLessons: 54, lastAccessed: new Date() 
     },
     { 
-      id: '2', title: 'Banking Special English', thumbnail: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400', 
+      id: '2', title: 'Banking Special English', thumbnail: '/images/course_spoken.png', 
       progress: 12, totalLessons: 80, completedLessons: 10, lastAccessed: new Date() 
     },
     { 
-      id: '3', title: 'GK/GS Marathon Batch', thumbnail: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400', 
+      id: '3', title: 'GK/GS Marathon Batch', thumbnail: '/images/course_ssc.png', 
       progress: 78, totalLessons: 45, completedLessons: 35, lastAccessed: new Date() 
     },
   ];

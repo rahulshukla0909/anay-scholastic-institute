@@ -29,7 +29,7 @@ export const Navbar: React.FC<NavbarProps> = ({ user, onOpenAuth, onScrollToCour
     <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100 px-6 py-4">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div onClick={() => handleNavClick(onResetView)} className="flex items-center gap-3 group cursor-pointer relative z-50">
-          <InstituteLogo className="w-10 h-10 transition-transform group-hover:rotate-12" />
+          <InstituteLogo useImage className="w-10 h-10 transition-transform group-hover:rotate-12" />
           <div className="flex flex-col">
             <span className="font-bold text-brand-navy leading-tight tracking-tight text-lg">ANAY SCHOLASTIC</span>
             <span className="text-brand-orange text-[9px] font-bold tracking-[0.05em] uppercase flex flex-col">
