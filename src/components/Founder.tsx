@@ -31,7 +31,7 @@ export const Founder: React.FC = () => {
               <div className="relative bg-white rounded-[2.5rem] shadow-2xl border border-slate-100 overflow-hidden group">
                 <div className="aspect-[4/5] relative overflow-hidden">
                   <img 
-                    src="/images/rahul_shukla.png" 
+                    src="/images/founder.png" 
                     alt="Rahul Shukla" 
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />

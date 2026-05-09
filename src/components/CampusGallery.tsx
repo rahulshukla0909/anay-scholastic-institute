@@ -4,18 +4,18 @@ import { Camera, MapPin, Star } from 'lucide-react';
 
 const campusImages = [
   {
-    url: 'https://images.unsplash.com/photo-1523050853023-8c2d2dabd896?auto=format&fit=crop&q=80&w=800',
+    url: 'images/front.png',
     title: 'Our Institute Exterior',
     description: 'Safe and accessible location in Tikamgarh'
   },
   {
-    url: 'https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80&w=800',
+    url: 'images/class.png',
     title: 'Modern Classroom',
     description: 'Comfortable seating and conducive learning environment'
   },
   {
-    url: 'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&q=80&w=800',
-    title: 'Digital Library',
+    url: 'images/library.png',
+    title: 'Library',
     description: 'Self-study area with high-speed internet access'
   },
   {
