@@ -11,11 +11,12 @@ interface NavbarProps {
   onOpenAuth: (mode: AuthMode) => void;
   onScrollToCourses: () => void;
   onScrollToAbout: () => void;
+  onScrollToResults: () => void;
   onScrollToContact: () => void;
   onResetView: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ user, onOpenAuth, onScrollToCourses, onScrollToAbout, onScrollToContact, onResetView }) => {
+export const Navbar: React.FC<NavbarProps> = ({ user, onOpenAuth, onScrollToCourses, onScrollToAbout, onScrollToResults, onScrollToContact, onResetView }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -57,6 +58,12 @@ export const Navbar: React.FC<NavbarProps> = ({ user, onOpenAuth, onScrollToCour
             className="hover:text-brand-orange transition-colors"
           >
             About
+          </button>
+          <button 
+            onClick={onScrollToResults}
+            className="hover:text-brand-orange transition-colors"
+          >
+            Results
           </button>
           <button 
             onClick={onScrollToContact}
@@ -140,6 +147,13 @@ export const Navbar: React.FC<NavbarProps> = ({ user, onOpenAuth, onScrollToCour
                 className="text-left py-3 px-4 rounded-xl hover:bg-slate-50 text-slate-600 font-bold flex items-center justify-between group"
               >
                 <span>About</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-brand-orange opacity-0 group-hover:opacity-100 transition-opacity" />
+              </button>
+              <button 
+                onClick={() => handleNavClick(onScrollToResults)}
+                className="text-left py-3 px-4 rounded-xl hover:bg-slate-50 text-slate-600 font-bold flex items-center justify-between group"
+              >
+                <span>Results</span>
                 <span className="w-1.5 h-1.5 rounded-full bg-brand-orange opacity-0 group-hover:opacity-100 transition-opacity" />
               </button>
               <button 

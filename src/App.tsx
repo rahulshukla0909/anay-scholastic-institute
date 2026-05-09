@@ -6,6 +6,8 @@ import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { Courses } from './components/Courses';
 import { About } from './components/About';
+import { Founder } from './components/Founder';
+import { Results } from './components/Results';
 import { Feedback } from './components/Feedback';
 import { Legal } from './components/Legal';
 import { StudentDashboard } from './components/StudentDashboard';
@@ -24,7 +26,7 @@ export default function App() {
   const [user, setUser] = useState<FirebaseUser | null>(null);
   const [authMode, setAuthMode] = useState<AuthMode>('none');
   const [isInitializing, setIsInitializing] = useState(true);
-  const [currentView, setCurrentView] = useState<'home' | 'courses' | 'about' | 'feedback' | 'legal' | 'contact' | 'signup'>('home');
+  const [currentView, setCurrentView] = useState<'home' | 'courses' | 'about' | 'results' | 'feedback' | 'legal' | 'contact' | 'signup'>('home');
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -55,6 +57,23 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const scrollToSection = (sectionId: string) => {
+    if (currentView !== 'home') {
+      setCurrentView('home');
+      setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    } else {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
   if (isInitializing) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-white">
@@ -76,6 +95,7 @@ export default function App() {
         return (
           <>
             <Hero onStart={openAuth} onScrollToCourses={() => setView('courses')} onScrollToAbout={() => setView('about')} />
+            <Founder />
             <PosterGallery />
             <CampusGallery />
             <Features />
@@ -116,7 +136,14 @@ export default function App() {
       case 'courses':
         return <Courses />;
       case 'about':
-        return <About />;
+        return (
+          <>
+            <About />
+            <Founder />
+          </>
+        );
+      case 'results':
+        return <Results />;
       case 'feedback':
         return <Feedback />;
       case 'legal':
@@ -175,6 +202,7 @@ export default function App() {
         onOpenAuth={openAuth} 
         onScrollToCourses={() => setView('courses')} 
         onScrollToAbout={() => setView('about')}
+        onScrollToResults={() => setView('results')}
         onScrollToContact={() => setView('contact')}
         onResetView={() => setView('home')}
       />
@@ -185,6 +213,7 @@ export default function App() {
 
       <Footer 
         onAboutClick={() => setView('about')}
+        onResultsClick={() => setView('results')}
         onFeedbackClick={() => setView('feedback')} 
         onLegalClick={() => setView('legal')}
       />
