@@ -12,19 +12,19 @@ interface Poster {
 const posters: Poster[] = [
   {
     id: 1,
-    url: '/posters/poster2.png',
+    url: '/posters/poster3.png',
     title: 'SSC & Banking Special',
     category: 'Competitive Exams'
   },
   {
     id: 2,
-    url: '/posters/poster2.png',
+    url: '/posters/poster3.png',
     title: 'English Spoken Classes',
     category: 'Language Skills'
   },
   {
     id: 3,
-    url: '/posters/poster2.png',
+    url: '/posters/poster3.png',
     title: 'Class 10th MP Board',
     category: 'School Education'
   }
