@@ -24,68 +24,78 @@ const categories = [
 ];
 
 const students: ResultCardProps[] = [
+  
   {
-    id: 1,
-    name: "Vikram Singh",
-    exam: "SBI PO Selection",
-    year: "2023",
-    category: "banking",
-    image: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=400",
-    quote: "Rahul Sir's guidance was the key to my success in bank exams."
-  },
-  {
-    id: 2,
-    name: "Priya Sharma",
-    exam: "SSC CGL (Tax Assistant)",
-    year: "2024",
-    category: "ssc",
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=400",
-    quote: "The grammar techniques taught here are unmatched. Highly recommended!"
-  },
-  {
-    id: 3,
-    name: "Anand Verma",
-    exam: "IBPS Clerk Selected",
-    year: "2023",
-    category: "banking",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400",
-    quote: "Foundation classes helped me clear my basics in record time."
-  },
-  {
-    id: 4,
-    name: "Sandeep Kumar",
-    exam: "SSC CHSL",
-    year: "2023",
-    category: "ssc",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=400",
-    quote: "Best institute in Tikamgarh for SSC preparation."
-  },
-  {
-    id: 5,
-    name: "Rahul Mehra",
-    exam: "95% in Class 10th",
-    year: "2024",
+    id: 8,
+    name: "Naitik Khare",
+    exam: "Class 10th (8/16)",
+    year: "May 10, 2026",
     category: "class10",
-    image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=400",
-    quote: "Individual attention to each subject made the difference."
+    image: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=400"
   },
   {
-    id: 6,
-    name: "Neha Gupta",
-    exam: "92% in Class 9th",
-    year: "2024",
-    category: "class9",
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=400",
-    quote: "Science and Math are my favorites now thanks to Rahul Sir."
+    id: 9,
+    name: "Gauri Soni",
+    exam: "Class 10th (13.5/16)",
+    year: "May 10, 2026",
+    category: "class10",
+    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=400"
   },
   {
-    id: 7,
-    name: "Aditya Jain",
-    exam: "Topper Class 8th",
-    year: "2023",
-    category: "class8",
-    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=400",
-    quote: "Learning here is fun and very effective."
+    id: 10,
+    name: "Yash Pateriya",
+    exam: "Class 10th (15.5/16)",
+    year: "May 10, 2026",
+    category: "class10",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400"
+  },
+  {
+    id: 11,
+    name: "Yuvraj khare",
+    exam: "Class 10th (15/16)",
+    year: "May 10, 2026",
+    category: "class10",
+    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=400"
+  },
+  {
+    id: 12,
+    name: "Ayush Pathak",
+    exam: "Class 10th (15/16)",
+    year: "May 10, 2026",
+    category: "class10",
+    image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=400"
+  },
+  {
+    id: 13,
+    name: "Paras Rai",
+    exam: "Class 10th (13/16)",
+    year: "May 10, 2026",
+    category: "class10",
+    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=400"
+  },
+  {
+    id: 14,
+    name: "Ayushii Sen",
+    exam: "Class 10th (9/16)",
+    year: "May 10, 2026",
+    category: "class10",
+    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=400"
+  },
+  {
+    id: 15,
+    name: "Nandini",
+    exam: "Class 10th (7/16)",
+    year: "May 10, 2026",
+    category: "class10",
+    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=400"
+  },
+  {
+    id: 16,
+    name: "Paras Chautvedi",
+    exam: "Class 10th (12.5/16)",
+    year: "May 10, 2026",
+    category: "class10",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400"
   }
 ];
 
@@ -159,59 +169,71 @@ export const Results: React.FC = () => {
           ))}
         </div>
 
-        {/* Results Grid with Animation */}
-        <div className="grid md:grid-cols-3 gap-8">
-          <AnimatePresence mode="popLayout">
-            {filteredStudents.length > 0 ? (
-              filteredStudents.map((student) => (
-                <motion.div
-                  key={student.id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.4 }}
-                  className="relative group h-[450px] rounded-3xl overflow-hidden shadow-lg"
-                >
-                  <img 
-                    src={student.image} 
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
-                    alt={student.name}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-brand-navy via-brand-navy/20 to-transparent" />
-                  
-                  <div className="absolute bottom-0 p-8 w-full transition-transform duration-500 translate-y-4 group-hover:translate-y-0">
-                    <div className="flex items-center gap-2 mb-3">
-                      <Star className="text-brand-orange fill-brand-orange" size={16} />
-                      <Star className="text-brand-orange fill-brand-orange" size={16} />
-                      <Star className="text-brand-orange fill-brand-orange" size={16} />
-                      <Star className="text-brand-orange fill-brand-orange" size={16} />
-                      <Star className="text-brand-orange fill-brand-orange" size={16} />
-                    </div>
-                    <h3 className="text-2xl font-bold text-white mb-1">{student.name}</h3>
-                    <p className="text-brand-orange font-bold uppercase tracking-widest text-xs mb-4">{student.exam} - {student.year}</p>
-                    {student.quote && (
-                      <p className="text-white/80 text-sm italic line-clamp-3">
-                        "{student.quote}"
-                      </p>
-                    )}
-                  </div>
-                </motion.div>
-              ))
-            ) : (
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="col-span-full py-20 text-center bg-white rounded-[2rem] border-2 border-dashed border-slate-200"
-              >
-                <div className="text-slate-400 mb-2">
-                  <TrendingUp size={48} className="mx-auto opacity-20" />
-                </div>
-                <h3 className="text-xl font-bold text-slate-600">Coming Soon!</h3>
-                <p className="text-slate-400">We are currently updating our latest achievers for this category.</p>
-              </motion.div>
-            )}
-          </AnimatePresence>
+        {/* Results Table */}
+        <div className="overflow-hidden bg-white rounded-[2rem] shadow-xl border border-slate-100">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-brand-navy text-white">
+                  <th className="px-8 py-6 text-sm font-bold uppercase tracking-wider">Student Name</th>
+                  <th className="px-8 py-6 text-sm font-bold uppercase tracking-wider">Achievement / Exam</th>
+                  <th className="px-8 py-6 text-sm font-bold uppercase tracking-wider text-right">Session / Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <AnimatePresence mode="popLayout">
+                  {filteredStudents.length > 0 ? (
+                    filteredStudents.map((student, index) => (
+                      <motion.tr
+                        key={student.id}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 20 }}
+                        transition={{ delay: index * 0.05 }}
+                        className="border-b border-slate-50 hover:bg-brand-orange/5 transition-colors group"
+                      >
+                        <td className="px-8 py-6">
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 rounded-full bg-brand-orange/10 flex items-center justify-center text-brand-orange font-bold text-xs">
+                              {student.name.charAt(0)}
+                            </div>
+                            <div>
+                              <div className="font-bold text-brand-navy group-hover:text-brand-orange transition-colors">{student.name}</div>
+                              {student.quote && (
+                                <div className="text-[10px] text-slate-400 italic mt-0.5 max-w-xs line-clamp-1">
+                                  "{student.quote}"
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-8 py-6">
+                          <span className="inline-flex items-center px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-[10px] font-bold uppercase tracking-widest border border-slate-200">
+                            {student.exam}
+                          </span>
+                        </td>
+                        <td className="px-8 py-6 text-right">
+                          <span className="text-sm font-semibold text-slate-500">
+                            {student.year}
+                          </span>
+                        </td>
+                      </motion.tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={3} className="py-24 text-center">
+                        <div className="flex flex-col items-center justify-center text-slate-400">
+                          <TrendingUp size={48} className="mb-4 opacity-20" />
+                          <h3 className="text-xl font-bold text-slate-600">Coming Soon!</h3>
+                          <p className="text-sm">We are currently updating our latest achievers for this category.</p>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </AnimatePresence>
+              </tbody>
+            </table>
+          </div>
         </div>
 
         <motion.div 
