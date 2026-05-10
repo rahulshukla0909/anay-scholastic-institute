@@ -50,6 +50,15 @@ service cloud.firestore {
              (!data.keys().hasAll(['uid']) || (data.uid is string || data.uid == null));
     }
 
+    function isValidCourseProgress(data) {
+      return data.keys().hasAll(['uid', 'subjectId', 'completedChapters', 'updatedAt']) &&
+             data.keys().size() == 4 &&
+             data.uid == request.auth.uid &&
+             data.subjectId is string &&
+             data.completedChapters is list &&
+             data.updatedAt is timestamp;
+    }
+
     // Users Collection
     match /users/{uid} {
       allow get: if isSignedIn() && (request.auth.uid == uid || isAdmin());
@@ -61,6 +70,12 @@ service cloud.firestore {
          incoming().diff(existing()).affectedKeys().hasOnly(['name', 'className', 'mobileNumber', 'whatsappNumber', 'photoURL']) && 
          isValidUser(incoming()))
       );
+
+      // Course Progress Subcollection
+      match /courseProgress/{subjectId} {
+        allow read: if isSignedIn() && (request.auth.uid == uid || isAdmin());
+        allow write: if isSignedIn() && request.auth.uid == uid && isValidCourseProgress(incoming());
+      }
     }
 
     // Counters Collection

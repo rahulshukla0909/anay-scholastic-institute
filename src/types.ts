@@ -61,4 +61,11 @@ export interface UserProfile {
   };
 }
 
+export interface SubjectProgress {
+  uid: string;
+  subjectId: string;
+  completedChapters: string[]; // array of chapter IDs
+  updatedAt: any;
+}
+
 export type AuthMode = 'signin' | 'signup' | 'none';

@@ -17,10 +17,11 @@ import {
 } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { signOut, updateProfile, updatePassword } from 'firebase/auth';
-import { UserProfile, AttendanceRecord, AcademicDocument, Course, PerformanceStats, Notification } from '../types';
+import { UserProfile, AttendanceRecord, AcademicDocument, Course, PerformanceStats, Notification, SubjectProgress } from '../types';
 import { handleFirestoreError, Operation } from '../lib/errorHandlers';
 import { InstituteLogo } from './Logo';
 import { cn } from '../lib/utils';
+import { ACADEMIC_SUBJECTS, Subject, Chapter } from '../data/courseData';
 import * as XLSX from 'xlsx';
 import { 
   AreaChart, Area, XAxis, YAxis, CartesianGrid, 
@@ -45,7 +46,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onBackToWebs
   // Data States
   const [attendanceRecords, setAttendanceRecords] = useState<AttendanceRecord[]>([]);
   const [academicDocs, setAcademicDocs] = useState<AcademicDocument[]>([]);
-  const [courses, setCourses] = useState<Course[]>([]);
+  const [subjectProgress, setSubjectProgress] = useState<Record<string, SubjectProgress>>({});
   
   // Settings Form
   const [isEditingProfile, setIsEditingProfile] = useState(false);
@@ -109,6 +110,16 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onBackToWebs
     const notifQuery = query(collection(db, 'notifications'), where('userId', 'in', [uid, 'all']), orderBy('createdAt', 'desc'));
     onSnapshot(notifQuery, (snap) => {
       setNotifications(snap.docs.map(d => ({ id: d.id, ...d.data() }) as Notification));
+    });
+
+    // Academic Course Progress
+    const progressQuery = collection(db, 'users', uid, 'courseProgress');
+    onSnapshot(progressQuery, (snap) => {
+      const progress: Record<string, SubjectProgress> = {};
+      snap.docs.forEach(doc => {
+        progress[doc.id] = doc.data() as SubjectProgress;
+      });
+      setSubjectProgress(progress);
     });
   };
 
@@ -318,8 +329,8 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onBackToWebs
         {/* View Content */}
         <section className="p-8 pb-20">
           <AnimatePresence mode="wait">
-            {activeTab === 'dashboard' && <DashboardOverview key="dash" profile={profile!} attendance={attendanceRecords} />}
-            {activeTab === 'courses' && <CoursesSection key="courses" profile={profile!} />}
+            {activeTab === 'dashboard' && <DashboardOverview key="dash" profile={profile!} attendance={attendanceRecords} progress={subjectProgress} onNavigate={setActiveTab} />}
+            {activeTab === 'courses' && <CoursesSection key="courses" profile={profile!} progress={subjectProgress} />}
             {activeTab === 'attendance' && <AttendanceSection key="att" records={attendanceRecords} />}
             {activeTab === 'performance' && <PerformanceSection key="perf" />}
             {activeTab === 'material' && <MaterialSection key="docs" docs={academicDocs} role={profile?.role} />}
@@ -342,9 +353,19 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onBackToWebs
 
 // --- View Components ---
 
-const DashboardOverview: React.FC<{ profile: UserProfile, attendance: AttendanceRecord[] }> = ({ profile, attendance }) => {
+const DashboardOverview: React.FC<{ 
+  profile: UserProfile, 
+  attendance: AttendanceRecord[],
+  progress: Record<string, SubjectProgress>,
+  onNavigate: (tab: ActiveTab) => void
+}> = ({ profile, attendance, progress, onNavigate }) => {
+  
+  const totalChapters = ACADEMIC_SUBJECTS.reduce((acc: number, sub: Subject) => acc + sub.chapters.length, 0);
+  const completedChapters = Object.values(progress).reduce((acc: number, sub: SubjectProgress) => acc + (sub.completedChapters?.length || 0), 0);
+  const academicProgress = totalChapters > 0 ? Math.round(((completedChapters as number) / (totalChapters as number)) * 100) : 0;
+
   const stats = [
-    { label: 'Total Courses', value: profile.stats?.totalPurchasedCourses || 0, icon: BookOpen, color: 'text-blue-500', bg: 'bg-blue-50' },
+    { label: 'Overall Progress', value: `${academicProgress}%`, icon: BookOpen, color: 'text-blue-500', bg: 'bg-blue-50' },
     { 
       label: 'Attendance', 
       value: `${attendance.length > 0 ? Math.round((attendance.filter(r => r.status === 'present').length / attendance.length) * 100) : 0}%`, 
@@ -455,72 +476,231 @@ const DashboardOverview: React.FC<{ profile: UserProfile, attendance: Attendance
           </div>
           <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-[100px] translate-x-1/2 -translate-y-1/2" />
         </div>
+
+        {/* Subject Progress Breakdown */}
+        <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100">
+          <h3 className="text-xl font-bold text-brand-navy mb-8">Subject Progress Report</h3>
+          <div className="space-y-6">
+            {ACADEMIC_SUBJECTS.map((subject) => {
+              const currentProgress = progress[subject.id]?.completedChapters.length || 0;
+              const totalChapters = subject.chapters.length;
+              const percentage = totalChapters > 0 ? Math.round((currentProgress / totalChapters) * 100) : 0;
+              
+              return (
+                <div key={subject.id}>
+                  <div className="flex justify-between items-end mb-2">
+                    <div className="flex items-center gap-2">
+                      <div className={cn("w-2 h-2 rounded-full", subject.color)} />
+                      <p className="text-sm font-bold text-brand-navy">{subject.nameEn}</p>
+                    </div>
+                    <span className="text-[10px] font-black text-slate-400 uppercase">{currentProgress}/{totalChapters} Chapters</span>
+                  </div>
+                  <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                    <motion.div 
+                      initial={{ width: 0 }}
+                      animate={{ width: `${percentage}%` }}
+                      className={cn("h-full rounded-full", subject.color)} 
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <button 
+            onClick={() => onNavigate('courses')}
+            className="w-full mt-10 py-4 border-2 border-slate-100 text-brand-navy text-xs font-black uppercase tracking-widest rounded-2xl hover:bg-slate-50 transition-all"
+          >
+             View Full Syllabus
+          </button>
+        </div>
       </div>
     </motion.div>
   );
 };
 
-const CoursesSection: React.FC<{ profile: UserProfile }> = ({ profile }) => {
-  const courses: Course[] = [
-    { 
-      id: '1', title: 'Mathematics Foundation CGL', thumbnail: 'https://images.unsplash.com/photo-1509228468518-180dd482195e?auto=format&fit=crop&q=80&w=800', 
-      progress: 45, totalLessons: 120, completedLessons: 54, lastAccessed: new Date() 
-    },
-    { 
-      id: '2', title: 'Banking Special English', thumbnail: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&q=80&w=800', 
-      progress: 12, totalLessons: 80, completedLessons: 10, lastAccessed: new Date() 
-    },
-    { 
-      id: '3', title: 'Class 10th Science & Math', thumbnail: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&q=80&w=800', 
-      progress: 78, totalLessons: 45, completedLessons: 35, lastAccessed: new Date() 
-    },
-  ];
+const CoursesSection: React.FC<{ profile: UserProfile, progress: Record<string, SubjectProgress> }> = ({ profile, progress }) => {
+  const [selectedSubject, setSelectedSubject] = useState<Subject | null>(null);
+
+  const handleToggleChapter = async (subjectId: string, chapterId: string) => {
+    if (!auth.currentUser) return;
+    
+    const subjectProgress = progress[subjectId] || {
+      uid: auth.currentUser.uid,
+      subjectId,
+      completedChapters: [],
+      updatedAt: serverTimestamp()
+    };
+
+    let newCompleted = [...subjectProgress.completedChapters];
+    if (newCompleted.includes(chapterId)) {
+      newCompleted = newCompleted.filter(id => id !== chapterId);
+    } else {
+      newCompleted.push(chapterId);
+    }
+
+    try {
+      await setDoc(doc(db, 'users', auth.currentUser.uid, 'courseProgress', subjectId), {
+        uid: auth.currentUser.uid,
+        subjectId,
+        completedChapters: newCompleted,
+        updatedAt: serverTimestamp()
+      });
+    } catch (error) {
+      handleFirestoreError(error, Operation.WRITE, `users/${auth.currentUser.uid}/courseProgress/${subjectId}`);
+    }
+  };
 
   return (
     <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-8">
-      <div>
-        <h2 className="text-3xl font-black text-brand-navy">My Learning Paths</h2>
-        <p className="text-slate-500 mt-2">Pick up exactly where you left off in your courses.</p>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h2 className="text-3xl font-black text-brand-navy">My Academic Progress</h2>
+          <p className="text-slate-500 mt-2">Track your syllabus completion across all subjects.</p>
+        </div>
+        {selectedSubject && (
+          <button 
+            onClick={() => setSelectedSubject(null)}
+            className="flex items-center gap-2 text-brand-orange font-bold text-sm bg-brand-orange/10 px-4 py-2 rounded-xl transition-all hover:bg-brand-orange hover:text-white"
+          >
+             View All Subjects
+          </button>
+        )}
       </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {courses.map((course) => (
-          <div key={course.id} className="bg-white rounded-[2.5rem] overflow-hidden shadow-sm border border-slate-100 group transition-all hover:shadow-xl">
-            <div className="relative h-48 overflow-hidden">
-              <img src={course.thumbnail} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-              <div className="absolute inset-0 bg-brand-navy/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                <button className="p-4 bg-brand-orange text-white rounded-full shadow-2xl scale-75 group-hover:scale-100 transition-transform">
-                  <Video size={24} />
-                </button>
-              </div>
-            </div>
-            <div className="p-8">
-              <h3 className="font-bold text-lg text-brand-navy mb-4 line-clamp-1 group-hover:text-brand-orange transition-colors">{course.title}</h3>
-              
-              <div className="flex items-center justify-between text-xs font-bold text-slate-400 mb-2 uppercase tracking-widest">
-                <span>Progress</span>
-                <span>{course.progress}%</span>
-              </div>
-              <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden mb-6">
+      <AnimatePresence mode="wait">
+        {!selectedSubject ? (
+          <motion.div 
+            key="list"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+          >
+            {ACADEMIC_SUBJECTS.map((subject) => {
+              const currentProgress = progress[subject.id]?.completedChapters.length || 0;
+              const totalChapters = subject.chapters.length;
+              const percentage = totalChapters > 0 ? Math.round((currentProgress / totalChapters) * 100) : 0;
+
+              return (
                 <div 
-                  className="bg-brand-orange h-full rounded-full transition-all duration-1000"
-                  style={{ width: `${course.progress}%` }}
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex flex-col">
-                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Completed</span>
-                  <span className="text-sm font-bold text-brand-navy">{course.completedLessons}/{course.totalLessons} Lessons</span>
+                  key={subject.id} 
+                  onClick={() => setSelectedSubject(subject)}
+                  className="bg-white rounded-[2.5rem] overflow-hidden shadow-sm border border-slate-100 group cursor-pointer transition-all hover:shadow-xl hover:-translate-y-1"
+                >
+                  <div className={cn("h-4 min-h-[16px]", subject.color)} />
+                  <div className="p-8">
+                    <div className="flex justify-between items-start mb-6">
+                      <div>
+                        <h3 className="font-black text-2xl text-brand-navy">{subject.nameEn}</h3>
+                        <p className="text-slate-400 font-bold text-lg">{subject.nameHi}</p>
+                      </div>
+                      <div className={cn(
+                        "w-12 h-12 rounded-2xl flex items-center justify-center text-white font-black text-xl",
+                        subject.color
+                      )}>
+                        {subject.nameEn[0]}
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between text-xs font-black text-slate-400 uppercase tracking-widest">
+                        <span>Completion</span>
+                        <span className="text-brand-navy">{percentage}%</span>
+                      </div>
+                      <div className="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
+                        <motion.div 
+                          initial={{ width: 0 }}
+                          animate={{ width: `${percentage}%` }}
+                          className={cn("h-full rounded-full", subject.color)}
+                        />
+                      </div>
+                      <div className="flex items-center justify-between pt-2">
+                        <div className="flex flex-col">
+                          <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Chapters</span>
+                          <span className="text-sm font-bold text-brand-navy">{currentProgress} / {totalChapters}</span>
+                        </div>
+                        <ChevronRight className="text-slate-300 group-hover:text-brand-orange transition-colors" />
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <button className="flex items-center gap-2 text-brand-orange font-bold text-sm group/btn">
-                  Continue <ChevronRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
-                </button>
+              );
+            })}
+          </motion.div>
+        ) : (
+          <motion.div 
+            key="details"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            className="space-y-6"
+          >
+            <div className={cn("p-8 rounded-[2.5rem] text-white overflow-hidden relative", selectedSubject.color)}>
+              <div className="relative z-10">
+                <h3 className="text-4xl font-black">{selectedSubject.nameEn} Syllabus</h3>
+                <p className="text-white/80 font-bold text-xl mt-2">{selectedSubject.nameHi} पाठ्यक्रम</p>
+                <div className="mt-8 flex items-center gap-8">
+                  <div>
+                    <p className="text-white/60 text-[10px] font-black uppercase tracking-widest">Chapter Mastery</p>
+                    <p className="text-3xl font-black">{progress[selectedSubject.id]?.completedChapters.length || 0} / {selectedSubject.chapters.length}</p>
+                  </div>
+                  <div className="flex-grow max-w-xs">
+                    <div className="w-full bg-white/20 h-2 rounded-full overflow-hidden mb-2">
+                      <div 
+                        className="bg-white h-full rounded-full transition-all duration-500" 
+                        style={{ width: `${Math.round(((progress[selectedSubject.id]?.completedChapters.length || 0) / selectedSubject.chapters.length) * 100)}%` }}
+                      />
+                    </div>
+                    <p className="text-[10px] font-black">{Math.round(((progress[selectedSubject.id]?.completedChapters.length || 0) / selectedSubject.chapters.length) * 100)}% Complete</p>
+                  </div>
+                </div>
+              </div>
+              <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-[100px] translate-x-1/3 -translate-y-1/3" />
+            </div>
+
+            <div className="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-sm">
+              <div className="grid gap-4">
+                {selectedSubject.chapters.map((chapter, index) => {
+                  const isCompleted = progress[selectedSubject.id]?.completedChapters.includes(chapter.id);
+                  return (
+                    <div 
+                      key={chapter.id}
+                      onClick={() => handleToggleChapter(selectedSubject.id, chapter.id)}
+                      className={cn(
+                        "group flex items-center gap-6 p-6 rounded-3xl cursor-pointer transition-all border-2",
+                        isCompleted 
+                          ? "bg-emerald-50 border-emerald-100" 
+                          : "bg-slate-50 border-transparent hover:border-slate-200"
+                      )}
+                    >
+                      <div className={cn(
+                        "w-12 h-12 rounded-2xl flex items-center justify-center font-black transition-all",
+                        isCompleted ? "bg-emerald-500 text-white" : "bg-white text-slate-400 group-hover:text-brand-navy"
+                      )}>
+                        {index + 1}
+                      </div>
+                      <div className="flex-grow">
+                        <h4 className={cn("font-bold text-lg", isCompleted ? "text-emerald-900" : "text-brand-navy")}>
+                          {chapter.titleEn}
+                        </h4>
+                        <p className={cn("text-sm", isCompleted ? "text-emerald-600" : "text-slate-500")}>
+                          {chapter.titleHi}
+                        </p>
+                      </div>
+                      <div className={cn(
+                        "w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all",
+                        isCompleted ? "bg-emerald-500 border-emerald-500 text-white" : "border-slate-200 text-transparent"
+                      )}>
+                        <CheckCircle2 size={16} />
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 };

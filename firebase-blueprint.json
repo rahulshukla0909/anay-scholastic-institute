@@ -53,6 +53,21 @@
         "uploadedAt": { "type": "string", "format": "date-time" }
       },
       "required": ["title", "category", "url"]
+    },
+    "CourseProgress": {
+      "title": "Course Progress",
+      "description": "Tracking of completed chapters per subject for a student.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "completedChapters": { 
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "subjectId", "completedChapters"]
     }
   },
   "firestore": {
@@ -71,6 +86,10 @@
     "/documents/{docId}": {
       "schema": "AcademicDocument",
       "description": "Repository of academic resources accessible to students."
+    },
+    "/users/{uid}/courseProgress/{subjectId}": {
+      "schema": "CourseProgress",
+      "description": "Detailed progress tracking for subjects."
     }
   }
 }
