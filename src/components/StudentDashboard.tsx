@@ -520,58 +520,72 @@ const DashboardOverview: React.FC<{
 
 const CoursesSection: React.FC<{ profile: UserProfile, progress: Record<string, SubjectProgress> }> = ({ profile, progress }) => {
   const [selectedSubject, setSelectedSubject] = useState<Subject | null>(null);
-  const [localCompleted, setLocalCompleted] = useState<string[]>([]);
-  const [isSaving, setIsSaving] = useState(false);
-  const [hasChanges, setHasChanges] = useState(false);
-  const [saveSuccess, setSaveSuccess] = useState(false);
+  // Track local changes for ALL subjects: subjectId -> list of chapterIds
+  const [pendingProgress, setPendingProgress] = useState<Record<string, string[]>>({});
+  const [isSavingRecord, setIsSavingRecord] = useState<Record<string, boolean>>({});
+  const [saveSuccessRecord, setSaveSuccessRecord] = useState<Record<string, boolean>>({});
 
-  // Initialize/Sync local state
+  // Sync with server progress only once per subject if no local changes exist
   useEffect(() => {
     if (selectedSubject) {
-      const dbCompleted = progress[selectedSubject.id]?.completedChapters || [];
-      // Only set local state if we aren't currently editing or if it's the first load
-      if (!hasChanges) {
-        setLocalCompleted(dbCompleted);
+      if (pendingProgress[selectedSubject.id] === undefined) {
+        setPendingProgress(prev => ({
+          ...prev,
+          [selectedSubject.id]: progress[selectedSubject.id]?.completedChapters || []
+        }));
       }
     }
-  }, [selectedSubject, progress[selectedSubject?.id || '']]);
+  }, [selectedSubject, progress]);
 
-  const toggleChapterLocal = (chapterId: string) => {
-    setLocalCompleted(prev => {
-      const next = prev.includes(chapterId) 
-        ? prev.filter(id => id !== chapterId) 
-        : [...prev, chapterId];
+  const toggleChapterLocal = (subjectId: string, chapterId: string) => {
+    setPendingProgress(prev => {
+      const currentList = prev[subjectId] || progress[subjectId]?.completedChapters || [];
+      const next = currentList.includes(chapterId) 
+        ? currentList.filter(id => id !== chapterId) 
+        : [...currentList, chapterId];
       
-      // Compare with DB progress to see if there are actual changes
-      const dbCompleted = progress[selectedSubject?.id || '']?.completedChapters || [];
-      const changed = JSON.stringify([...next].sort()) !== JSON.stringify([...dbCompleted].sort());
-      setHasChanges(changed);
-      setSaveSuccess(false);
-      
-      return next;
+      return { ...prev, [subjectId]: next };
     });
+    // Reset success state for this subject when user makes new changes
+    setSaveSuccessRecord(prev => ({ ...prev, [subjectId]: false }));
   };
 
-  const handleSaveProgress = async () => {
-    if (!selectedSubject || !auth.currentUser) return;
+  const handleSaveSubject = async (subjectId: string) => {
+    const listToSave = pendingProgress[subjectId];
+    if (!listToSave || !auth.currentUser) return;
     
-    setIsSaving(true);
+    setIsSavingRecord(prev => ({ ...prev, [subjectId]: true }));
     try {
-      await setDoc(doc(db, 'users', auth.currentUser.uid, 'courseProgress', selectedSubject.id), {
+      await setDoc(doc(db, 'users', auth.currentUser.uid, 'courseProgress', subjectId), {
         uid: auth.currentUser.uid,
-        subjectId: selectedSubject.id,
-        completedChapters: localCompleted,
+        subjectId,
+        completedChapters: listToSave,
         updatedAt: serverTimestamp()
       });
-      setHasChanges(false);
-      setSaveSuccess(true);
-      setTimeout(() => setSaveSuccess(false), 3000);
+      
+      setSaveSuccessRecord(prev => ({ ...prev, [subjectId]: true }));
+      // Clear pending state after 3 seconds or on next interaction
+      setTimeout(() => {
+        setSaveSuccessRecord(prev => ({ ...prev, [subjectId]: false }));
+      }, 3000);
     } catch (error: any) {
-      handleFirestoreError(error, Operation.WRITE, `users/${auth.currentUser.uid}/courseProgress/${selectedSubject.id}`);
+      handleFirestoreError(error, Operation.WRITE, `users/${auth.currentUser.uid}/courseProgress/${subjectId}`);
     } finally {
-      setIsSaving(false);
+      setIsSavingRecord(prev => ({ ...prev, [subjectId]: false }));
     }
   };
+
+  const hasUnsavedChanges = (subjectId: string) => {
+    const local = pendingProgress[subjectId];
+    if (local === undefined) return false;
+    const dbVal = progress[subjectId]?.completedChapters || [];
+    return JSON.stringify([...local].sort()) !== JSON.stringify([...dbVal].sort());
+  };
+
+  const currentLocalList = selectedSubject ? (pendingProgress[selectedSubject.id] || progress[selectedSubject.id]?.completedChapters || []) : [];
+  const subjectHasChanges = selectedSubject ? hasUnsavedChanges(selectedSubject.id) : false;
+  const subjectIsSaving = selectedSubject ? isSavingRecord[selectedSubject.id] : false;
+  const subjectSaveSuccess = selectedSubject ? saveSuccessRecord[selectedSubject.id] : false;
 
   return (
     <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-8">
@@ -583,17 +597,17 @@ const CoursesSection: React.FC<{ profile: UserProfile, progress: Record<string, 
         <div className="flex items-center gap-3">
           {selectedSubject && (
             <>
-              {hasChanges || isSaving ? (
+              {(subjectHasChanges || subjectIsSaving) ? (
                 <button 
-                  onClick={handleSaveProgress}
-                  disabled={isSaving}
+                  onClick={() => handleSaveSubject(selectedSubject.id)}
+                  disabled={subjectIsSaving}
                   className="flex items-center gap-2 bg-emerald-500 text-white font-bold text-sm px-6 py-2.5 rounded-xl transition-all hover:bg-emerald-600 shadow-lg shadow-emerald-200 disabled:opacity-50"
                 >
-                   {isSaving ? <Loader2 className="animate-spin" size={18} /> : <Library size={18} />}
-                   {isSaving ? 'Saving...' : 'Save Progress'}
+                   {subjectIsSaving ? <Loader2 className="animate-spin" size={18} /> : <Library size={18} />}
+                   {subjectIsSaving ? 'Saving...' : 'Save Progress'}
                 </button>
-              ) : saveSuccess ? (
-                <div className="flex items-center gap-2 bg-emerald-50 text-emerald-600 font-bold text-sm px-6 py-2.5 rounded-xl border border-emerald-100 animte-bounce">
+              ) : subjectSaveSuccess ? (
+                <div className="flex items-center gap-2 bg-emerald-50 text-emerald-600 font-bold text-sm px-6 py-2.5 rounded-xl border border-emerald-100 animate-bounce">
                   <CheckCircle2 size={18} /> Saved!
                 </div>
               ) : null}
@@ -619,49 +633,80 @@ const CoursesSection: React.FC<{ profile: UserProfile, progress: Record<string, 
           >
             {ACADEMIC_SUBJECTS.map((subject) => {
               const currentProgress = progress[subject.id]?.completedChapters?.length || 0;
+              const pendingLocal = pendingProgress[subject.id];
+              const localCount = pendingLocal ? pendingLocal.length : currentProgress;
               const totalChapters = subject.chapters.length;
-              const percentage = totalChapters > 0 ? Math.round((currentProgress / totalChapters) * 100) : 0;
+              const percentage = totalChapters > 0 ? Math.round((localCount / totalChapters) * 100) : 0;
+              const isChanged = hasUnsavedChanges(subject.id);
+              const isSaving = isSavingRecord[subject.id];
+              const isSuccess = saveSuccessRecord[subject.id];
 
               return (
                 <div 
                   key={subject.id} 
                   id={`subject-${subject.id}`}
-                  onClick={() => setSelectedSubject(subject)}
-                  className="bg-white rounded-[2.5rem] overflow-hidden shadow-sm border border-slate-100 group cursor-pointer transition-all hover:shadow-xl hover:-translate-y-1"
+                  className="bg-white rounded-[2.5rem] overflow-hidden shadow-sm border border-slate-100 group transition-all hover:shadow-xl hover:-translate-y-1 relative"
                 >
                   <div className={cn("h-4 min-h-[16px]", subject.color)} />
-                  <div className="p-8">
+                  
+                  {isChanged && (
+                    <div className="absolute top-6 right-6">
+                       <button 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleSaveSubject(subject.id);
+                        }}
+                        disabled={isSaving}
+                        className="bg-brand-orange text-white p-3 rounded-2xl shadow-lg shadow-brand-orange/30 hover:scale-110 transition-transform disabled:opacity-50"
+                        title="Save Unsaved Changes"
+                       >
+                         {isSaving ? <Loader2 className="animate-spin" size={20} /> : <Library size={20} />}
+                       </button>
+                    </div>
+                  )}
+
+                  {isSuccess && !isChanged && (
+                    <div className="absolute top-6 right-6">
+                      <div className="bg-emerald-500 text-white p-3 rounded-2xl shadow-lg shadow-emerald-500/30 animate-bounce">
+                        <CheckCircle2 size={20} />
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="p-8 cursor-pointer" onClick={() => setSelectedSubject(subject)}>
                     <div className="flex justify-between items-start mb-6">
                       <div>
                         <h3 className="font-black text-2xl text-brand-navy">{subject.nameEn}</h3>
                         <p className="text-slate-400 font-bold text-lg">{subject.nameHi}</p>
-                      </div>
-                      <div className={cn(
-                        "w-12 h-12 rounded-2xl flex items-center justify-center text-white font-black text-xl",
-                        subject.color
-                      )}>
-                        {subject.nameEn[0]}
                       </div>
                     </div>
                     
                     <div className="space-y-4">
                       <div className="flex items-center justify-between text-xs font-black text-slate-400 uppercase tracking-widest">
                         <span>Completion</span>
-                        <span className="text-brand-navy">{percentage}%</span>
+                        <div className="flex items-center gap-2">
+                           {isChanged && <span className="text-brand-orange text-[8px] animate-pulse">PENDING CHANGES</span>}
+                           <span className="text-brand-navy">{percentage}%</span>
+                        </div>
                       </div>
                       <div className="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
                         <motion.div 
                           initial={{ width: 0 }}
                           animate={{ width: `${percentage}%` }}
-                          className={cn("h-full rounded-full", subject.color)}
+                          className={cn("h-full rounded-full transition-all duration-500", subject.color)}
                         />
                       </div>
                       <div className="flex items-center justify-between pt-2">
                         <div className="flex flex-col">
                           <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Chapters</span>
-                          <span className="text-sm font-bold text-brand-navy">{currentProgress} / {totalChapters}</span>
+                          <span className="text-sm font-bold text-brand-navy">{localCount} / {totalChapters}</span>
                         </div>
-                        <ChevronRight className="text-slate-300 group-hover:text-brand-orange transition-colors" />
+                        <div className="flex items-center gap-3">
+                           {isChanged && (
+                            <span className="text-[10px] font-black text-brand-orange bg-brand-orange/10 px-3 py-1 rounded-full">SAVE NOW</span>
+                           )}
+                           <ChevronRight className="text-slate-300 group-hover:text-brand-orange transition-colors" />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -685,17 +730,17 @@ const CoursesSection: React.FC<{ profile: UserProfile, progress: Record<string, 
                     <p className="text-white/80 font-bold text-xl mt-2">{selectedSubject.nameHi} पाठ्यक्रम</p>
                   </div>
                   <div className="flex items-center gap-3">
-                    {(hasChanges || isSaving) && (
+                    {(subjectHasChanges || subjectIsSaving) && (
                       <button 
-                        onClick={handleSaveProgress}
-                        disabled={isSaving}
+                        onClick={() => handleSaveSubject(selectedSubject.id)}
+                        disabled={subjectIsSaving}
                         className="bg-white text-brand-navy px-6 py-3 rounded-2xl font-black text-sm flex items-center gap-2 hover:bg-slate-50 transition-all shadow-2xl disabled:opacity-50 active:scale-95"
                       >
-                        {isSaving ? <Loader2 className="animate-spin" size={18} /> : <Library size={18} />} 
-                        {isSaving ? 'SAVING...' : 'SAVE PROGRESS'}
+                        {subjectIsSaving ? <Loader2 className="animate-spin" size={18} /> : <Library size={18} />} 
+                        {subjectIsSaving ? 'SAVING...' : 'SAVE PROGRESS'}
                       </button>
                     )}
-                    {saveSuccess && (
+                    {subjectSaveSuccess && (
                       <div className="bg-emerald-500 text-white px-6 py-3 rounded-2xl font-black text-sm flex items-center gap-2 shadow-2xl animate-bounce">
                         <CheckCircle2 size={18} /> SAVED!
                       </div>
@@ -706,16 +751,16 @@ const CoursesSection: React.FC<{ profile: UserProfile, progress: Record<string, 
                 <div className="mt-8 flex items-center gap-8">
                   <div>
                     <p className="text-white/60 text-[10px] font-black uppercase tracking-widest">Chapter Mastery</p>
-                    <p className="text-3xl font-black">{localCompleted.length} / {selectedSubject.chapters.length}</p>
+                    <p className="text-3xl font-black">{currentLocalList.length} / {selectedSubject.chapters.length}</p>
                   </div>
                   <div className="flex-grow max-w-xs">
                     <div className="w-full bg-white/20 h-2 rounded-full overflow-hidden mb-2">
                       <div 
                         className="bg-white h-full rounded-full transition-all duration-500" 
-                        style={{ width: `${Math.round((localCompleted.length / selectedSubject.chapters.length) * 100)}%` }}
+                        style={{ width: `${Math.round((currentLocalList.length / selectedSubject.chapters.length) * 100)}%` }}
                       />
                     </div>
-                    <p className="text-[10px] font-black">{Math.round((localCompleted.length / selectedSubject.chapters.length) * 100)}% Complete</p>
+                    <p className="text-[10px] font-black">{Math.round((currentLocalList.length / selectedSubject.chapters.length) * 100)}% Complete</p>
                   </div>
                 </div>
               </div>
@@ -723,7 +768,7 @@ const CoursesSection: React.FC<{ profile: UserProfile, progress: Record<string, 
             </div>
 
             <div className="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-sm relative">
-              {isSaving && (
+              {subjectIsSaving && (
                 <div className="absolute inset-0 bg-white/60 backdrop-blur-[1px] z-10 flex items-center justify-center rounded-[2.5rem]">
                    <div className="flex flex-col items-center gap-4">
                      <Loader2 className="animate-spin text-brand-orange" size={32} />
@@ -734,7 +779,7 @@ const CoursesSection: React.FC<{ profile: UserProfile, progress: Record<string, 
               
               <div className="grid gap-4">
                 {selectedSubject.chapters.map((chapter, index) => {
-                  const isCompletedLocal = localCompleted.includes(chapter.id);
+                  const isCompletedLocal = currentLocalList.includes(chapter.id);
                   const isCompletedDB = progress[selectedSubject.id]?.completedChapters?.includes(chapter.id);
                   const isPendingChange = isCompletedLocal !== isCompletedDB;
 
@@ -742,14 +787,14 @@ const CoursesSection: React.FC<{ profile: UserProfile, progress: Record<string, 
                     <div 
                       key={chapter.id}
                       id={`chapter-${chapter.id}`}
-                      onClick={() => !isSaving && toggleChapterLocal(chapter.id)}
+                      onClick={() => !subjectIsSaving && toggleChapterLocal(selectedSubject.id, chapter.id)}
                       className={cn(
                         "group flex items-center gap-6 p-6 rounded-3xl cursor-pointer transition-all border-2",
                         isCompletedLocal 
                           ? "bg-emerald-50 border-emerald-100 shadow-inner" 
                           : "bg-slate-50 border-transparent hover:border-brand-navy/10",
                         isPendingChange && "border-dashed border-brand-orange/50",
-                        isSaving && "opacity-50 cursor-not-allowed"
+                        subjectIsSaving && "opacity-50 cursor-not-allowed"
                       )}
                     >
                       <div className={cn(
@@ -782,18 +827,18 @@ const CoursesSection: React.FC<{ profile: UserProfile, progress: Record<string, 
                 })}
               </div>
               
-              {(hasChanges || isSaving) && (
+              {(subjectHasChanges || subjectIsSaving) && (
                 <div className="mt-10 p-8 bg-slate-50 rounded-[2rem] border-2 border-dashed border-slate-200 flex flex-col items-center text-center">
                   <Library className="text-brand-orange mb-4" size={48} />
                   <h4 className="font-bold text-brand-navy text-xl">Ready to Save?</h4>
                   <p className="text-slate-500 mt-2 mb-8 max-w-sm">You've updated your progress for this subject. Save these changes to sync with your records.</p>
                   <button 
-                    onClick={handleSaveProgress}
-                    disabled={isSaving}
+                    onClick={() => handleSaveSubject(selectedSubject.id)}
+                    disabled={subjectIsSaving}
                     className="w-full max-w-md bg-brand-navy text-white font-black py-5 rounded-2xl flex items-center justify-center gap-3 hover:bg-brand-navy/90 transition-all shadow-2xl disabled:opacity-50 active:scale-95"
                   >
-                    {isSaving ? <Loader2 className="animate-spin" /> : <CheckCircle2 />}
-                    {isSaving ? 'SAVING PROGRESS...' : 'SAVE ALL CHANGES NOW'}
+                    {subjectIsSaving ? <Loader2 className="animate-spin" /> : <CheckCircle2 />}
+                    {subjectIsSaving ? 'SAVING PROGRESS...' : 'SAVE ALL CHANGES NOW'}
                   </button>
                 </div>
               )}
