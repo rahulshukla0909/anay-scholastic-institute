@@ -7,7 +7,7 @@ import {
   Menu, X, ChevronRight, User, Clock, 
   Plus, Trash2, Download, Upload, Loader2,
   AlertCircle, CheckCircle2, Camera, MoreVertical,
-  Mail, Phone
+  Mail, Phone, ExternalLink
 } from 'lucide-react';
 import { auth, db, storage } from '../lib/firebase';
 import { 
@@ -31,7 +31,11 @@ import {
 
 type ActiveTab = 'dashboard' | 'courses' | 'attendance' | 'performance' | 'tests' | 'material' | 'live' | 'certificates' | 'fees' | 'notifications' | 'settings' | 'admin';
 
-export const StudentDashboard: React.FC = () => {
+interface StudentDashboardProps {
+  onBackToWebsite?: () => void;
+}
+
+export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onBackToWebsite }) => {
   const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -161,8 +165,9 @@ export const StudentDashboard: React.FC = () => {
     <div className="min-h-screen bg-slate-50 flex">
       {/* Sidebar */}
       <aside className={cn(
-        "fixed inset-y-0 left-0 bg-brand-navy text-white transition-all duration-300 z-50 flex flex-col",
-        isSidebarOpen ? "w-72" : "w-20"
+        "fixed left-0 bg-brand-navy text-white transition-all duration-300 z-50 flex flex-col",
+        isSidebarOpen ? "w-72" : "w-20",
+        "top-[73px] bottom-0"
       )}>
         <div className="p-6 flex items-center justify-between">
           {isSidebarOpen ? (
@@ -208,6 +213,16 @@ export const StudentDashboard: React.FC = () => {
 
         {/* Navigation */}
         <nav className="flex-grow p-4 space-y-2 overflow-y-auto">
+          {onBackToWebsite && (
+            <button
+              onClick={onBackToWebsite}
+              className="w-full flex items-center gap-4 p-3 rounded-xl transition-all text-brand-orange hover:bg-brand-orange/10 group mb-4"
+            >
+              <ExternalLink size={20} />
+              {isSidebarOpen && <span className="font-bold text-sm">Main Website</span>}
+            </button>
+          )}
+
           {menuItems.map((item) => (
             <button
               key={item.id}
@@ -254,7 +269,7 @@ export const StudentDashboard: React.FC = () => {
         isSidebarOpen ? "ml-72" : "ml-20"
       )}>
         {/* Header */}
-        <header className="sticky top-0 bg-white/80 backdrop-blur-md border-b border-slate-100 z-40 px-8 py-4 flex items-center justify-between">
+        <header className="sticky top-[73px] bg-white/80 backdrop-blur-md border-b border-slate-100 z-40 px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <button 
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}

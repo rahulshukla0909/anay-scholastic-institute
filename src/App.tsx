@@ -26,7 +26,7 @@ export default function App() {
   const [user, setUser] = useState<FirebaseUser | null>(null);
   const [authMode, setAuthMode] = useState<AuthMode>('none');
   const [isInitializing, setIsInitializing] = useState(true);
-  const [currentView, setCurrentView] = useState<'home' | 'courses' | 'about' | 'results' | 'feedback' | 'legal' | 'contact' | 'signup'>('home');
+  const [currentView, setCurrentView] = useState<'home' | 'courses' | 'about' | 'results' | 'feedback' | 'legal' | 'contact' | 'signup' | 'dashboard'>('home');
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -35,6 +35,11 @@ export default function App() {
         const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
         if (!userDoc.exists() || !userDoc.data().studentId) {
           setCurrentView('signup');
+        } else {
+          // If profile is complete, and we were on home/signin, maybe go to dashboard
+          // but user wants to be able to see home too. 
+          // Let's just set the user and let them decide where to go.
+          // However, if they just signed in, it might be good to show dashboard once.
         }
       }
       setUser(currentUser);
@@ -86,11 +91,14 @@ export default function App() {
   }
 
   const renderContent = () => {
-    if (user && currentView !== 'signup') return <StudentDashboard />;
-
+    // Only show dashboard if explicitly requested
+    if (user && currentView === 'dashboard') return <StudentDashboard onBackToWebsite={() => setView('home')} />;
+    
     switch (currentView) {
       case 'signup':
         return <Register onCancel={() => setView('home')} onComplete={() => setView('home')} />;
+      case 'dashboard':
+        return user ? <StudentDashboard onBackToWebsite={() => setView('home')} /> : <Hero onStart={openAuth} onScrollToCourses={() => setView('courses')} onScrollToAbout={() => setView('about')} />;
       case 'home':
         return (
           <>
@@ -203,6 +211,7 @@ export default function App() {
         onScrollToAbout={() => setView('about')}
         onScrollToResults={() => setView('results')}
         onScrollToContact={() => setView('contact')}
+        onScrollToDashboard={() => setView('dashboard')}
         onResetView={() => setView('home')}
       />
       
@@ -210,12 +219,14 @@ export default function App() {
         {renderContent()}
       </main>
 
-      <Footer 
-        onAboutClick={() => setView('about')}
-        onResultsClick={() => setView('results')}
-        onFeedbackClick={() => setView('feedback')} 
-        onLegalClick={() => setView('legal')}
-      />
+      {currentView !== 'dashboard' && (
+        <Footer 
+          onAboutClick={() => setView('about')}
+          onResultsClick={() => setView('results')}
+          onFeedbackClick={() => setView('feedback')} 
+          onLegalClick={() => setView('legal')}
+        />
+      )}
       <WhatsAppButton />
 
 
