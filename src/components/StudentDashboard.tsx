@@ -72,7 +72,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onBackToWebs
         const data = snap.data() as UserProfile;
         
         // Admin auto-upgrade check
-        if (auth.currentUser?.email === 'prshntshukla063@gmail.com' && data.role !== 'admin') {
+        if ((auth.currentUser?.email === 'prshntshukla063@gmail.com' || auth.currentUser?.email === 'anayscholasticinstitute@gmail.com') && data.role !== 'admin') {
           await updateDoc(doc(db, 'users', uid), { role: 'admin' });
           data.role = 'admin';
         }

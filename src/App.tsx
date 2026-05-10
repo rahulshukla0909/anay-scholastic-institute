@@ -28,25 +28,36 @@ export default function App() {
   const [isInitializing, setIsInitializing] = useState(true);
   const [currentView, setCurrentView] = useState<'home' | 'courses' | 'about' | 'results' | 'feedback' | 'legal' | 'contact' | 'signup' | 'dashboard'>('home');
 
+  const hasRedirectedRef = React.useRef(false);
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         // Force profile completion check
-        const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
-        if (!userDoc.exists() || !userDoc.data().studentId) {
-          setCurrentView('signup');
-        } else {
-          // If profile is complete, and we were on home/signin, maybe go to dashboard
-          // but user wants to be able to see home too. 
-          // Let's just set the user and let them decide where to go.
-          // However, if they just signed in, it might be good to show dashboard once.
+        try {
+          const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
+          if (!userDoc.exists() || !userDoc.data()?.studentId) {
+            setCurrentView('signup');
+          } else if (!hasRedirectedRef.current) {
+            // Redirect to dashboard ONLY on initial login/session load
+            setCurrentView('dashboard');
+            hasRedirectedRef.current = true;
+          }
+        } catch (error) {
+          console.error("Auth check error:", error);
         }
+      } else {
+        // Redirect to home on logout
+        if (currentView === 'dashboard') {
+          setCurrentView('home');
+        }
+        hasRedirectedRef.current = false;
       }
       setUser(currentUser);
       setIsInitializing(false);
     });
     return () => unsubscribe();
-  }, []);
+  }, []); // Remove currentView dependency to prevent re-instantiating the listener on every navigation
 
   const openAuth = (mode: AuthMode) => {
     if (mode === 'signup') {
@@ -91,12 +102,9 @@ export default function App() {
   }
 
   const renderContent = () => {
-    // Only show dashboard if explicitly requested
-    if (user && currentView === 'dashboard') return <StudentDashboard onBackToWebsite={() => setView('home')} />;
-    
     switch (currentView) {
       case 'signup':
-        return <Register onCancel={() => setView('home')} onComplete={() => setView('home')} />;
+        return <Register onCancel={() => setView('home')} onComplete={() => setView('dashboard')} />;
       case 'dashboard':
         return user ? <StudentDashboard onBackToWebsite={() => setView('home')} /> : <Hero onStart={openAuth} onScrollToCourses={() => setView('courses')} onScrollToAbout={() => setView('about')} />;
       case 'home':

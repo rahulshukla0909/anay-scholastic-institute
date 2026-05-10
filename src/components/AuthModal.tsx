@@ -125,7 +125,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ mode, onClose }) => {
           mobileNumber,
           whatsappNumber,
           photoURL,
-          role: email === 'prshntshukla063@gmail.com' ? 'admin' : 'student',
+          role: (email === 'prshntshukla063@gmail.com' || email === 'anayscholasticinstitute@gmail.com') ? 'admin' : 'student',
           createdAt: serverTimestamp(),
         });
 

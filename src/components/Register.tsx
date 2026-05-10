@@ -160,7 +160,7 @@ export function Register({ onCancel, onComplete }: RegisterProps) {
           mobileNumber: `+91 ${mobileNumber}`,
           whatsappNumber: `+91 ${whatsappNumber}`,
           photoURL: photoURL || null,
-          role: finalUser.email === 'prshntshukla063@gmail.com' ? 'admin' : 'student',
+          role: (finalUser.email === 'prshntshukla063@gmail.com' || finalUser.email === 'anayscholasticinstitute@gmail.com') ? 'admin' : 'student',
           createdAt: serverTimestamp(),
         });
       } catch (err) {
