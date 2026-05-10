@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   LayoutDashboard, BookOpen, Calendar, TrendingUp, 
@@ -360,8 +360,8 @@ const DashboardOverview: React.FC<{
   onNavigate: (tab: ActiveTab) => void
 }> = ({ profile, attendance, progress, onNavigate }) => {
   
-  const totalChapters = ACADEMIC_SUBJECTS.reduce((acc: number, sub: Subject) => acc + sub.chapters.length, 0);
-  const completedChapters = Object.values(progress).reduce((acc: number, sub: SubjectProgress) => acc + (sub.completedChapters?.length || 0), 0);
+  const totalChapters = useMemo(() => ACADEMIC_SUBJECTS.reduce((acc: number, sub: Subject) => acc + sub.chapters.length, 0), []);
+  const completedChapters = useMemo(() => Object.values(progress).reduce((acc: number, sub: SubjectProgress) => acc + (sub.completedChapters?.length || 0), 0), [progress]);
   const academicProgress = totalChapters > 0 ? Math.round(((completedChapters as number) / (totalChapters as number)) * 100) : 0;
 
   const stats = [
@@ -482,7 +482,7 @@ const DashboardOverview: React.FC<{
           <h3 className="text-xl font-bold text-brand-navy mb-8">Subject Progress Report</h3>
           <div className="space-y-6">
             {ACADEMIC_SUBJECTS.map((subject) => {
-              const currentProgress = progress[subject.id]?.completedChapters.length || 0;
+              const currentProgress = progress[subject.id]?.completedChapters?.length || 0;
               const totalChapters = subject.chapters.length;
               const percentage = totalChapters > 0 ? Math.round((currentProgress / totalChapters) * 100) : 0;
               
@@ -508,9 +508,9 @@ const DashboardOverview: React.FC<{
           </div>
           <button 
             onClick={() => onNavigate('courses')}
-            className="w-full mt-10 py-4 border-2 border-slate-100 text-brand-navy text-xs font-black uppercase tracking-widest rounded-2xl hover:bg-slate-50 transition-all"
+            className="w-full mt-10 py-4 border-2 border-slate-100 text-brand-navy text-xs font-black uppercase tracking-widest rounded-2xl hover:bg-slate-50 transition-all flex items-center justify-center gap-2"
           >
-             View Full Syllabus
+             VIEW FULL SYLLABUS <ChevronRight size={14} />
           </button>
         </div>
       </div>
@@ -523,15 +523,18 @@ const CoursesSection: React.FC<{ profile: UserProfile, progress: Record<string, 
   const [localCompleted, setLocalCompleted] = useState<string[]>([]);
   const [isSaving, setIsSaving] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
 
   // Initialize/Sync local state
   useEffect(() => {
     if (selectedSubject) {
       const dbCompleted = progress[selectedSubject.id]?.completedChapters || [];
-      setLocalCompleted(dbCompleted);
-      setHasChanges(false);
+      // Only set local state if we aren't currently editing or if it's the first load
+      if (!hasChanges) {
+        setLocalCompleted(dbCompleted);
+      }
     }
-  }, [selectedSubject, progress]);
+  }, [selectedSubject, progress[selectedSubject?.id || '']]);
 
   const toggleChapterLocal = (chapterId: string) => {
     setLocalCompleted(prev => {
@@ -543,6 +546,7 @@ const CoursesSection: React.FC<{ profile: UserProfile, progress: Record<string, 
       const dbCompleted = progress[selectedSubject?.id || '']?.completedChapters || [];
       const changed = JSON.stringify([...next].sort()) !== JSON.stringify([...dbCompleted].sort());
       setHasChanges(changed);
+      setSaveSuccess(false);
       
       return next;
     });
@@ -560,6 +564,8 @@ const CoursesSection: React.FC<{ profile: UserProfile, progress: Record<string, 
         updatedAt: serverTimestamp()
       });
       setHasChanges(false);
+      setSaveSuccess(true);
+      setTimeout(() => setSaveSuccess(false), 3000);
     } catch (error: any) {
       handleFirestoreError(error, Operation.WRITE, `users/${auth.currentUser.uid}/courseProgress/${selectedSubject.id}`);
     } finally {
@@ -575,23 +581,29 @@ const CoursesSection: React.FC<{ profile: UserProfile, progress: Record<string, 
           <p className="text-slate-500 mt-2">Track your syllabus completion across all subjects.</p>
         </div>
         <div className="flex items-center gap-3">
-          {selectedSubject && hasChanges && (
-            <button 
-              onClick={handleSaveProgress}
-              disabled={isSaving}
-              className="flex items-center gap-2 bg-emerald-500 text-white font-bold text-sm px-6 py-2.5 rounded-xl transition-all hover:bg-emerald-600 shadow-lg shadow-emerald-200 disabled:opacity-50"
-            >
-               {isSaving ? <Loader2 className="animate-spin" size={18} /> : <Library size={18} />}
-               Save Progress
-            </button>
-          )}
           {selectedSubject && (
-            <button 
-              onClick={() => setSelectedSubject(null)}
-              className="flex items-center gap-2 text-brand-orange font-bold text-sm bg-brand-orange/10 px-4 py-2.5 rounded-xl transition-all hover:bg-brand-orange hover:text-white"
-            >
-               View All Subjects
-            </button>
+            <>
+              {hasChanges || isSaving ? (
+                <button 
+                  onClick={handleSaveProgress}
+                  disabled={isSaving}
+                  className="flex items-center gap-2 bg-emerald-500 text-white font-bold text-sm px-6 py-2.5 rounded-xl transition-all hover:bg-emerald-600 shadow-lg shadow-emerald-200 disabled:opacity-50"
+                >
+                   {isSaving ? <Loader2 className="animate-spin" size={18} /> : <Library size={18} />}
+                   {isSaving ? 'Saving...' : 'Save Progress'}
+                </button>
+              ) : saveSuccess ? (
+                <div className="flex items-center gap-2 bg-emerald-50 text-emerald-600 font-bold text-sm px-6 py-2.5 rounded-xl border border-emerald-100 animte-bounce">
+                  <CheckCircle2 size={18} /> Saved!
+                </div>
+              ) : null}
+              <button 
+                onClick={() => setSelectedSubject(null)}
+                className="flex items-center gap-2 text-brand-orange font-bold text-sm bg-brand-orange/10 px-4 py-2.5 rounded-xl transition-all hover:bg-brand-orange hover:text-white"
+              >
+                 View All Subjects
+              </button>
+            </>
           )}
         </div>
       </div>
@@ -606,7 +618,7 @@ const CoursesSection: React.FC<{ profile: UserProfile, progress: Record<string, 
             className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
             {ACADEMIC_SUBJECTS.map((subject) => {
-              const currentProgress = progress[subject.id]?.completedChapters.length || 0;
+              const currentProgress = progress[subject.id]?.completedChapters?.length || 0;
               const totalChapters = subject.chapters.length;
               const percentage = totalChapters > 0 ? Math.round((currentProgress / totalChapters) * 100) : 0;
 
@@ -665,25 +677,30 @@ const CoursesSection: React.FC<{ profile: UserProfile, progress: Record<string, 
             exit={{ opacity: 0, x: -20 }}
             className="space-y-6"
           >
-            <div className={cn("p-8 rounded-[2.5rem] text-white overflow-hidden relative", selectedSubject.color)}>
+            <div className={cn("p-8 rounded-[2.5rem] text-white overflow-hidden relative shadow-lg shadow-brand-navy/10", selectedSubject.color)}>
               <div className="relative z-10">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between flex-wrap gap-4">
                   <div>
                     <h3 className="text-4xl font-black">{selectedSubject.nameEn} Syllabus</h3>
                     <p className="text-white/80 font-bold text-xl mt-2">{selectedSubject.nameHi} पाठ्यक्रम</p>
                   </div>
-                  {hasChanges && (
-                    <div className="flex flex-col items-end gap-2">
-                       <span className="text-[10px] font-black bg-white text-brand-navy px-3 py-1 rounded-full animate-pulse shadow-xl">UNSAVED CHANGES</span>
-                       <button 
+                  <div className="flex items-center gap-3">
+                    {(hasChanges || isSaving) && (
+                      <button 
                         onClick={handleSaveProgress}
                         disabled={isSaving}
-                        className="bg-white text-brand-navy px-6 py-3 rounded-2xl font-black text-sm flex items-center gap-2 hover:bg-slate-50 transition-colors shadow-2xl disabled:opacity-50"
+                        className="bg-white text-brand-navy px-6 py-3 rounded-2xl font-black text-sm flex items-center gap-2 hover:bg-slate-50 transition-all shadow-2xl disabled:opacity-50 active:scale-95"
                       >
-                        {isSaving ? <Loader2 className="animate-spin" size={18} /> : <Library size={18} />} SAVE NOW
+                        {isSaving ? <Loader2 className="animate-spin" size={18} /> : <Library size={18} />} 
+                        {isSaving ? 'SAVING...' : 'SAVE PROGRESS'}
                       </button>
-                    </div>
-                  )}
+                    )}
+                    {saveSuccess && (
+                      <div className="bg-emerald-500 text-white px-6 py-3 rounded-2xl font-black text-sm flex items-center gap-2 shadow-2xl animate-bounce">
+                        <CheckCircle2 size={18} /> SAVED!
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 <div className="mt-8 flex items-center gap-8">
@@ -705,28 +722,38 @@ const CoursesSection: React.FC<{ profile: UserProfile, progress: Record<string, 
               <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-[100px] translate-x-1/3 -translate-y-1/3" />
             </div>
 
-            <div className="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-sm">
+            <div className="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-sm relative">
+              {isSaving && (
+                <div className="absolute inset-0 bg-white/60 backdrop-blur-[1px] z-10 flex items-center justify-center rounded-[2.5rem]">
+                   <div className="flex flex-col items-center gap-4">
+                     <Loader2 className="animate-spin text-brand-orange" size={32} />
+                     <p className="text-brand-navy font-bold">Updating Progress...</p>
+                   </div>
+                </div>
+              )}
+              
               <div className="grid gap-4">
                 {selectedSubject.chapters.map((chapter, index) => {
                   const isCompletedLocal = localCompleted.includes(chapter.id);
-                  const isCompletedDB = progress[selectedSubject.id]?.completedChapters.includes(chapter.id);
+                  const isCompletedDB = progress[selectedSubject.id]?.completedChapters?.includes(chapter.id);
                   const isPendingChange = isCompletedLocal !== isCompletedDB;
 
                   return (
                     <div 
                       key={chapter.id}
                       id={`chapter-${chapter.id}`}
-                      onClick={() => toggleChapterLocal(chapter.id)}
+                      onClick={() => !isSaving && toggleChapterLocal(chapter.id)}
                       className={cn(
                         "group flex items-center gap-6 p-6 rounded-3xl cursor-pointer transition-all border-2",
                         isCompletedLocal 
                           ? "bg-emerald-50 border-emerald-100 shadow-inner" 
-                          : "bg-slate-50 border-transparent hover:border-slate-200",
-                        isPendingChange && "border-dashed border-brand-orange/50"
+                          : "bg-slate-50 border-transparent hover:border-brand-navy/10",
+                        isPendingChange && "border-dashed border-brand-orange/50",
+                        isSaving && "opacity-50 cursor-not-allowed"
                       )}
                     >
                       <div className={cn(
-                        "w-12 h-12 rounded-2xl flex items-center justify-center font-black transition-all",
+                        "w-12 h-12 rounded-2xl flex items-center justify-center font-black transition-all shadow-sm",
                         isCompletedLocal ? "bg-emerald-500 text-white" : "bg-white text-slate-400 group-hover:text-brand-navy"
                       )}>
                         {index + 1}
@@ -737,7 +764,7 @@ const CoursesSection: React.FC<{ profile: UserProfile, progress: Record<string, 
                             {chapter.titleEn}
                           </h4>
                           {isPendingChange && (
-                            <span className="text-[8px] font-black bg-brand-orange text-white px-2 py-0.5 rounded-full uppercase">Unsaved</span>
+                            <span className="text-[8px] font-black bg-brand-orange text-white px-2 py-0.5 rounded-full uppercase animate-pulse">Unsaved</span>
                           )}
                         </div>
                         <p className={cn("text-sm", isCompletedLocal ? "text-emerald-600" : "text-slate-500")}>
@@ -755,15 +782,15 @@ const CoursesSection: React.FC<{ profile: UserProfile, progress: Record<string, 
                 })}
               </div>
               
-              {hasChanges && (
+              {(hasChanges || isSaving) && (
                 <div className="mt-10 p-8 bg-slate-50 rounded-[2rem] border-2 border-dashed border-slate-200 flex flex-col items-center text-center">
                   <Library className="text-brand-orange mb-4" size={48} />
-                  <h4 className="font-bold text-brand-navy text-xl">Confirm Your Progress</h4>
-                  <p className="text-slate-500 mt-2 mb-8 max-w-sm">You have selected {localCompleted.length} chapters. Please click the button below to save your progress permanently.</p>
+                  <h4 className="font-bold text-brand-navy text-xl">Ready to Save?</h4>
+                  <p className="text-slate-500 mt-2 mb-8 max-w-sm">You've updated your progress for this subject. Save these changes to sync with your records.</p>
                   <button 
                     onClick={handleSaveProgress}
                     disabled={isSaving}
-                    className="w-full max-w-md bg-brand-navy text-white font-black py-5 rounded-2xl flex items-center justify-center gap-3 hover:bg-brand-navy/90 transition-all shadow-2xl disabled:opacity-50"
+                    className="w-full max-w-md bg-brand-navy text-white font-black py-5 rounded-2xl flex items-center justify-center gap-3 hover:bg-brand-navy/90 transition-all shadow-2xl disabled:opacity-50 active:scale-95"
                   >
                     {isSaving ? <Loader2 className="animate-spin" /> : <CheckCircle2 />}
                     {isSaving ? 'SAVING PROGRESS...' : 'SAVE ALL CHANGES NOW'}
