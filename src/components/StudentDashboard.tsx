@@ -55,25 +55,37 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onBackToWebs
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    let unsubscribes: (() => void)[] = [];
+
     const unsubscribeAuth = auth.onAuthStateChanged(user => {
+      // Clear old listeners if auth state changes
+      unsubscribes.forEach(unsub => unsub());
+      unsubscribes = [];
+
       if (user) {
         fetchProfile(user.uid);
-        setupRealtimeData(user.uid);
+        unsubscribes = setupRealtimeData(user.uid);
       } else {
         setIsLoading(false);
+        setProfile(null);
       }
     });
-    return () => unsubscribeAuth();
+
+    return () => {
+      unsubscribeAuth();
+      unsubscribes.forEach(unsub => unsub());
+    };
   }, []);
 
   const fetchProfile = async (uid: string) => {
+    if (!auth.currentUser) return;
     try {
       const snap = await getDoc(doc(db, 'users', uid));
       if (snap.exists()) {
         const data = snap.data() as UserProfile;
         
         // Admin auto-upgrade check
-        if ((auth.currentUser?.email === 'prshntshukla063@gmail.com' || auth.currentUser?.email === 'anayscholasticinstitute@gmail.com') && data.role !== 'admin') {
+        if ((auth.currentUser?.email === 'anayscholasticinstitute@gmail.com') && data.role !== 'admin') {
           await updateDoc(doc(db, 'users', uid), { role: 'admin' });
           data.role = 'admin';
         }
@@ -87,40 +99,68 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onBackToWebs
         });
       }
     } catch (err) {
-      console.error("Profile fetch error:", err);
+      console.warn("Profile not ready:", err);
     } finally {
       setIsLoading(false);
     }
   };
 
   const setupRealtimeData = (uid: string) => {
-    // Attendance
-    const attQuery = query(collection(db, 'attendance'), where('uid', '==', uid), orderBy('date', 'desc'), limit(30));
-    onSnapshot(attQuery, (snap) => {
-      setAttendanceRecords(snap.docs.map(d => ({ id: d.id, ...d.data() }) as AttendanceRecord));
-    });
+    const unsubs: (() => void)[] = [];
+    if (!auth.currentUser) return unsubs;
 
-    // Content/Resources
-    const resQuery = query(collection(db, 'documents'), orderBy('uploadedAt', 'desc'));
-    onSnapshot(resQuery, (snap) => {
-      setAcademicDocs(snap.docs.map(d => ({ id: d.id, ...d.data() }) as AcademicDocument));
-    });
-
-    // Notifications
-    const notifQuery = query(collection(db, 'notifications'), where('userId', 'in', [uid, 'all']), orderBy('createdAt', 'desc'));
-    onSnapshot(notifQuery, (snap) => {
-      setNotifications(snap.docs.map(d => ({ id: d.id, ...d.data() }) as Notification));
-    });
-
-    // Academic Course Progress
-    const progressQuery = collection(db, 'users', uid, 'courseProgress');
-    onSnapshot(progressQuery, (snap) => {
-      const progress: Record<string, SubjectProgress> = {};
-      snap.docs.forEach(doc => {
-        progress[doc.id] = doc.data() as SubjectProgress;
+    try {
+      // Attendance
+      const attQuery = query(collection(db, 'attendance'), where('uid', '==', uid), orderBy('date', 'desc'), limit(30));
+      const unsubAtt = onSnapshot(attQuery, (snap) => {
+        setAttendanceRecords(snap.docs.map(d => ({ id: d.id, ...d.data() }) as AttendanceRecord));
+      }, (error) => {
+        if (auth.currentUser) {
+          console.error("Attendance Error:", error);
+        }
       });
-      setSubjectProgress(progress);
-    });
+      unsubs.push(unsubAtt);
+
+      // Content/Resources
+      const resQuery = query(collection(db, 'documents'), orderBy('uploadedAt', 'desc'), limit(20));
+      const unsubRes = onSnapshot(resQuery, (snap) => {
+        setAcademicDocs(snap.docs.map(d => ({ id: d.id, ...d.data() }) as AcademicDocument));
+      }, (error) => {
+        if (auth.currentUser) {
+          console.error("Docs Error:", error);
+        }
+      });
+      unsubs.push(unsubRes);
+
+      // Notifications
+      const notifQuery = query(collection(db, 'notifications'), where('userId', 'in', [uid, 'all']), orderBy('createdAt', 'desc'), limit(20));
+      const unsubNotif = onSnapshot(notifQuery, (snap) => {
+        setNotifications(snap.docs.map(d => ({ id: d.id, ...d.data() }) as Notification));
+      }, (error) => {
+        if (auth.currentUser) {
+          console.error("Notif Error:", error);
+        }
+      });
+      unsubs.push(unsubNotif);
+
+      // Academic Course Progress
+      const progQuery = query(collection(db, 'users', uid, 'courseProgress'));
+      const unsubProg = onSnapshot(progQuery, (snap) => {
+        const progMap: Record<string, SubjectProgress> = {};
+        snap.docs.forEach(d => {
+          progMap[d.id] = d.data() as SubjectProgress;
+        });
+        setSubjectProgress(progMap);
+      }, (error) => {
+        if (auth.currentUser) {
+          console.error("Progress Error:", error);
+        }
+      });
+      unsubs.push(unsubProg);
+    } catch (err) {
+      console.error(err);
+    }
+    return unsubs;
   };
 
   const menuItems = [
@@ -329,21 +369,30 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onBackToWebs
         {/* View Content */}
         <section className="p-8 pb-20">
           <AnimatePresence mode="wait">
-            {activeTab === 'dashboard' && <DashboardOverview key="dash" profile={profile!} attendance={attendanceRecords} progress={subjectProgress} onNavigate={setActiveTab} />}
-            {activeTab === 'courses' && <CoursesSection key="courses" profile={profile!} progress={subjectProgress} />}
-            {activeTab === 'attendance' && <AttendanceSection key="att" records={attendanceRecords} />}
-            {activeTab === 'performance' && <PerformanceSection key="perf" />}
-            {activeTab === 'material' && <MaterialSection key="docs" docs={academicDocs} role={profile?.role} />}
-            {activeTab === 'notifications' && <NotificationsSection key="notif" notifications={notifications} />}
-            {activeTab === 'settings' && (
-              <SettingsSection 
-                key="settings" 
-                profile={profile!} 
-                isUpdating={isUpdating} 
-                onPhotoUpload={handlePhotoUpload} 
-              />
+            {!profile ? (
+              <div className="flex flex-col items-center justify-center p-20 bg-white rounded-[2.5rem] border-2 border-dashed border-slate-100 italic text-slate-400">
+                <AlertCircle size={48} className="mb-4 text-brand-orange/30" />
+                <p>Unable to load your profile data. Please refresh or contact support.</p>
+              </div>
+            ) : (
+              <>
+                {activeTab === 'dashboard' && <DashboardOverview key="dash" profile={profile} attendance={attendanceRecords} progress={subjectProgress} onNavigate={setActiveTab} />}
+                {activeTab === 'courses' && <CoursesSection key="courses" profile={profile} progress={subjectProgress} />}
+                {activeTab === 'attendance' && <AttendanceSection key="att" records={attendanceRecords} />}
+                {activeTab === 'performance' && <PerformanceSection key="perf" />}
+                {activeTab === 'material' && <MaterialSection key="docs" docs={academicDocs} role={profile?.role} />}
+                {activeTab === 'notifications' && <NotificationsSection key="notif" notifications={notifications} />}
+                {activeTab === 'settings' && (
+                  <SettingsSection 
+                    key="settings" 
+                    profile={profile} 
+                    isUpdating={isUpdating} 
+                    onPhotoUpload={handlePhotoUpload} 
+                  />
+                )}
+                {activeTab === 'admin' && <AdminTools key="admin" profile={profile} />}
+              </>
             )}
-            {activeTab === 'admin' && <AdminTools key="admin" profile={profile!} />}
           </AnimatePresence>
         </section>
       </main>
@@ -371,8 +420,8 @@ const DashboardOverview: React.FC<{
       value: `${attendance.length > 0 ? Math.round((attendance.filter(r => r.status === 'present').length / attendance.length) * 100) : 0}%`, 
       icon: Calendar, color: 'text-brand-orange', bg: 'bg-brand-orange/10' 
     },
-    { label: 'Performance', value: profile.stats?.performanceScore ? `${profile.stats.performanceScore}%` : '85%', icon: TrendingUp, color: 'text-emerald-500', bg: 'bg-emerald-50' },
-    { label: 'Pending Work', value: profile.stats?.pendingAssignments || 4, icon: ClipboardCheck, color: 'text-rose-500', bg: 'bg-rose-50' },
+    { label: 'Performance', value: profile?.stats?.performanceScore ? `${profile.stats.performanceScore}%` : '85%', icon: TrendingUp, color: 'text-emerald-500', bg: 'bg-emerald-50' },
+    { label: 'Pending Work', value: profile?.stats?.pendingAssignments || 4, icon: ClipboardCheck, color: 'text-rose-500', bg: 'bg-rose-50' },
   ];
 
   const chartData = [
@@ -439,7 +488,7 @@ const DashboardOverview: React.FC<{
         </div>
 
         {/* Side Panel: Classes */}
-        <div className="bg-brand-navy p-8 rounded-[2.5rem] shadow-xl text-white relative overflow-hidden">
+        <div className="bg-brand-navy p-8 rounded-[2.5rem] shadow-xl text-white relative overflow-hidden h-full">
           <div className="relative z-10">
             <div className="flex items-center justify-between mb-8">
               <h3 className="font-bold flex items-center gap-2"><Clock size={16} /> Up Next</h3>
@@ -477,41 +526,51 @@ const DashboardOverview: React.FC<{
           <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-[100px] translate-x-1/2 -translate-y-1/2" />
         </div>
 
-        {/* Subject Progress Breakdown */}
-        <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100">
-          <h3 className="text-xl font-bold text-brand-navy mb-8">Subject Progress Report</h3>
-          <div className="space-y-6">
+        {/* Subject Progress Report */}
+        <div className="lg:col-span-3 bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100">
+          <div className="flex items-center justify-between mb-8">
+            <h3 className="text-xl font-bold text-brand-navy">Academic Progress Report</h3>
+            <button 
+              onClick={() => onNavigate('courses')}
+              className="text-xs font-black text-brand-orange hover:underline uppercase tracking-widest"
+            >
+              View Full Syllabus
+            </button>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {ACADEMIC_SUBJECTS.map((subject) => {
               const currentProgress = progress[subject.id]?.completedChapters?.length || 0;
               const totalChapters = subject.chapters.length;
               const percentage = totalChapters > 0 ? Math.round((currentProgress / totalChapters) * 100) : 0;
-              
+
               return (
-                <div key={subject.id}>
-                  <div className="flex justify-between items-end mb-2">
-                    <div className="flex items-center gap-2">
-                      <div className={cn("w-2 h-2 rounded-full", subject.color)} />
-                      <p className="text-sm font-bold text-brand-navy">{subject.nameEn}</p>
-                    </div>
-                    <span className="text-[10px] font-black text-slate-400 uppercase">{currentProgress}/{totalChapters} Chapters</span>
+                <div key={subject.id} className="group">
+                  <div className="flex justify-between items-end mb-3">
+                     <div>
+                       <p className="text-sm font-bold text-brand-navy">{subject.nameEn}</p>
+                       <p className="text-[10px] text-slate-400 font-bold">{subject.nameHi}</p>
+                     </div>
+                     <span className="text-[10px] font-black text-brand-navy">{currentProgress}/{totalChapters}</span>
                   </div>
-                  <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                  <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
                     <motion.div 
                       initial={{ width: 0 }}
                       animate={{ width: `${percentage}%` }}
                       className={cn("h-full rounded-full", subject.color)} 
                     />
                   </div>
+                  <div className="mt-3 flex justify-between items-center">
+                    <p className="text-[10px] font-bold text-slate-400">{percentage}% Complete</p>
+                    <div className="flex -space-x-1">
+                       {[1, 2, 3].map(i => (
+                         <div key={i} className="w-4 h-4 rounded-full border-2 border-white bg-slate-200" />
+                       ))}
+                    </div>
+                  </div>
                 </div>
               );
             })}
           </div>
-          <button 
-            onClick={() => onNavigate('courses')}
-            className="w-full mt-10 py-4 border-2 border-slate-100 text-brand-navy text-xs font-black uppercase tracking-widest rounded-2xl hover:bg-slate-50 transition-all flex items-center justify-center gap-2"
-          >
-             VIEW FULL SYLLABUS <ChevronRight size={14} />
-          </button>
         </div>
       </div>
     </motion.div>
@@ -520,72 +579,30 @@ const DashboardOverview: React.FC<{
 
 const CoursesSection: React.FC<{ profile: UserProfile, progress: Record<string, SubjectProgress> }> = ({ profile, progress }) => {
   const [selectedSubject, setSelectedSubject] = useState<Subject | null>(null);
-  // Track local changes for ALL subjects: subjectId -> list of chapterIds
-  const [pendingProgress, setPendingProgress] = useState<Record<string, string[]>>({});
-  const [isSavingRecord, setIsSavingRecord] = useState<Record<string, boolean>>({});
-  const [saveSuccessRecord, setSaveSuccessRecord] = useState<Record<string, boolean>>({});
+  const [isSaving, setIsSaving] = useState(false);
 
-  // Sync with server progress only once per subject if no local changes exist
-  useEffect(() => {
-    if (selectedSubject) {
-      if (pendingProgress[selectedSubject.id] === undefined) {
-        setPendingProgress(prev => ({
-          ...prev,
-          [selectedSubject.id]: progress[selectedSubject.id]?.completedChapters || []
-        }));
-      }
-    }
-  }, [selectedSubject, progress]);
-
-  const toggleChapterLocal = (subjectId: string, chapterId: string) => {
-    setPendingProgress(prev => {
-      const currentList = prev[subjectId] || progress[subjectId]?.completedChapters || [];
-      const next = currentList.includes(chapterId) 
-        ? currentList.filter(id => id !== chapterId) 
-        : [...currentList, chapterId];
-      
-      return { ...prev, [subjectId]: next };
-    });
-    // Reset success state for this subject when user makes new changes
-    setSaveSuccessRecord(prev => ({ ...prev, [subjectId]: false }));
-  };
-
-  const handleSaveSubject = async (subjectId: string) => {
-    const listToSave = pendingProgress[subjectId];
-    if (!listToSave || !auth.currentUser) return;
+  const toggleChapter = async (subjectId: string, chapterId: string) => {
+    if (!auth.currentUser) return;
     
-    setIsSavingRecord(prev => ({ ...prev, [subjectId]: true }));
+    setIsSaving(true);
     try {
+      const currentCompleted = progress[subjectId]?.completedChapters || [];
+      const nextCompleted = currentCompleted.includes(chapterId)
+        ? currentCompleted.filter(id => id !== chapterId)
+        : [...currentCompleted, chapterId];
+
       await setDoc(doc(db, 'users', auth.currentUser.uid, 'courseProgress', subjectId), {
         uid: auth.currentUser.uid,
-        subjectId,
-        completedChapters: listToSave,
+        subjectId: subjectId,
+        completedChapters: nextCompleted,
         updatedAt: serverTimestamp()
       });
-      
-      setSaveSuccessRecord(prev => ({ ...prev, [subjectId]: true }));
-      // Clear pending state after 3 seconds or on next interaction
-      setTimeout(() => {
-        setSaveSuccessRecord(prev => ({ ...prev, [subjectId]: false }));
-      }, 3000);
     } catch (error: any) {
       handleFirestoreError(error, Operation.WRITE, `users/${auth.currentUser.uid}/courseProgress/${subjectId}`);
     } finally {
-      setIsSavingRecord(prev => ({ ...prev, [subjectId]: false }));
+      setIsSaving(false);
     }
   };
-
-  const hasUnsavedChanges = (subjectId: string) => {
-    const local = pendingProgress[subjectId];
-    if (local === undefined) return false;
-    const dbVal = progress[subjectId]?.completedChapters || [];
-    return JSON.stringify([...local].sort()) !== JSON.stringify([...dbVal].sort());
-  };
-
-  const currentLocalList = selectedSubject ? (pendingProgress[selectedSubject.id] || progress[selectedSubject.id]?.completedChapters || []) : [];
-  const subjectHasChanges = selectedSubject ? hasUnsavedChanges(selectedSubject.id) : false;
-  const subjectIsSaving = selectedSubject ? isSavingRecord[selectedSubject.id] : false;
-  const subjectSaveSuccess = selectedSubject ? saveSuccessRecord[selectedSubject.id] : false;
 
   return (
     <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-8">
@@ -594,32 +611,14 @@ const CoursesSection: React.FC<{ profile: UserProfile, progress: Record<string, 
           <h2 className="text-3xl font-black text-brand-navy">My Academic Progress</h2>
           <p className="text-slate-500 mt-2">Track your syllabus completion across all subjects.</p>
         </div>
-        <div className="flex items-center gap-3">
-          {selectedSubject && (
-            <>
-              {(subjectHasChanges || subjectIsSaving) ? (
-                <button 
-                  onClick={() => handleSaveSubject(selectedSubject.id)}
-                  disabled={subjectIsSaving}
-                  className="flex items-center gap-2 bg-emerald-500 text-white font-bold text-sm px-6 py-2.5 rounded-xl transition-all hover:bg-emerald-600 shadow-lg shadow-emerald-200 disabled:opacity-50"
-                >
-                   {subjectIsSaving ? <Loader2 className="animate-spin" size={18} /> : <Library size={18} />}
-                   {subjectIsSaving ? 'Saving...' : 'Save Progress'}
-                </button>
-              ) : subjectSaveSuccess ? (
-                <div className="flex items-center gap-2 bg-emerald-50 text-emerald-600 font-bold text-sm px-6 py-2.5 rounded-xl border border-emerald-100 animate-bounce">
-                  <CheckCircle2 size={18} /> Saved!
-                </div>
-              ) : null}
-              <button 
-                onClick={() => setSelectedSubject(null)}
-                className="flex items-center gap-2 text-brand-orange font-bold text-sm bg-brand-orange/10 px-4 py-2.5 rounded-xl transition-all hover:bg-brand-orange hover:text-white"
-              >
-                 View All Subjects
-              </button>
-            </>
-          )}
-        </div>
+        {selectedSubject ? (
+          <button 
+            onClick={() => setSelectedSubject(null)}
+            className="flex items-center gap-2 text-brand-orange font-bold text-sm bg-brand-orange/10 px-4 py-2.5 rounded-xl transition-all hover:bg-brand-orange hover:text-white"
+          >
+             View All Subjects
+          </button>
+        ) : null}
       </div>
 
       <AnimatePresence mode="wait">
@@ -633,80 +632,50 @@ const CoursesSection: React.FC<{ profile: UserProfile, progress: Record<string, 
           >
             {ACADEMIC_SUBJECTS.map((subject) => {
               const currentProgress = progress[subject.id]?.completedChapters?.length || 0;
-              const pendingLocal = pendingProgress[subject.id];
-              const localCount = pendingLocal ? pendingLocal.length : currentProgress;
               const totalChapters = subject.chapters.length;
-              const percentage = totalChapters > 0 ? Math.round((localCount / totalChapters) * 100) : 0;
-              const isChanged = hasUnsavedChanges(subject.id);
-              const isSaving = isSavingRecord[subject.id];
-              const isSuccess = saveSuccessRecord[subject.id];
+              const percentage = totalChapters > 0 ? Math.round((currentProgress / totalChapters) * 100) : 0;
 
               return (
                 <div 
                   key={subject.id} 
                   id={`subject-${subject.id}`}
-                  className="bg-white rounded-[2.5rem] overflow-hidden shadow-sm border border-slate-100 group transition-all hover:shadow-xl hover:-translate-y-1 relative"
+                  onClick={() => setSelectedSubject(subject)}
+                  className="bg-white rounded-[2.5rem] overflow-hidden shadow-sm border border-slate-100 group cursor-pointer transition-all hover:shadow-xl hover:-translate-y-1"
                 >
                   <div className={cn("h-4 min-h-[16px]", subject.color)} />
                   
-                  {isChanged && (
-                    <div className="absolute top-6 right-6">
-                       <button 
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleSaveSubject(subject.id);
-                        }}
-                        disabled={isSaving}
-                        className="bg-brand-orange text-white p-3 rounded-2xl shadow-lg shadow-brand-orange/30 hover:scale-110 transition-transform disabled:opacity-50"
-                        title="Save Unsaved Changes"
-                       >
-                         {isSaving ? <Loader2 className="animate-spin" size={20} /> : <Library size={20} />}
-                       </button>
-                    </div>
-                  )}
-
-                  {isSuccess && !isChanged && (
-                    <div className="absolute top-6 right-6">
-                      <div className="bg-emerald-500 text-white p-3 rounded-2xl shadow-lg shadow-emerald-500/30 animate-bounce">
-                        <CheckCircle2 size={20} />
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="p-8 cursor-pointer" onClick={() => setSelectedSubject(subject)}>
+                  <div className="p-8">
                     <div className="flex justify-between items-start mb-6">
                       <div>
                         <h3 className="font-black text-2xl text-brand-navy">{subject.nameEn}</h3>
                         <p className="text-slate-400 font-bold text-lg">{subject.nameHi}</p>
+                      </div>
+                      <div className={cn(
+                        "w-12 h-12 rounded-2xl flex items-center justify-center text-white font-black text-xl",
+                        subject.color
+                      )}>
+                        {subject.nameEn[0]}
                       </div>
                     </div>
                     
                     <div className="space-y-4">
                       <div className="flex items-center justify-between text-xs font-black text-slate-400 uppercase tracking-widest">
                         <span>Completion</span>
-                        <div className="flex items-center gap-2">
-                           {isChanged && <span className="text-brand-orange text-[8px] animate-pulse">PENDING CHANGES</span>}
-                           <span className="text-brand-navy">{percentage}%</span>
-                        </div>
+                        <span className="text-brand-navy">{percentage}%</span>
                       </div>
                       <div className="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
                         <motion.div 
                           initial={{ width: 0 }}
                           animate={{ width: `${percentage}%` }}
-                          className={cn("h-full rounded-full transition-all duration-500", subject.color)}
+                          className={cn("h-full rounded-full", subject.color)}
                         />
                       </div>
                       <div className="flex items-center justify-between pt-2">
                         <div className="flex flex-col">
                           <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Chapters</span>
-                          <span className="text-sm font-bold text-brand-navy">{localCount} / {totalChapters}</span>
+                          <span className="text-sm font-bold text-brand-navy">{currentProgress} / {totalChapters}</span>
                         </div>
-                        <div className="flex items-center gap-3">
-                           {isChanged && (
-                            <span className="text-[10px] font-black text-brand-orange bg-brand-orange/10 px-3 py-1 rounded-full">SAVE NOW</span>
-                           )}
-                           <ChevronRight className="text-slate-300 group-hover:text-brand-orange transition-colors" />
-                        </div>
+                        <ChevronRight className="text-slate-300 group-hover:text-brand-orange transition-colors" />
                       </div>
                     </div>
                   </div>
@@ -729,38 +698,21 @@ const CoursesSection: React.FC<{ profile: UserProfile, progress: Record<string, 
                     <h3 className="text-4xl font-black">{selectedSubject.nameEn} Syllabus</h3>
                     <p className="text-white/80 font-bold text-xl mt-2">{selectedSubject.nameHi} पाठ्यक्रम</p>
                   </div>
-                  <div className="flex items-center gap-3">
-                    {(subjectHasChanges || subjectIsSaving) && (
-                      <button 
-                        onClick={() => handleSaveSubject(selectedSubject.id)}
-                        disabled={subjectIsSaving}
-                        className="bg-white text-brand-navy px-6 py-3 rounded-2xl font-black text-sm flex items-center gap-2 hover:bg-slate-50 transition-all shadow-2xl disabled:opacity-50 active:scale-95"
-                      >
-                        {subjectIsSaving ? <Loader2 className="animate-spin" size={18} /> : <Library size={18} />} 
-                        {subjectIsSaving ? 'SAVING...' : 'SAVE PROGRESS'}
-                      </button>
-                    )}
-                    {subjectSaveSuccess && (
-                      <div className="bg-emerald-500 text-white px-6 py-3 rounded-2xl font-black text-sm flex items-center gap-2 shadow-2xl animate-bounce">
-                        <CheckCircle2 size={18} /> SAVED!
-                      </div>
-                    )}
-                  </div>
                 </div>
 
                 <div className="mt-8 flex items-center gap-8">
                   <div>
                     <p className="text-white/60 text-[10px] font-black uppercase tracking-widest">Chapter Mastery</p>
-                    <p className="text-3xl font-black">{currentLocalList.length} / {selectedSubject.chapters.length}</p>
+                    <p className="text-3xl font-black">{(progress[selectedSubject.id]?.completedChapters?.length || 0)} / {selectedSubject.chapters.length}</p>
                   </div>
                   <div className="flex-grow max-w-xs">
                     <div className="w-full bg-white/20 h-2 rounded-full overflow-hidden mb-2">
-                      <div 
+                      <motion.div 
+                        animate={{ width: `${Math.round(((progress[selectedSubject.id]?.completedChapters?.length || 0) / selectedSubject.chapters.length) * 100)}%` }}
                         className="bg-white h-full rounded-full transition-all duration-500" 
-                        style={{ width: `${Math.round((currentLocalList.length / selectedSubject.chapters.length) * 100)}%` }}
                       />
                     </div>
-                    <p className="text-[10px] font-black">{Math.round((currentLocalList.length / selectedSubject.chapters.length) * 100)}% Complete</p>
+                    <p className="text-[10px] font-black">{Math.round(((progress[selectedSubject.id]?.completedChapters?.length || 0) / selectedSubject.chapters.length) * 100)}% Complete</p>
                   </div>
                 </div>
               </div>
@@ -768,7 +720,7 @@ const CoursesSection: React.FC<{ profile: UserProfile, progress: Record<string, 
             </div>
 
             <div className="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-sm relative">
-              {subjectIsSaving && (
+              {isSaving && (
                 <div className="absolute inset-0 bg-white/60 backdrop-blur-[1px] z-10 flex items-center justify-center rounded-[2.5rem]">
                    <div className="flex flex-col items-center gap-4">
                      <Loader2 className="animate-spin text-brand-orange" size={32} />
@@ -779,69 +731,45 @@ const CoursesSection: React.FC<{ profile: UserProfile, progress: Record<string, 
               
               <div className="grid gap-4">
                 {selectedSubject.chapters.map((chapter, index) => {
-                  const isCompletedLocal = currentLocalList.includes(chapter.id);
-                  const isCompletedDB = progress[selectedSubject.id]?.completedChapters?.includes(chapter.id);
-                  const isPendingChange = isCompletedLocal !== isCompletedDB;
+                  const isCompleted = progress[selectedSubject.id]?.completedChapters?.includes(chapter.id);
 
                   return (
                     <div 
                       key={chapter.id}
                       id={`chapter-${chapter.id}`}
-                      onClick={() => !subjectIsSaving && toggleChapterLocal(selectedSubject.id, chapter.id)}
+                      onClick={() => !isSaving && toggleChapter(selectedSubject.id, chapter.id)}
                       className={cn(
                         "group flex items-center gap-6 p-6 rounded-3xl cursor-pointer transition-all border-2",
-                        isCompletedLocal 
+                        isCompleted 
                           ? "bg-emerald-50 border-emerald-100 shadow-inner" 
                           : "bg-slate-50 border-transparent hover:border-brand-navy/10",
-                        isPendingChange && "border-dashed border-brand-orange/50",
-                        subjectIsSaving && "opacity-50 cursor-not-allowed"
+                        isSaving && "opacity-50 cursor-not-allowed"
                       )}
                     >
                       <div className={cn(
                         "w-12 h-12 rounded-2xl flex items-center justify-center font-black transition-all shadow-sm",
-                        isCompletedLocal ? "bg-emerald-500 text-white" : "bg-white text-slate-400 group-hover:text-brand-navy"
+                        isCompleted ? "bg-emerald-500 text-white" : "bg-white text-slate-400 group-hover:text-brand-navy"
                       )}>
                         {index + 1}
                       </div>
                       <div className="flex-grow">
-                        <div className="flex items-center gap-3">
-                          <h4 className={cn("font-bold text-lg", isCompletedLocal ? "text-emerald-900" : "text-brand-navy")}>
-                            {chapter.titleEn}
-                          </h4>
-                          {isPendingChange && (
-                            <span className="text-[8px] font-black bg-brand-orange text-white px-2 py-0.5 rounded-full uppercase animate-pulse">Unsaved</span>
-                          )}
-                        </div>
-                        <p className={cn("text-sm", isCompletedLocal ? "text-emerald-600" : "text-slate-500")}>
+                        <h4 className={cn("font-bold text-lg", isCompleted ? "text-emerald-900" : "text-brand-navy")}>
+                          {chapter.titleEn}
+                        </h4>
+                        <p className="text-[10px] uppercase font-black text-slate-400 tracking-widest mt-1">
                           {chapter.titleHi}
                         </p>
                       </div>
                       <div className={cn(
                         "w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all",
-                        isCompletedLocal ? "bg-emerald-500 border-emerald-500 text-white" : "border-slate-200 text-transparent"
+                        isCompleted ? "bg-emerald-500 border-emerald-500 text-white" : "border-slate-200 text-transparent"
                       )}>
-                        <CheckCircle2 size={16} />
+                        {isCompleted && <CheckCircle2 size={16} />}
                       </div>
                     </div>
                   );
                 })}
               </div>
-              
-              {(subjectHasChanges || subjectIsSaving) && (
-                <div className="mt-10 p-8 bg-slate-50 rounded-[2rem] border-2 border-dashed border-slate-200 flex flex-col items-center text-center">
-                  <Library className="text-brand-orange mb-4" size={48} />
-                  <h4 className="font-bold text-brand-navy text-xl">Ready to Save?</h4>
-                  <p className="text-slate-500 mt-2 mb-8 max-w-sm">You've updated your progress for this subject. Save these changes to sync with your records.</p>
-                  <button 
-                    onClick={() => handleSaveSubject(selectedSubject.id)}
-                    disabled={subjectIsSaving}
-                    className="w-full max-w-md bg-brand-navy text-white font-black py-5 rounded-2xl flex items-center justify-center gap-3 hover:bg-brand-navy/90 transition-all shadow-2xl disabled:opacity-50 active:scale-95"
-                  >
-                    {subjectIsSaving ? <Loader2 className="animate-spin" /> : <CheckCircle2 />}
-                    {subjectIsSaving ? 'SAVING PROGRESS...' : 'SAVE ALL CHANGES NOW'}
-                  </button>
-                </div>
-              )}
             </div>
           </motion.div>
         )}

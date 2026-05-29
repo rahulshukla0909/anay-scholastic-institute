@@ -10,10 +10,12 @@ service cloud.firestore {
     function isValidId(id) { 
       return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); 
     }
-    function isSignedIn() { return request.auth != null; }
+    function isSignedIn() { 
+      return request.auth != null; 
+    }
     
     function isAdmin() { 
-      return isSignedIn() && 
+      return request.auth != null && 
              get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin'; 
     }
     
@@ -47,7 +49,19 @@ service cloud.firestore {
              data.studentId is string && data.studentId.size() > 0 && data.studentId.size() <= 32 &&
              data.date is timestamp &&
              data.status in ['present', 'absent', 'late', 'excused'] &&
-             (!data.keys().hasAll(['uid']) || (data.uid is string || data.uid == null));
+             (!data.keys().hasAll(['uid']) || (data.uid is string || data.uid == null)) &&
+             (!data.keys().hasAll(['importedAt']) || data.importedAt is timestamp);
+    }
+
+    function isValidNotification(data) {
+      return data.keys().hasAll(['userId', 'title', 'message', 'type', 'createdAt', 'isRead']) &&
+             data.keys().size() == 6 &&
+             data.userId is string &&
+             data.title is string && data.title.size() <= 200 &&
+             data.message is string && data.message.size() <= 2000 &&
+             data.type in ['info', 'alert', 'success'] &&
+             data.createdAt is timestamp &&
+             data.isRead is bool;
     }
 
     function isValidCourseProgress(data) {
@@ -62,7 +76,7 @@ service cloud.firestore {
     // Users Collection
     match /users/{uid} {
       allow get: if isSignedIn() && (request.auth.uid == uid || isAdmin());
-      allow list: if isSignedIn() && (resource.data.uid == request.auth.uid || isAdmin()); 
+      allow list: if isSignedIn() && (request.auth.uid == uid || isAdmin()); 
       allow create: if isSignedIn() && request.auth.uid == uid && isValidUser(incoming());
       allow update: if isSignedIn() && (
         isAdmin() || 
@@ -86,12 +100,7 @@ service cloud.firestore {
 
     // Attendance Collection
     match /attendance/{recordId} {
-      allow get: if isSignedIn() && (
-        isAdmin() || 
-        resource.data.uid == request.auth.uid
-      );
-      
-      allow list: if isSignedIn() && (
+      allow get, list: if isSignedIn() && (
         isAdmin() || 
         resource.data.uid == request.auth.uid
       );
@@ -104,6 +113,18 @@ service cloud.firestore {
     match /documents/{docId} {
       allow read: if isSignedIn();
       allow write: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // Notifications Collection
+    match /notifications/{notifId} {
+      allow read: if isSignedIn() && (
+        resource.data.userId == request.auth.uid || 
+        resource.data.userId == 'all' ||
+        isAdmin()
+      );
+      allow create: if isAdmin() && isValidNotification(incoming());
+      allow update: if (isSignedIn() && request.auth.uid == resource.data.userId && incoming().diff(existing()).affectedKeys().hasOnly(['isRead'])) || isAdmin();
       allow delete: if isAdmin();
     }
   }

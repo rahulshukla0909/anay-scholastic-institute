@@ -68,6 +68,20 @@
         "updatedAt": { "type": "string", "format": "date-time" }
       },
       "required": ["uid", "subjectId", "completedChapters"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "System or administrative notifications for users.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "UID of the user, or 'all'" },
+        "title": { "type": "string" },
+        "message": { "type": "string" },
+        "type": { "type": "string", "enum": ["info", "alert", "success"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "isRead": { "type": "boolean" }
+      },
+      "required": ["userId", "title", "message", "type", "createdAt", "isRead"]
     }
   },
   "firestore": {
@@ -86,6 +100,10 @@
     "/documents/{docId}": {
       "schema": "AcademicDocument",
       "description": "Repository of academic resources accessible to students."
+    },
+    "/notifications/{notifId}": {
+      "schema": "Notification",
+      "description": "User-specific or broadcast notifications."
     },
     "/users/{uid}/courseProgress/{subjectId}": {
       "schema": "CourseProgress",

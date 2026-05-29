@@ -17,7 +17,7 @@ import { PosterGallery } from './components/PosterGallery';
 import { CampusGallery } from './components/CampusGallery';
 import { Features } from './components/Features';
 import { Footer } from './components/Footer';
-import { AuthModal } from './components/AuthModal';
+import { Downloads } from './components/Downloads';
 import { AuthMode } from './types';
 import { AnimatePresence } from 'motion/react';
 import { MapPin, Phone, Mail } from 'lucide-react';
@@ -26,7 +26,7 @@ export default function App() {
   const [user, setUser] = useState<FirebaseUser | null>(null);
   const [authMode, setAuthMode] = useState<AuthMode>('none');
   const [isInitializing, setIsInitializing] = useState(true);
-  const [currentView, setCurrentView] = useState<'home' | 'courses' | 'about' | 'results' | 'feedback' | 'legal' | 'contact' | 'signup' | 'dashboard'>('home');
+  const [currentView, setCurrentView] = useState<'home' | 'courses' | 'about' | 'results' | 'feedback' | 'legal' | 'contact' | 'signup' | 'dashboard' | 'downloads'>('home');
 
   const hasRedirectedRef = React.useRef(false);
 
@@ -106,11 +106,11 @@ export default function App() {
       case 'signup':
         return <Register onCancel={() => setView('home')} onComplete={() => setView('dashboard')} />;
       case 'dashboard':
-        return user ? <StudentDashboard onBackToWebsite={() => setView('home')} /> : <Hero onStart={openAuth} onScrollToCourses={() => setView('courses')} onScrollToAbout={() => setView('about')} />;
+        return user ? <StudentDashboard onBackToWebsite={() => setView('home')} /> : <Hero onScrollToCourses={() => setView('courses')} onScrollToContact={() => setView('contact')} />;
       case 'home':
         return (
           <>
-            <Hero onStart={openAuth} onScrollToCourses={() => setView('courses')} onScrollToAbout={() => setView('about')} />
+            <Hero onScrollToCourses={() => setView('courses')} onScrollToContact={() => setView('contact')} />
             <PosterGallery />
             <CampusGallery />
             <Features />
@@ -159,6 +159,8 @@ export default function App() {
         );
       case 'results':
         return <Results />;
+      case 'downloads':
+        return <Downloads />;
       case 'feedback':
         return <Feedback />;
       case 'legal':
@@ -220,6 +222,7 @@ export default function App() {
         onScrollToResults={() => setView('results')}
         onScrollToContact={() => setView('contact')}
         onScrollToDashboard={() => setView('dashboard')}
+        onScrollToDownloads={() => setView('downloads')}
         onResetView={() => setView('home')}
       />
       
@@ -237,12 +240,6 @@ export default function App() {
       )}
       <WhatsAppButton />
 
-
-      <AnimatePresence>
-        {authMode !== 'none' && (
-          <AuthModal mode={authMode} onClose={closeAuth} />
-        )}
-      </AnimatePresence>
     </div>
   );
 }

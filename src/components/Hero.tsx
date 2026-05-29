@@ -1,15 +1,13 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight, BookOpen, GraduationCap, Users } from 'lucide-react';
-import { AuthMode } from '../types';
 
 interface HeroProps {
-  onStart: (mode: AuthMode) => void;
   onScrollToCourses: () => void;
-  onScrollToAbout: () => void;
+  onScrollToContact: () => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ onStart, onScrollToCourses, onScrollToAbout }) => {
+export const Hero: React.FC<HeroProps> = ({ onScrollToCourses, onScrollToContact }) => {
   return (
     <section className="relative min-h-[80vh] flex items-center overflow-hidden bg-white">
       {/* Background Pattern */}
@@ -38,17 +36,17 @@ export const Hero: React.FC<HeroProps> = ({ onStart, onScrollToCourses, onScroll
           </p>
           <div className="flex flex-wrap gap-4">
             <button 
-              onClick={() => onStart('signup')}
+              onClick={onScrollToCourses}
               className="px-8 py-4 bg-brand-orange text-white font-bold rounded-2xl hover:bg-brand-orange/90 transition-all shadow-lg shadow-brand-orange/20 flex items-center gap-2 group"
             >
-              <span>Register Now</span>
+              <span>Explore Courses</span>
               <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </button>
             <button 
-              onClick={onScrollToCourses}
+              onClick={onScrollToContact}
               className="px-8 py-4 bg-brand-navy text-white font-bold rounded-2xl hover:bg-brand-navy/90 transition-colors shadow-lg shadow-brand-navy/20"
             >
-              View Our Courses
+              Contact Us
             </button>
           </div>
 

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { LogIn, UserPlus, LogOut, User, Menu, X, ChevronDown, Download, BookOpen, FileText, ClipboardList, ChevronRight } from 'lucide-react';
+import { LogOut, User, Menu, X, ChevronDown, Download, BookOpen, FileText, ClipboardList, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { InstituteLogo } from './Logo';
 import { AuthMode } from '../types';
@@ -14,10 +14,21 @@ interface NavbarProps {
   onScrollToResults: () => void;
   onScrollToContact: () => void;
   onScrollToDashboard: () => void;
+  onScrollToDownloads: () => void;
   onResetView: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ user, onOpenAuth, onScrollToCourses, onScrollToAbout, onScrollToResults, onScrollToContact, onScrollToDashboard, onResetView }) => {
+export const Navbar: React.FC<NavbarProps> = ({ 
+  user, 
+  onOpenAuth, 
+  onScrollToCourses, 
+  onScrollToAbout, 
+  onScrollToResults, 
+  onScrollToContact, 
+  onScrollToDashboard, 
+  onScrollToDownloads,
+  onResetView 
+}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDownloadsOpen, setIsDownloadsOpen] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -101,51 +112,14 @@ export const Navbar: React.FC<NavbarProps> = ({ user, onOpenAuth, onScrollToCour
             </button>
           )}
           
-          {/* Downloads Dropdown */}
-          <div 
-            className="relative"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
+          {/* Downloads Button to Page */}
+          <button 
+            onClick={() => handleNavClick(onScrollToDownloads)}
+            className="flex items-center gap-1.5 hover:text-brand-orange transition-colors group px-1 text-slate-600 font-medium"
           >
-            <button 
-              className="flex items-center gap-1 hover:text-brand-orange transition-colors group"
-            >
-              <Download size={18} className="text-brand-orange" />
-              <span>Downloads</span>
-              <ChevronDown size={14} className={`transition-transform duration-300 ${isDownloadsOpen ? 'rotate-180' : ''}`} />
-            </button>
-
-            <AnimatePresence>
-              {isDownloadsOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                  className="absolute top-full right-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden"
-                >
-                  <div className="p-2">
-                    <div className="px-4 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-50 mb-1">
-                      Resources (Class 10th)
-                    </div>
-                    {resourceLinks.map((link, idx) => (
-                      <a 
-                        key={idx}
-                        href={link.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-brand-orange/5 text-slate-600 hover:text-brand-orange font-bold text-sm transition-all group"
-                      >
-                        <span className="text-brand-orange/50 group-hover:text-brand-orange transition-colors">
-                          {link.icon}
-                        </span>
-                        <span>{link.title}</span>
-                      </a>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+            <Download size={18} className="text-brand-orange group-hover:scale-110 transition-transform" />
+            <span className="font-bold">Downloads</span>
+          </button>
         </div>
 
         <div className="flex items-center gap-3 relative z-50">
@@ -163,25 +137,7 @@ export const Navbar: React.FC<NavbarProps> = ({ user, onOpenAuth, onScrollToCour
                 <LogOut size={20} />
               </button>
             </div>
-          ) : (
-            <div className="flex items-center gap-2">
-              <button 
-                onClick={() => onOpenAuth('signin')}
-                className="hidden sm:flex items-center gap-2 px-4 py-2 text-brand-navy font-bold hover:text-brand-orange transition-colors"
-              >
-                <LogIn size={18} />
-                <span>Login</span>
-              </button>
-              <button 
-                data-signup="true"
-                onClick={() => onOpenAuth('signup')}
-                className="flex items-center gap-2 px-6 py-2.5 bg-brand-orange text-white font-bold rounded-xl shadow-lg shadow-brand-orange/20 hover:scale-105 active:scale-95 transition-all"
-              >
-                <UserPlus size={18} />
-                <span className="hidden xs:inline">Register</span>
-              </button>
-            </div>
-          )}
+          ) : null}
           
           <button 
             className="md:hidden p-2 text-brand-navy hover:bg-slate-50 rounded-xl transition-colors"
@@ -249,27 +205,17 @@ export const Navbar: React.FC<NavbarProps> = ({ user, onOpenAuth, onScrollToCour
                 </button>
               )}
 
-              {/* Mobile Downloads Section */}
-              <div className="mt-2 py-4 px-4 bg-slate-50 rounded-2xl">
-                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-2">
-                  <Download size={14} className="text-brand-orange" />
-                  <span>Downloads (Class 10)</span>
+              {/* Mobile Downloads Button */}
+              <button 
+                onClick={() => handleNavClick(onScrollToDownloads)}
+                className="text-left py-3.5 px-4 bg-brand-orange/10 hover:bg-brand-orange/15 text-brand-orange rounded-xl font-bold flex items-center justify-between group mt-2"
+              >
+                <div className="flex items-center gap-2">
+                  <Download size={18} className="text-brand-orange" />
+                  <span>Free Material & Practice Papers</span>
                 </div>
-                <div className="flex flex-col gap-2">
-                  {resourceLinks.map((link, idx) => (
-                    <a 
-                      key={idx}
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-3 py-2 text-slate-600 font-bold text-sm"
-                    >
-                      <span className="text-brand-orange">{link.icon}</span>
-                      <span>{link.title}</span>
-                    </a>
-                  ))}
-                </div>
-              </div>
+                <ChevronRight size={16} />
+              </button>
 
               {user && (
                  <div className="mt-4 pt-6 border-t border-slate-100">

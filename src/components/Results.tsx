@@ -14,17 +14,47 @@ interface ResultCardProps {
 
 const categories = [
   { id: 'all', label: 'All Results' },
-  { id: 'class6', label: 'Class 6th' },
-  { id: 'class7', label: 'Class 7th' },
-  { id: 'class8', label: 'Class 8th' },
-  { id: 'class9', label: 'Class 9th' },
+  { id: 'banking', label: 'Banking Selections' },
+  { id: 'ssc', label: 'SSC Selections' },
   { id: 'class10', label: 'Class 10th' },
-  { id: 'banking', label: 'Banking' },
-  { id: 'ssc', label: 'SSC' },
 ];
 
 const students: ResultCardProps[] = [
-  
+  {
+    id: 1,
+    name: "Shubham Pathak",
+    exam: "SBI PO / IBPS PO Selection",
+    year: "Batch of 2024",
+    category: "banking",
+    image: "/images/SHUBHAM-PO.jpg",
+    quote: "Highly competent guides and superb test material helped me qualify SBI PO."
+  },
+  {
+    id: 2,
+    name: "Rahul Shukla",
+    exam: "QUALIFIED SBI, IBPS, LIC",
+    year: "Director Selection",
+    category: "banking",
+    image: "/images/rahul_shukla.png",
+    quote: "With proper dedication and confidence, any competitive exam can be cleared."
+  },
+  {
+    id: 3,
+    name: "Anjali Sharma",
+    exam: "SSC CGL Selection",
+    year: "Batch of 2024",
+    category: "ssc",
+    image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=400",
+    quote: "Consistent test papers and guidance was key to my SSC selection."
+  },
+  {
+    id: 4,
+    name: "Manish Bundela",
+    exam: "SSC CHSL Qualified",
+    year: "Batch of 2024",
+    category: "ssc",
+    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=400"
+  },
   {
     id: 8,
     name: "Naitik Khare",
@@ -169,71 +199,83 @@ export const Results: React.FC = () => {
           ))}
         </div>
 
-        {/* Results Table */}
-        <div className="overflow-hidden bg-white rounded-[2rem] shadow-xl border border-slate-100">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-brand-navy text-white">
-                  <th className="px-8 py-6 text-sm font-bold uppercase tracking-wider">Student Name</th>
-                  <th className="px-8 py-6 text-sm font-bold uppercase tracking-wider">Achievement / Exam</th>
-                  <th className="px-8 py-6 text-sm font-bold uppercase tracking-wider text-right">Session / Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                <AnimatePresence mode="popLayout">
-                  {filteredStudents.length > 0 ? (
-                    filteredStudents.map((student, index) => (
-                      <motion.tr
-                        key={student.id}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 20 }}
-                        transition={{ delay: index * 0.05 }}
-                        className="border-b border-slate-50 hover:bg-brand-orange/5 transition-colors group"
-                      >
-                        <td className="px-8 py-6">
-                          <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-full bg-brand-orange/10 flex items-center justify-center text-brand-orange font-bold text-xs">
-                              {student.name.charAt(0)}
-                            </div>
-                            <div>
-                              <div className="font-bold text-brand-navy group-hover:text-brand-orange transition-colors">{student.name}</div>
-                              {student.quote && (
-                                <div className="text-[10px] text-slate-400 italic mt-0.5 max-w-xs line-clamp-1">
-                                  "{student.quote}"
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        </td>
-                        <td className="px-8 py-6">
-                          <span className="inline-flex items-center px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-[10px] font-bold uppercase tracking-widest border border-slate-200">
-                            {student.exam}
-                          </span>
-                        </td>
-                        <td className="px-8 py-6 text-right">
-                          <span className="text-sm font-semibold text-slate-500">
-                            {student.year}
-                          </span>
-                        </td>
-                      </motion.tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan={3} className="py-24 text-center">
-                        <div className="flex flex-col items-center justify-center text-slate-400">
-                          <TrendingUp size={48} className="mb-4 opacity-20" />
-                          <h3 className="text-xl font-bold text-slate-600">Coming Soon!</h3>
-                          <p className="text-sm">We are currently updating our latest achievers for this category.</p>
+        {/* Results Card Grid */}
+        <div className="relative">
+          <AnimatePresence mode="popLayout">
+            {filteredStudents.length > 0 ? (
+              <motion.div 
+                layout
+                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"
+              >
+                {filteredStudents.map((student, index) => (
+                  <motion.div
+                    key={student.id}
+                    layout
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.4, delay: index * 0.05 }}
+                    className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl border border-slate-100 hover:border-brand-orange/20 transition-all duration-300 group flex flex-col h-full"
+                  >
+                    {/* Student Photo Container */}
+                    <div className="relative h-64 overflow-hidden bg-slate-50 shrink-0 select-none">
+                      {student.image ? (
+                        <img 
+                          src={student.image} 
+                          alt={student.name} 
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          referrerPolicy="no-referrer"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-brand-navy/5 text-brand-navy font-bold text-3xl">
+                          {student.name.charAt(0)}
                         </div>
-                      </td>
-                    </tr>
-                  )}
-                </AnimatePresence>
-              </tbody>
-            </table>
-          </div>
+                      )}
+                      {/* Category Badge overlay */}
+                      <span className="absolute top-4 right-4 bg-brand-navy/90 backdrop-blur-sm text-white text-[10px] uppercase font-black tracking-widest px-3.5 py-1.5 rounded-full shadow-md border border-white/10">
+                        {student.category === 'banking' ? 'Banking' : student.category === 'ssc' ? 'SSC' : 'Class 10th'}
+                      </span>
+                    </div>
+
+                    {/* Detailed Information Box */}
+                    <div className="p-6 flex flex-col flex-grow justify-between">
+                      <div>
+                        <h3 className="text-xl font-extrabold text-brand-navy group-hover:text-brand-orange transition-colors mb-1.5">
+                          {student.name}
+                        </h3>
+                        <span className="inline-block px-3 py-1 bg-brand-orange/10 text-brand-orange rounded-full text-xs font-bold uppercase tracking-wider mb-4 border border-brand-orange/20">
+                          {student.exam}
+                        </span>
+                        
+                        {student.quote && (
+                          <p className="text-slate-600 font-medium text-xs leading-relaxed italic bg-slate-50 p-4 rounded-2xl border border-slate-100 relative mt-2">
+                            "{student.quote}"
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-[11px] font-black tracking-wider text-slate-400 uppercase">
+                        <span>Session/Date</span>
+                        <span className="text-brand-navy font-bold">{student.year}</span>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </motion.div>
+            ) : (
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="py-24 text-center bg-white rounded-[2rem] border border-slate-100 shadow-md"
+              >
+                <div className="flex flex-col items-center justify-center text-slate-400">
+                  <TrendingUp size={48} className="mb-4 opacity-20 text-brand-orange animate-pulse" />
+                  <h3 className="text-xl font-bold text-slate-600">Coming Soon!</h3>
+                  <p className="text-sm px-4">We are currently updating our latest achievers for this category.</p>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         <motion.div 
