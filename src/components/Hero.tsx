@@ -51,20 +51,22 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToCourses, onScrollToContact
           </div>
 
           <div className="mt-12 grid grid-cols-3 gap-8">
-            <div>
-              <div className="text-3xl font-bold text-brand-navy">500+</div>
-              <div className="text-slate-500 text-sm">Students</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-brand-navy">50+</div>
-              <div className="text-slate-500 text-sm">Expert Tutors</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-brand-navy">95%</div>
-              <div className="text-slate-500 text-sm">Success Rate</div>
-            </div>
-          </div>
-        </motion.div>
+  <div>
+    <div className="text-3xl font-bold text-brand-navy">500+</div>
+    <div className="text-slate-500 text-sm">Students</div>
+  </div>
+
+  <div>
+    <div className="text-3xl font-bold text-brand-navy">10+</div>
+    <div className="text-slate-500 text-sm">Years Experience</div>
+  </div>
+
+  <div>
+    <div className="text-3xl font-bold text-brand-navy">95%</div>
+    <div className="text-slate-500 text-sm">Success Rate</div>
+  </div>
+</div>
+</motion.div>
 
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
