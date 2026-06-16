@@ -24,12 +24,18 @@ interface ResourceItem {
   fileSize: string;
   fileType: string;
   downloadUrl: string;
+  branch?: 'Chemistry' | 'Biology' | 'Physics' | 'Environment' | 'History' | 'Geography' | 'Civics' | 'Economics';
+  medium?: 'English' | 'Hindi';
 }
 
 export const Downloads: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'all' | 'ncert' | 'test-series' | 'notes' | 'pyq'>('all');
   const [pyqBoard, setPyqBoard] = useState<'cbse' | 'mp'>('cbse');
   const [searchQuery, setSearchQuery] = useState('');
+  const [notesSubject, setNotesSubject] = useState<'all' | 'science' | 'sst' | 'math'>('all');
+  const [scienceBranch, setScienceBranch] = useState<'all' | 'Chemistry' | 'Biology' | 'Physics' | 'Environment'>('all');
+  const [sstBranch, setSstBranch] = useState<'all' | 'History' | 'Geography' | 'Civics' | 'Economics'>('all');
+  const [notesMedium, setNotesMedium] = useState<'all' | 'English' | 'Hindi'>('all');
 
   // NCERT Class 10th & 9th Books
   const ncertBooks: ResourceItem[] = [
@@ -91,15 +97,800 @@ export const Downloads: React.FC = () => {
 
   // Revision & Chapter Notes
   const revisionNotes: ResourceItem[] = [
+    // --- Science Revision Notes (English Medium) ---
+    // Chemistry (English)
     {
-      id: 'notes-chem-reactions',
-      title: 'Chemical Reactions and Equations Notes',
-      subject: 'Chemistry',
+      id: 'sc-en-chem-ch1',
+      title: 'Chemistry Chapter 1: Chemical Reactions and Equations',
+      subject: 'Science',
+      classLevel: 'Class 10th',
+      fileSize: '1.9 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Chemistry',
+      medium: 'English'
+    },
+    {
+      id: 'sc-en-chem-ch2',
+      title: 'Chemistry Chapter 2: Acids, Bases and Salts',
+      subject: 'Science',
+      classLevel: 'Class 10th',
+      fileSize: '2.1 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Chemistry',
+      medium: 'English'
+    },
+    {
+      id: 'sc-en-chem-ch3',
+      title: 'Chemistry Chapter 3: Metals and Non-Metals',
+      subject: 'Science',
+      classLevel: 'Class 10th',
+      fileSize: '1.8 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Chemistry',
+      medium: 'English'
+    },
+    {
+      id: 'sc-en-chem-ch4',
+      title: 'Chemistry Chapter 4: Carbon and Its Compounds',
+      subject: 'Science',
+      classLevel: 'Class 10th',
+      fileSize: '2.5 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Chemistry',
+      medium: 'English'
+    },
+    // Biology (English)
+    {
+      id: 'sc-en-bio-ch5',
+      title: 'Biology Chapter 5: Life Processes',
+      subject: 'Science',
+      classLevel: 'Class 10th',
+      fileSize: '2.8 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Biology',
+      medium: 'English'
+    },
+    {
+      id: 'sc-en-bio-coord',
+      title: 'Biology Chapter 6: Control and Coordination',
+      subject: 'Science',
+      classLevel: 'Class 10th',
+      fileSize: '1.7 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Biology',
+      medium: 'English'
+    },
+    {
+      id: 'sc-en-bio-reprod',
+      title: 'Biology Chapter 7: How Do Organisms Reproduce?',
+      subject: 'Science',
+      classLevel: 'Class 10th',
+      fileSize: '2.3 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Biology',
+      medium: 'English'
+    },
+    {
+      id: 'sc-en-bio-heredity',
+      title: 'Biology Chapter 8: Heredity and Evolution',
+      subject: 'Science',
+      classLevel: 'Class 10th',
+      fileSize: '1.9 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Biology',
+      medium: 'English'
+    },
+    // Physics (English)
+    {
+      id: 'sc-en-phy-light',
+      title: 'Physics Chapter 9: Light – Reflection and Refraction',
+      subject: 'Science',
+      classLevel: 'Class 10th',
+      fileSize: '3.0 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Physics',
+      medium: 'English'
+    },
+    {
+      id: 'sc-en-phy-eye',
+      title: 'Physics Chapter 10: The Human Eye and the Colourful World',
+      subject: 'Science',
+      classLevel: 'Class 10th',
+      fileSize: '1.6 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Physics',
+      medium: 'English'
+    },
+    {
+      id: 'sc-en-phy-elec',
+      title: 'Physics Chapter 11: Electricity',
+      subject: 'Science',
+      classLevel: 'Class 10th',
+      fileSize: '2.2 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Physics',
+      medium: 'English'
+    },
+    {
+      id: 'sc-en-phy-mag',
+      title: 'Physics Chapter 12: Magnetic Effects of Electric Current',
+      subject: 'Science',
       classLevel: 'Class 10th',
       fileSize: '2.4 MB',
       fileType: 'PDF',
-      downloadUrl: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173' // Mock URL to trigger viewing or printing
+      downloadUrl: '#',
+      branch: 'Physics',
+      medium: 'English'
     },
+    // Environment (English)
+    {
+      id: 'sc-en-env-our',
+      title: 'Environment Chapter 13: Our Environment',
+      subject: 'Science',
+      classLevel: 'Class 10th',
+      fileSize: '1.2 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Environment',
+      medium: 'English'
+    },
+
+    // --- Science Revision Notes (Hindi Medium - हिन्दी माध्यम) ---
+    // Chemistry (Hindi)
+    {
+      id: 'sc-hi-chem-ch1',
+      title: 'रसायन विज्ञान Chapter 1: रासायनिक अभिक्रियाएँ एवं समीकरण',
+      subject: 'Science',
+      classLevel: 'Class 10th',
+      fileSize: '2.0 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Chemistry',
+      medium: 'Hindi'
+    },
+    {
+      id: 'sc-hi-chem-ch2',
+      title: 'रसायन विज्ञान Chapter 2: अम्ल, क्षारक एवं लवण',
+      subject: 'Science',
+      classLevel: 'Class 10th',
+      fileSize: '2.2 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Chemistry',
+      medium: 'Hindi'
+    },
+    {
+      id: 'sc-hi-chem-ch3',
+      title: 'रसायन विज्ञान Chapter 3: धातु एवं अधातु',
+      subject: 'Science',
+      classLevel: 'Class 10th',
+      fileSize: '1.9 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Chemistry',
+      medium: 'Hindi'
+    },
+    {
+      id: 'sc-hi-chem-ch4',
+      title: 'रसायन विज्ञान Chapter 4: कार्बन एवं उसके यौगिक',
+      subject: 'Science',
+      classLevel: 'Class 10th',
+      fileSize: '2.6 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Chemistry',
+      medium: 'Hindi'
+    },
+    // Biology (Hindi)
+    {
+      id: 'sc-hi-bio-ch5',
+      title: 'जीव विज्ञान Chapter 5: जैव प्रक्रम',
+      subject: 'Science',
+      classLevel: 'Class 10th',
+      fileSize: '2.9 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Biology',
+      medium: 'Hindi'
+    },
+    {
+      id: 'sc-hi-bio-coord',
+      title: 'जीव विज्ञान Chapter 6: नियंत्रण एवं समन्वय',
+      subject: 'Science',
+      classLevel: 'Class 10th',
+      fileSize: '1.8 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Biology',
+      medium: 'Hindi'
+    },
+    {
+      id: 'sc-hi-bio-reprod',
+      title: 'जीव विज्ञान Chapter 7: जीव जनन कैसे करते हैं?',
+      subject: 'Science',
+      classLevel: 'Class 10th',
+      fileSize: '2.4 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Biology',
+      medium: 'Hindi'
+    },
+    {
+      id: 'sc-hi-bio-heredity',
+      title: 'जीव विज्ञान Chapter 8: आनुवंशिकता एवं जैव विकास',
+      subject: 'Science',
+      classLevel: 'Class 10th',
+      fileSize: '2.0 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Biology',
+      medium: 'Hindi'
+    },
+    // Physics (Hindi)
+    {
+      id: 'sc-hi-phy-light',
+      title: 'भौतिक विज्ञान Chapter 9: प्रकाश – परावर्तन तथा अपवर्तन',
+      subject: 'Science',
+      classLevel: 'Class 10th',
+      fileSize: '3.1 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Physics',
+      medium: 'Hindi'
+    },
+    {
+      id: 'sc-hi-phy-eye',
+      title: 'भौतिक विज्ञान Chapter 10: मानव नेत्र तथा रंग-बिरंगी दुनिया',
+      subject: 'Science',
+      classLevel: 'Class 10th',
+      fileSize: '1.7 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Physics',
+      medium: 'Hindi'
+    },
+    {
+      id: 'sc-hi-phy-elec',
+      title: 'भौतिक विज्ञान Chapter 11: विद्युत',
+      subject: 'Science',
+      classLevel: 'Class 10th',
+      fileSize: '2.3 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Physics',
+      medium: 'Hindi'
+    },
+    {
+      id: 'sc-hi-phy-mag',
+      title: 'भौतिक विज्ञान Chapter 12: विद्युत धारा के चुंबकीय प्रभाव',
+      subject: 'Science',
+      classLevel: 'Class 10th',
+      fileSize: '2.5 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Physics',
+      medium: 'Hindi'
+    },
+    // Environment (Hindi)
+    {
+      id: 'sc-hi-env-our',
+      title: 'पर्यावरण Chapter 13: हमारा पर्यावरण',
+      subject: 'Science',
+      classLevel: 'Class 10th',
+      fileSize: '1.3 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Environment',
+      medium: 'Hindi'
+    },
+
+    // --- SST Revision Notes (English Medium) ---
+    // History (English)
+    {
+      id: 'sst-en-hist-ch1',
+      title: 'History Chapter 1: The Rise of Nationalism in Europe',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '2.5 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'History',
+      medium: 'English'
+    },
+    {
+      id: 'sst-en-hist-ch2',
+      title: 'History Chapter 2: Nationalism in India',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '2.7 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'History',
+      medium: 'English'
+    },
+    {
+      id: 'sst-en-hist-ch3',
+      title: 'History Chapter 3: The Making of a Global World',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '2.1 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'History',
+      medium: 'English'
+    },
+    {
+      id: 'sst-en-hist-ch4',
+      title: 'History Chapter 4: The Age of Industrialisation',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '2.3 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'History',
+      medium: 'English'
+    },
+    {
+      id: 'sst-en-hist-ch5',
+      title: 'History Chapter 5: Print Culture and the Modern World',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '1.9 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'History',
+      medium: 'English'
+    },
+    // Geography (English)
+    {
+      id: 'sst-en-geo-ch1',
+      title: 'Geography Chapter 1: Resources and Development',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '2.4 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Geography',
+      medium: 'English'
+    },
+    {
+      id: 'sst-en-geo-ch2',
+      title: 'Geography Chapter 2: Forest and Wildlife Resources',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '1.8 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Geography',
+      medium: 'English'
+    },
+    {
+      id: 'sst-en-geo-ch3',
+      title: 'Geography Chapter 3: Water Resources',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '1.5 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Geography',
+      medium: 'English'
+    },
+    {
+      id: 'sst-en-geo-ch4',
+      title: 'Geography Chapter 4: Agriculture',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '2.2 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Geography',
+      medium: 'English'
+    },
+    {
+      id: 'sst-en-geo-ch5',
+      title: 'Geography Chapter 5: Minerals and Energy Resources',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '2.6 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Geography',
+      medium: 'English'
+    },
+    {
+      id: 'sst-en-geo-ch6',
+      title: 'Geography Chapter 6: Manufacturing Industries',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '2.3 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Geography',
+      medium: 'English'
+    },
+    {
+      id: 'sst-en-geo-ch7',
+      title: 'Geography Chapter 7: Lifelines of National Economy',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '2.0 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Geography',
+      medium: 'English'
+    },
+    // Civics (English)
+    {
+      id: 'sst-en-civ-ch1',
+      title: 'Political Science Chapter 1: Power Sharing',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '1.7 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Civics',
+      medium: 'English'
+    },
+    {
+      id: 'sst-en-civ-ch2',
+      title: 'Political Science Chapter 2: Federalism',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '1.9 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Civics',
+      medium: 'English'
+    },
+    {
+      id: 'sst-en-civ-ch3',
+      title: 'Political Science Chapter 3: Gender, Religion and Caste',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '2.1 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Civics',
+      medium: 'English'
+    },
+    {
+      id: 'sst-en-civ-ch4',
+      title: 'Political Science Chapter 4: Political Parties',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '2.0 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Civics',
+      medium: 'English'
+    },
+    {
+      id: 'sst-en-civ-ch5',
+      title: 'Political Science Chapter 5: Outcomes of Democracy',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '1.6 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Civics',
+      medium: 'English'
+    },
+    // Economics (English)
+    {
+      id: 'sst-en-eco-ch1',
+      title: 'Economics Chapter 1: Development',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '1.8 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Economics',
+      medium: 'English'
+    },
+    {
+      id: 'sst-en-eco-ch2',
+      title: 'Economics Chapter 2: Sectors of the Indian Economy',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '2.2 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Economics',
+      medium: 'English'
+    },
+    {
+      id: 'sst-en-eco-ch3',
+      title: 'Economics Chapter 3: Money and Credit',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '2.0 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Economics',
+      medium: 'English'
+    },
+    {
+      id: 'sst-en-eco-ch4',
+      title: 'Economics Chapter 4: Globalisation and the Indian Economy',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '2.3 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Economics',
+      medium: 'English'
+    },
+    {
+      id: 'sst-en-eco-ch5',
+      title: 'Economics Chapter 5: Consumer Rights',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '1.5 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Economics',
+      medium: 'English'
+    },
+
+    // --- SST Revision Notes (Hindi Medium - हिन्दी माध्यम) ---
+    // History (Hindi)
+    {
+      id: 'sst-hi-hist-ch1',
+      title: 'इतिहास Chapter 1: यूरोप में राष्ट्रवाद का उदय',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '2.6 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'History',
+      medium: 'Hindi'
+    },
+    {
+      id: 'sst-hi-hist-ch2',
+      title: 'इतिहास Chapter 2: भारत में राष्ट्रवाद',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '2.8 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'History',
+      medium: 'Hindi'
+    },
+    {
+      id: 'sst-hi-hist-ch3',
+      title: 'इतिहास Chapter 3: भूमंडलीकृत विश्व का बनना',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '2.2 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'History',
+      medium: 'Hindi'
+    },
+    {
+      id: 'sst-hi-hist-ch4',
+      title: 'इतिहास Chapter 4: औद्योगीकरण का युग',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '2.4 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'History',
+      medium: 'Hindi'
+    },
+    {
+      id: 'sst-hi-hist-ch5',
+      title: 'इतिहास Chapter 5: मुद्रण संस्कृति और आधुनिक दुनिया',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '2.0 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'History',
+      medium: 'Hindi'
+    },
+    // Geography (Hindi)
+    {
+      id: 'sst-hi-geo-ch1',
+      title: 'भूगोल Chapter 1: संसाधन एवं विकास',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '2.5 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Geography',
+      medium: 'Hindi'
+    },
+    {
+      id: 'sst-hi-geo-ch2',
+      title: 'भूगोल Chapter 2: वन एवं वन्य जीव संसाधन',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '1.9 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Geography',
+      medium: 'Hindi'
+    },
+    {
+      id: 'sst-hi-geo-ch3',
+      title: 'भूगोल Chapter 3: जल संसाधन',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '1.6 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Geography',
+      medium: 'Hindi'
+    },
+    {
+      id: 'sst-hi-geo-ch4',
+      title: 'भूगोल Chapter 4: कृषि',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '2.3 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Geography',
+      medium: 'Hindi'
+    },
+    {
+      id: 'sst-hi-geo-ch5',
+      title: 'भूगोल Chapter 5: खनिज तथा ऊर्जा संसाधन',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '2.7 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Geography',
+      medium: 'Hindi'
+    },
+    {
+      id: 'sst-hi-geo-ch6',
+      title: 'भूगोल Chapter 6: विनिर्माण उद्योग',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '2.4 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Geography',
+      medium: 'Hindi'
+    },
+    {
+      id: 'sst-hi-geo-ch7',
+      title: 'भूगोल Chapter 7: राष्ट्रीय अर्थव्यवस्था की जीवन रेखाएँ',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '2.1 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Geography',
+      medium: 'Hindi'
+    },
+    // Civics (Hindi)
+    {
+      id: 'sst-hi-civ-ch1',
+      title: 'नागरिक शास्त्र Chapter 1: सत्ता की साझेदारी',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '1.8 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Civics',
+      medium: 'Hindi'
+    },
+    {
+      id: 'sst-hi-civ-ch2',
+      title: 'नागरिक शास्त्र Chapter 2: संघवाद',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '2.0 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Civics',
+      medium: 'Hindi'
+    },
+    {
+      id: 'sst-hi-civ-ch3',
+      title: 'नागरिक शास्त्र Chapter 3: लैंगिक, धर्म और जाति',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '2.2 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Civics',
+      medium: 'Hindi'
+    },
+    {
+      id: 'sst-hi-civ-ch4',
+      title: 'नागरिक शास्त्र Chapter 4: राजनीतिक दल',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '2.1 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Civics',
+      medium: 'Hindi'
+    },
+    {
+      id: 'sst-hi-civ-ch5',
+      title: 'नागरिक शास्त्र Chapter 5: लोकतंत्र के परिणाम',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '1.7 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Civics',
+      medium: 'Hindi'
+    },
+    // Economics (Hindi)
+    {
+      id: 'sst-hi-eco-ch1',
+      title: 'अर्थशास्त्र Chapter 1: विकास',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '1.9 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Economics',
+      medium: 'Hindi'
+    },
+    {
+      id: 'sst-hi-eco-ch2',
+      title: 'अर्थशास्त्र Chapter 2: भारतीय अर्थव्यवस्था के क्षेत्रक',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '2.3 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Economics',
+      medium: 'Hindi'
+    },
+    {
+      id: 'sst-hi-eco-ch3',
+      title: 'अर्थशास्त्र Chapter 3: मुद्रा और साख',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '2.1 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Economics',
+      medium: 'Hindi'
+    },
+    {
+      id: 'sst-hi-eco-ch4',
+      title: 'अर्थशास्त्र Chapter 4: वैश्वीकरण और भारतीय अर्थव्यवस्था',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '2.4 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Economics',
+      medium: 'Hindi'
+    },
+    {
+      id: 'sst-hi-eco-ch5',
+      title: 'अर्थशास्त्र Chapter 5: उपभोक्ता अधिकार',
+      subject: 'SST',
+      classLevel: 'Class 10th',
+      fileSize: '1.6 MB',
+      fileType: 'PDF',
+      downloadUrl: '#',
+      branch: 'Economics',
+      medium: 'Hindi'
+    },
+    // --- Mathematics Revision Notes ---
     {
       id: 'notes-quad-eq',
       title: 'Quadratic Equations Formula Guide & Short Notes',
@@ -110,29 +901,20 @@ export const Downloads: React.FC = () => {
       downloadUrl: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173'
     },
     {
-      id: 'notes-light',
-      title: 'Light - Reflection & Refraction Concise Notes',
-      subject: 'Physics',
-      classLevel: 'Class 10th',
-      fileSize: '3.1 MB',
-      fileType: 'PDF',
-      downloadUrl: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173'
-    },
-    {
-      id: 'notes-life-processes',
-      title: 'Biological Life Processes Diagram Study Sheet',
-      subject: 'Biology',
-      classLevel: 'Class 10th',
-      fileSize: '4.2 MB',
-      fileType: 'PDF',
-      downloadUrl: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173'
-    },
-    {
       id: 'notes-real-nums',
       title: 'Real Numbers Chapter Summary Class 10th',
       subject: 'Mathematics',
       classLevel: 'Class 10th',
       fileSize: '1.2 MB',
+      fileType: 'PDF',
+      downloadUrl: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173'
+    },
+    {
+      id: 'notes-trigo-formulas',
+      title: 'Trigonometry Value Table & Identities Formula Sheet',
+      subject: 'Mathematics',
+      classLevel: 'Class 10th',
+      fileSize: '2.0 MB',
       fileType: 'PDF',
       downloadUrl: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173'
     }
@@ -499,51 +1281,256 @@ export const Downloads: React.FC = () => {
         {/* SECTION 3: Chapter Revision Notes */}
         {(activeTab === 'all' || activeTab === 'notes') && (
           <div className="mb-16">
-            <div className="flex items-center gap-3 mb-8">
-              <div className="p-2.5 bg-brand-orange/10 rounded-2xl text-brand-orange">
-                <FileText size={24} />
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 pb-4 border-b border-slate-100">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 bg-brand-orange/10 rounded-2xl text-brand-orange">
+                  <FileText size={24} />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-black text-brand-navy">Revision & Chapter Summary Notes</h3>
+                  <p className="text-xs text-slate-500 font-bold uppercase tracking-wider mt-0.5">Carefully prepared for quick revision</p>
+                </div>
               </div>
-              <div>
-                <h3 className="text-2xl font-black text-brand-navy">Revision & Chapter Summary Notes</h3>
-                <p className="text-xs text-slate-500 font-bold uppercase tracking-wider mt-0.5">Carefully prepared for quick revision</p>
+
+              {/* Sub-sections tabs for Science & SST */}
+              <div className="flex flex-wrap items-center gap-1.5 bg-slate-100 p-1 rounded-2xl self-start md:self-auto border border-slate-200">
+                {[
+                  { id: 'all', label: 'All Subjects' },
+                  { id: 'science', label: 'Science' },
+                  { id: 'sst', label: 'SST' },
+                  { id: 'math', label: 'Mathematics' }
+                ].map(subTab => {
+                  const isActive = notesSubject === subTab.id;
+                  return (
+                    <button
+                      key={subTab.id}
+                      onClick={() => setNotesSubject(subTab.id as any)}
+                      className={`px-4 py-2.5 rounded-xl text-xs font-extrabold uppercase tracking-wide transition-all duration-200 ${
+                        isActive
+                          ? 'bg-brand-navy text-white shadow-md'
+                          : 'text-slate-600 hover:text-brand-navy hover:bg-slate-200/60'
+                      }`}
+                    >
+                      {subTab.label}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {revisionNotes.filter(matchesSearch).map((notes) => (
-                <div 
-                  key={notes.id}
-                  className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 hover:shadow-xl hover:border-brand-orange/20 transition-all duration-300 flex flex-col justify-between group"
-                >
-                  <div>
-                    <div className="flex items-center justify-between gap-2 mb-4">
-                      <span className="px-3 py-1 bg-brand-orange/10 text-brand-orange rounded-full text-[10px] font-bold uppercase">
-                        {notes.subject}
-                      </span>
-                      <span className="text-slate-400 text-xs font-black">{notes.classLevel}</span>
-                    </div>
-
-                    <h4 className="font-extrabold text-lg text-brand-navy group-hover:text-brand-orange transition-colors mb-4">
-                      {notes.title}
-                    </h4>
-                  </div>
-
-                  <div className="pt-5 border-t border-slate-50 flex items-center justify-between">
-                    <span className="text-xs text-slate-450 font-semibold">{notes.fileSize} • PDF format</span>
-                    <button
-                      onClick={() => handleDownload(notes)}
-                      className="inline-flex items-center gap-1.5 text-brand-orange font-bold text-sm"
-                    >
-                      <span>Download Notes</span>
-                      <Download size={15} />
-                    </button>
+            {/* Science Specific Filters */}
+            {notesSubject === 'science' && (
+              <div className="bg-slate-50 border border-slate-100/80 p-5 rounded-3xl mb-8 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-6">
+                {/* Branch selection */}
+                <div className="flex flex-col gap-2">
+                  <span className="text-xs font-black text-brand-navy uppercase tracking-wider">Select Science Branch / शाखा चुनें</span>
+                  <div className="flex flex-wrap gap-1.5 bg-white p-1 rounded-xl shadow-xs border border-slate-200/80">
+                    {[
+                      { id: 'all', label: 'All / सभी' },
+                      { id: 'Chemistry', label: '🧪 Chemistry / रसायन' },
+                      { id: 'Biology', label: '🌿 Biology / जीव' },
+                      { id: 'Physics', label: '⚡ Physics / भौतिक' },
+                      { id: 'Environment', label: '🌍 Environment / पर्यावरण' }
+                    ].map(b => (
+                      <button
+                        key={b.id}
+                        onClick={() => setScienceBranch(b.id as any)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                          scienceBranch === b.id
+                            ? 'bg-brand-orange text-white shadow-xs'
+                            : 'text-slate-650 hover:bg-slate-100 hover:text-brand-navy'
+                        }`}
+                      >
+                        {b.label}
+                      </button>
+                    ))}
                   </div>
                 </div>
-              ))}
-            </div>
-            {revisionNotes.filter(matchesSearch).length === 0 && (
-              <p className="text-slate-500 font-bold text-center py-8">No revision notes match your query.</p>
+
+                {/* Medium toggle */}
+                <div className="flex flex-col gap-2 md:items-end">
+                  <span className="text-xs font-black text-brand-navy uppercase tracking-wider md:text-right">Study Medium / माध्यम</span>
+                  <div className="flex gap-1.5 bg-white p-1 rounded-xl shadow-xs border border-slate-200/80">
+                    {[
+                      { id: 'all', label: 'All / सभी' },
+                      { id: 'English', label: '🇬🇧 English Medium' },
+                      { id: 'Hindi', label: '🇮🇳 हिन्दी माध्यम' }
+                    ].map(med => (
+                      <button
+                        key={med.id}
+                        onClick={() => setNotesMedium(med.id as any)}
+                        className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                          notesMedium === med.id
+                            ? 'bg-brand-navy text-white shadow-xs'
+                            : 'text-slate-650 hover:bg-slate-100 hover:text-brand-navy'
+                        }`}
+                      >
+                        {med.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
             )}
+
+            {/* SST Specific Filters */}
+            {notesSubject === 'sst' && (
+              <div className="bg-slate-50 border border-slate-100/80 p-5 rounded-3xl mb-8 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-6">
+                {/* Branch selection */}
+                <div className="flex flex-col gap-2">
+                  <span className="text-xs font-black text-brand-navy uppercase tracking-wider">Select SST Branch / शाखा चुनें</span>
+                  <div className="flex flex-wrap gap-1.5 bg-white p-1 rounded-xl shadow-xs border border-slate-200/80">
+                    {[
+                      { id: 'all', label: 'All / सभी' },
+                      { id: 'History', label: '🏛️ History / इतिहास' },
+                      { id: 'Geography', label: '🌍 Geography / भूगोल' },
+                      { id: 'Civics', label: '🗳️ Civics / नागरिक शास्त्र' },
+                      { id: 'Economics', label: '💰 Economics / अर्थशास्त्र' }
+                    ].map(b => (
+                      <button
+                        key={b.id}
+                        onClick={() => setSstBranch(b.id as any)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                          sstBranch === b.id
+                            ? 'bg-brand-orange text-white shadow-xs'
+                            : 'text-slate-650 hover:bg-slate-100 hover:text-brand-navy'
+                        }`}
+                      >
+                        {b.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Medium toggle */}
+                <div className="flex flex-col gap-2 md:items-end">
+                  <span className="text-xs font-black text-brand-navy uppercase tracking-wider md:text-right">Study Medium / माध्यम</span>
+                  <div className="flex gap-1.5 bg-white p-1 rounded-xl shadow-xs border border-slate-200/80">
+                    {[
+                      { id: 'all', label: 'All / सभी' },
+                      { id: 'English', label: '🇬🇧 English Medium' },
+                      { id: 'Hindi', label: '🇮🇳 हिन्दी माध्यम' }
+                    ].map(med => (
+                      <button
+                        key={med.id}
+                        onClick={() => setNotesMedium(med.id as any)}
+                        className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                          notesMedium === med.id
+                            ? 'bg-brand-navy text-white shadow-xs'
+                            : 'text-slate-650 hover:bg-slate-100 hover:text-brand-navy'
+                        }`}
+                      >
+                        {med.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {revisionNotes
+                .filter(matchesSearch)
+                .filter((notes) => {
+                  // Subject selection
+                  if (notesSubject === 'science' && notes.subject !== 'Science') return false;
+                  if (notesSubject === 'sst' && notes.subject !== 'SST') return false;
+                  if (notesSubject === 'math' && notes.subject !== 'Mathematics') return false;
+
+                  // Science Branch & Medium filters
+                  if (notes.subject === 'Science') {
+                    if (scienceBranch !== 'all' && notes.branch !== scienceBranch) return false;
+                    if (notesMedium !== 'all' && notes.medium !== notesMedium) return false;
+                  }
+
+                  // SST Branch & Medium filters
+                  if (notes.subject === 'SST') {
+                    if (sstBranch !== 'all' && notes.branch !== sstBranch) return false;
+                    if (notesMedium !== 'all' && notes.medium !== notesMedium) return false;
+                  }
+                  return true;
+                })
+                .map((notes) => (
+                  <div 
+                    key={notes.id}
+                    className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 hover:shadow-xl hover:border-brand-orange/20 transition-all duration-300 flex flex-col justify-between group"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between gap-2 mb-4">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase ${
+                            notes.subject === 'Science' 
+                              ? 'bg-emerald-50 text-emerald-600 border border-emerald-100'
+                              : notes.subject === 'SST'
+                              ? 'bg-blue-50 text-blue-600 border border-blue-100'
+                              : 'bg-brand-orange/10 text-brand-orange border border-brand-orange/10'
+                          }`}>
+                            {notes.subject}
+                          </span>
+                          {notes.branch && (
+                            <span className="px-2 py-0.5 bg-slate-100 text-slate-600 rounded-md text-[9px] font-extrabold uppercase">
+                              {notes.branch === 'Chemistry' ? '🧪 Chemistry' : 
+                               notes.branch === 'Biology' ? '🌿 Biology' : 
+                               notes.branch === 'Physics' ? '⚡ Physics' : 
+                               notes.branch === 'Environment' ? '🌍 Env' : 
+                               notes.branch === 'History' ? '🏛️ History' : 
+                               notes.branch === 'Geography' ? '🌍 Geography' : 
+                               notes.branch === 'Civics' ? '🗳️ Civics' : 
+                               notes.branch === 'Economics' ? '💰 Economics' : notes.branch}
+                            </span>
+                          )}
+                          {notes.medium && (
+                            <span className={`px-2 py-0.5 rounded-md text-[9px] font-extrabold uppercase ${
+                              notes.medium === 'English' ? 'bg-indigo-50 text-indigo-600 border border-indigo-100' : 'bg-orange-50 text-orange-600 border border-orange-100'
+                            }`}>
+                              {notes.medium === 'English' ? 'English' : 'हिन्दी'}
+                            </span>
+                          )}
+                        </div>
+                        <span className="text-slate-400 text-xs font-black">{notes.classLevel}</span>
+                      </div>
+
+                      <h4 className="font-extrabold text-lg text-brand-navy group-hover:text-brand-orange transition-colors mb-4 text-left">
+                        {notes.title}
+                      </h4>
+                    </div>
+
+                    <div className="pt-5 border-t border-slate-50 flex items-center justify-between">
+                      <span className="text-xs text-slate-450 font-semibold">{notes.fileSize} • PDF format</span>
+                      <button
+                        onClick={() => handleDownload(notes)}
+                        className="inline-flex items-center gap-1.5 text-brand-orange font-bold text-sm"
+                      >
+                        <span>Download Notes</span>
+                        <Download size={15} />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+            </div>
+            
+            {revisionNotes
+              .filter(matchesSearch)
+              .filter((notes) => {
+                if (notesSubject === 'science' && notes.subject !== 'Science') return false;
+                if (notesSubject === 'sst' && notes.subject !== 'SST') return false;
+                if (notesSubject === 'math' && notes.subject !== 'Mathematics') return false;
+
+                if (notes.subject === 'Science') {
+                  if (scienceBranch !== 'all' && notes.branch !== scienceBranch) return false;
+                  if (notesMedium !== 'all' && notes.medium !== notesMedium) return false;
+                }
+                
+                if (notes.subject === 'SST') {
+                  if (sstBranch !== 'all' && notes.branch !== sstBranch) return false;
+                  if (notesMedium !== 'all' && notes.medium !== notesMedium) return false;
+                }
+                return true;
+              }).length === 0 && (
+                <p className="text-slate-500 font-bold text-center py-12 bg-white rounded-3xl border border-dashed border-slate-200">
+                  No revision notes match your selection.
+                </p>
+              )}
           </div>
         )}
 

@@ -12,19 +12,19 @@ interface Poster {
 const posters: Poster[] = [
   {
     id: 1,
-    url: 'images/p1.png',
+    url: 'images/p1.jpg',
     title: 'SSC & Banking Special',
     category: 'Competitive Exams'
   },
   {
     id: 2,
-    url: 'images/p2.png',
+    url: 'images/p2.jpg',
     title: 'English Spoken Classes',
     category: 'Language Skills'
   },
   {
     id: 3,
-    url: 'images/p3.png',
+    url: 'images/p3.jpg',
     title: 'Class 10th MP Board',
     category: 'School Education'
   }
@@ -51,8 +51,8 @@ export const PosterGallery: React.FC = () => {
               Explore Our <span className="text-brand-orange">Courses</span>
             </h2>
             <div className="w-24 h-1.5 bg-brand-orange mx-auto rounded-full mb-6" />
-            <p className="text-slate-300 text-xl italic font-medium">
-              “Coaching नहीं, <span className="text-brand-orange">Confidence</span> बनाते हैं!”
+            <p className="text-slate-300 text-xl font-bold tracking-wide">
+              Quality Education & Premium Mentorship • <span className="text-brand-orange">कोचिंग नहीं, कॉन्फिडेंस बनाते हैं</span>
             </p>
           </motion.div>
         </div>

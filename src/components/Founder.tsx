@@ -12,7 +12,7 @@ export const Founder: React.FC = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl font-bold text-brand-navy mb-4">Meet Our Founder</h2>
+          <h2 className="text-4xl font-bold text-brand-navy mb-4">Meet Our Foundfer</h2>
           <div className="w-20 h-1 bg-brand-orange mx-auto rounded-full mb-4" />
           <p className="text-slate-600 max-w-2xl mx-auto">The visionary behind Anay Scholastic Institute, dedicated to transforming educational landscapes.</p>
         </motion.div>
@@ -31,7 +31,7 @@ export const Founder: React.FC = () => {
               <div className="relative bg-white rounded-[2.5rem] shadow-2xl border border-slate-100 overflow-hidden group">
                 <div className="aspect-[4/5] relative overflow-hidden">
                   <img 
-                    src="/images/founder.png" 
+                    src="/images/founder.jpg" 
                     alt="Rahul Shukla" 
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />

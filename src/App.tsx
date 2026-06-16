@@ -26,7 +26,8 @@ export default function App() {
   const [user, setUser] = useState<FirebaseUser | null>(null);
   const [authMode, setAuthMode] = useState<AuthMode>('none');
   const [isInitializing, setIsInitializing] = useState(true);
-  const [currentView, setCurrentView] = useState<'home' | 'courses' | 'about' | 'results' | 'feedback' | 'legal' | 'contact' | 'signup' | 'dashboard' | 'downloads'>('home');
+  const [currentView, setCurrentView] = useState<'home' | 'courses' | 'about' | 'results' | 'feedback' | 'legal' | 'contact' | 'signup' | 'dashboard' | 'downloads' | 'gallery'>('home');
+  const [selectedCourseCategory, setSelectedCourseCategory] = useState<string>('all');
 
   const hasRedirectedRef = React.useRef(false);
 
@@ -106,13 +107,11 @@ export default function App() {
       case 'signup':
         return <Register onCancel={() => setView('home')} onComplete={() => setView('dashboard')} />;
       case 'dashboard':
-        return user ? <StudentDashboard onBackToWebsite={() => setView('home')} /> : <Hero onScrollToCourses={() => setView('courses')} onScrollToContact={() => setView('contact')} />;
+        return user ? <StudentDashboard onBackToWebsite={() => setView('home')} /> : <Hero />;
       case 'home':
         return (
           <>
-            <Hero onScrollToCourses={() => setView('courses')} onScrollToContact={() => setView('contact')} />
-            <PosterGallery />
-            <CampusGallery />
+            <Hero />
             <Features />
             {/* CTA section integrated into home */}
             <section className="py-20 bg-brand-navy text-white overflow-hidden relative">
@@ -149,7 +148,14 @@ export default function App() {
           </>
         );
       case 'courses':
-        return <Courses />;
+        return (
+          <>
+            <Courses initialCategory={selectedCourseCategory} />
+            <PosterGallery />
+          </>
+        );
+      case 'gallery':
+        return <CampusGallery />;
       case 'about':
         return (
           <>
@@ -217,12 +223,16 @@ export default function App() {
       <Navbar 
         user={user} 
         onOpenAuth={openAuth} 
-        onScrollToCourses={() => setView('courses')} 
+        onScrollToCourses={(cat) => {
+          setSelectedCourseCategory(cat || 'all');
+          setView('courses');
+        }} 
         onScrollToAbout={() => setView('about')}
         onScrollToResults={() => setView('results')}
         onScrollToContact={() => setView('contact')}
         onScrollToDashboard={() => setView('dashboard')}
         onScrollToDownloads={() => setView('downloads')}
+        onScrollToGallery={() => setView('gallery')}
         onResetView={() => setView('home')}
       />
       

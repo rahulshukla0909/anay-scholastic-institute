@@ -9,12 +9,13 @@ import { signOut, User as FirebaseUser } from 'firebase/auth';
 interface NavbarProps {
   user: FirebaseUser | null;
   onOpenAuth: (mode: AuthMode) => void;
-  onScrollToCourses: () => void;
+  onScrollToCourses: (courseCategory?: string) => void;
   onScrollToAbout: () => void;
   onScrollToResults: () => void;
   onScrollToContact: () => void;
   onScrollToDashboard: () => void;
   onScrollToDownloads: () => void;
+  onScrollToGallery: () => void;
   onResetView: () => void;
 }
 
@@ -27,13 +28,43 @@ export const Navbar: React.FC<NavbarProps> = ({
   onScrollToContact, 
   onScrollToDashboard, 
   onScrollToDownloads,
+  onScrollToGallery,
   onResetView 
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDownloadsOpen, setIsDownloadsOpen] = useState(false);
+  const [isCoursesOpen, setIsCoursesOpen] = useState(false);
+  const [isSchoolSubmenuOpen, setIsSchoolSubmenuOpen] = useState(false);
+  const [isMobileCoursesOpen, setIsMobileCoursesOpen] = useState(false);
+  const [isMobileSchoolClassesOpen, setIsMobileSchoolClassesOpen] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const coursesTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const schoolSubmenuTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+  const handleCoursesMouseEnter = () => {
+    if (coursesTimeoutRef.current) clearTimeout(coursesTimeoutRef.current);
+    setIsCoursesOpen(true);
+  };
+
+  const handleCoursesMouseLeave = () => {
+    coursesTimeoutRef.current = setTimeout(() => {
+      setIsCoursesOpen(false);
+      setIsSchoolSubmenuOpen(false);
+    }, 200);
+  };
+
+  const handleSchoolMouseEnter = () => {
+    if (schoolSubmenuTimeoutRef.current) clearTimeout(schoolSubmenuTimeoutRef.current);
+    setIsSchoolSubmenuOpen(true);
+  };
+
+  const handleSchoolMouseLeave = () => {
+    schoolSubmenuTimeoutRef.current = setTimeout(() => {
+      setIsSchoolSubmenuOpen(false);
+    }, 150);
+  };
 
   const handleNavClick = (action: () => void) => {
     action();
@@ -66,7 +97,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span className="font-bold text-brand-navy leading-tight tracking-tight text-lg">ANAY SCHOLASTIC</span>
             <span className="text-brand-orange text-[9px] font-bold tracking-[0.05em] uppercase flex flex-col">
               <span>INSTITUTE</span>
-              <span className="text-[7px] text-brand-navy/60 italic">"Coaching nhi Confidence banate hain"</span>
+              <span className="text-[7px] text-brand-orange font-extrabold tracking-wider uppercase">Coaching nahi, confidence banate hain</span>
             </span>
           </div>
         </div>
@@ -78,12 +109,81 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             Home
           </button>
-          <button 
-            onClick={onScrollToCourses}
-            className="hover:text-brand-orange transition-colors"
+          <div 
+            className="relative"
+            onMouseEnter={handleCoursesMouseEnter}
+            onMouseLeave={handleCoursesMouseLeave}
           >
-            Courses
-          </button>
+            <button 
+              onClick={() => handleNavClick(() => onScrollToCourses('all'))}
+              className="hover:text-brand-orange transition-colors flex items-center gap-1 py-1 font-medium"
+            >
+              All Courses
+              <ChevronDown size={14} className={`transition-transform duration-300 ${isCoursesOpen ? 'rotate-180' : ''}`} />
+            </button>
+            
+            <AnimatePresence>
+              {isCoursesOpen && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                  transition={{ duration: 0.15 }}
+                  className="absolute left-1/2 -translate-x-1/2 mt-2 w-64 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-slate-100 py-2.5 z-[100]"
+                >
+                  <div 
+                    className="relative group/school"
+                    onMouseEnter={handleSchoolMouseEnter}
+                    onMouseLeave={handleSchoolMouseLeave}
+                  >
+                    <button
+                      onClick={() => handleNavClick(() => onScrollToCourses('school'))}
+                      className="w-full text-left px-5 py-2.5 hover:bg-slate-50 text-slate-700 hover:text-brand-orange font-bold transition-colors flex items-center justify-between text-sm border-b border-slate-50"
+                    >
+                      <span>School Preparation</span>
+                      <ChevronRight size={14} className="text-slate-400 group-hover/school:translate-x-1 transition-transform" />
+                    </button>
+
+                    <AnimatePresence>
+                      {isSchoolSubmenuOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.95, x: -10 }}
+                          animate={{ opacity: 1, scale: 1, x: 0 }}
+                          exit={{ opacity: 0, scale: 0.95, x: -10 }}
+                          transition={{ duration: 0.15 }}
+                          className="absolute left-full top-0 ml-1.5 w-48 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-slate-100 py-2.5 z-[120]"
+                        >
+                          {['6th', '7th', '8th', '9th', '10th'].map((cls) => (
+                            <button
+                              key={cls}
+                              onClick={() => handleNavClick(() => onScrollToCourses(`school-${cls.replace('th', '')}`))}
+                              className="w-full text-left px-5 py-2 hover:bg-slate-50 text-slate-600 hover:text-brand-orange font-bold transition-colors text-xs first:rounded-t-xl last:rounded-b-xl"
+                            >
+                              Class {cls}
+                            </button>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                  <button
+                    onMouseEnter={() => setIsSchoolSubmenuOpen(false)}
+                    onClick={() => handleNavClick(() => onScrollToCourses('ssc'))}
+                    className="w-full text-left px-5 py-2.5 hover:bg-slate-50 text-slate-700 hover:text-brand-orange font-bold transition-colors block text-sm border-b border-slate-50"
+                  >
+                    Bank and SSC preparation
+                  </button>
+                  <button
+                    onMouseEnter={() => setIsSchoolSubmenuOpen(false)}
+                    onClick={() => handleNavClick(() => onScrollToCourses('spoken'))}
+                    className="w-full text-left px-5 py-2.5 hover:bg-slate-50 text-slate-700 hover:text-brand-orange font-bold transition-colors block text-sm"
+                  >
+                    Spoken English
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
           <button 
             onClick={onScrollToAbout}
             className="hover:text-brand-orange transition-colors"
@@ -95,6 +195,12 @@ export const Navbar: React.FC<NavbarProps> = ({
             className="hover:text-brand-orange transition-colors"
           >
             Results
+          </button>
+          <button 
+            onClick={onScrollToGallery}
+            className="hover:text-brand-orange transition-colors font-bold text-brand-navy"
+          >
+            Infrastructure / सुविधाएं
           </button>
           <button 
             onClick={onScrollToContact}
@@ -166,13 +272,79 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span>Home</span>
                 <span className="w-1.5 h-1.5 rounded-full bg-brand-orange opacity-0 group-hover:opacity-100 transition-opacity" />
               </button>
-              <button 
-                onClick={() => handleNavClick(onScrollToCourses)}
-                className="text-left py-3 px-4 rounded-xl hover:bg-slate-50 text-slate-600 font-bold flex items-center justify-between group"
-              >
-                <span>Courses</span>
-                <span className="w-1.5 h-1.5 rounded-full bg-brand-orange opacity-0 group-hover:opacity-100 transition-opacity" />
-              </button>
+              <div className="flex flex-col">
+                <button 
+                  onClick={() => setIsMobileCoursesOpen(!isMobileCoursesOpen)}
+                  className="text-left py-3 px-4 rounded-xl hover:bg-slate-50 text-slate-600 font-bold flex items-center justify-between group"
+                >
+                  <span>All Courses</span>
+                  <ChevronDown size={18} className={`transition-transform text-slate-400 ${isMobileCoursesOpen ? 'rotate-180' : ''}`} />
+                </button>
+                <AnimatePresence>
+                  {isMobileCoursesOpen && (
+                    <motion.div 
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      className="ml-4 pl-4 border-l-2 border-slate-100 flex flex-col gap-1 overflow-hidden"
+                    >
+                      <button
+                        onClick={() => handleNavClick(() => onScrollToCourses('all'))}
+                        className="text-left py-2 text-slate-500 font-bold hover:text-brand-orange text-sm flex items-center justify-between"
+                      >
+                        <span>All Programs</span>
+                      </button>
+                      <div className="flex flex-col">
+                        <button
+                          onClick={() => setIsMobileSchoolClassesOpen(!isMobileSchoolClassesOpen)}
+                          className="text-left py-2 text-slate-500 font-bold hover:text-brand-orange text-sm flex items-center justify-between"
+                        >
+                          <span>School Preparation</span>
+                          <ChevronDown size={14} className={`transition-transform text-slate-400 ${isMobileSchoolClassesOpen ? 'rotate-180' : ''}`} />
+                        </button>
+                        <AnimatePresence>
+                          {isMobileSchoolClassesOpen && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: 'auto', opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              className="ml-4 pl-3 border-l border-slate-200 flex flex-col gap-1.5 overflow-hidden"
+                            >
+                              <button
+                                onClick={() => handleNavClick(() => onScrollToCourses('school'))}
+                                className="text-left py-1 text-slate-400 hover:text-brand-orange text-xs font-bold"
+                              >
+                                All Classes (6th-10th)
+                              </button>
+                              {['6th', '7th', '8th', '9th', '10th'].map((cls) => (
+                                <button
+                                  key={cls}
+                                  onClick={() => handleNavClick(() => onScrollToCourses(`school-${cls.replace('th', '')}`))}
+                                  className="text-left py-1 text-slate-400 hover:text-brand-orange text-xs font-bold"
+                                >
+                                  Class {cls}
+                                </button>
+                              ))}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                      <button
+                        onClick={() => handleNavClick(() => onScrollToCourses('ssc'))}
+                        className="text-left py-2 text-slate-500 font-bold hover:text-brand-orange text-sm flex items-center justify-between"
+                      >
+                        <span>Bank and SSC preparation</span>
+                      </button>
+                      <button
+                        onClick={() => handleNavClick(() => onScrollToCourses('spoken'))}
+                        className="text-left py-2 text-slate-500 font-bold hover:text-brand-orange text-sm flex items-center justify-between"
+                      >
+                        <span>Spoken English</span>
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
               <button 
                 onClick={() => handleNavClick(onScrollToAbout)}
                 className="text-left py-3 px-4 rounded-xl hover:bg-slate-50 text-slate-600 font-bold flex items-center justify-between group"
@@ -186,6 +358,15 @@ export const Navbar: React.FC<NavbarProps> = ({
               >
                 <span>Results</span>
                 <span className="w-1.5 h-1.5 rounded-full bg-brand-orange opacity-0 group-hover:opacity-100 transition-opacity" />
+              </button>
+              <button 
+                onClick={() => handleNavClick(onScrollToGallery)}
+                className="text-left py-3 px-4 rounded-xl hover:bg-slate-50 text-brand-navy font-black flex items-center justify-between group border-l-4 border-brand-orange pl-3"
+              >
+                <span>Infrastructure / सुविधाएं</span>
+                <span className="animate-pulse bg-brand-orange text-white text-[8px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider">
+                  Tour
+                </span>
               </button>
               <button 
                 onClick={() => handleNavClick(onScrollToContact)}
