@@ -61,6 +61,987 @@ interface PastPaper {
   sections: QuestionSection[];
 }
 
+interface MathChapterQuestion {
+  id: string;
+  type: 'mcq' | 'subjective' | 'tf' | 'blank';
+  text: string;
+  options?: string[];
+  answer?: string;
+  solution?: string;
+  renderSvgType?: string;
+  orQuestion?: {
+    text: string;
+    solution?: string;
+    renderSvgType?: string;
+  };
+}
+
+interface ChapterGroup {
+  year: string;
+  questions: MathChapterQuestion[];
+}
+
+const mathChapterQuestions: { [chapterName: string]: ChapterGroup[] } = {
+  'Real Numbers': [
+    {
+      year: '2019',
+      questions: [
+        {
+          id: 'rn-2019-1',
+          type: 'mcq',
+          text: 'The H.C.F. of 96 and 404 is :',
+          options: ['120', '4', '10', '3'],
+          answer: '4',
+          solution: 'Prime factorization:\n96 = 2⁵ × 3\n404 = 2² × 101\nH.C.F. = 2² = 4. Hence, the correct option is (b) 4.'
+        },
+        {
+          id: 'rn-2019-2',
+          type: 'subjective',
+          text: 'Find the LCM and HCF of 6 and 20 by the prime factorisation method. (2019)',
+          solution: '6 = 2 × 3\n20 = 2² × 5\nHCF = smallest power of common factor = 2\nLCM = highest powers of all prime factors = 2² × 3 × 5 = 60.',
+          orQuestion: {
+            text: 'Find the H.C.F. of 6, 72 and 120 using the prime factorisation method.',
+            solution: '6 = 2 × 3\n72 = 2³ × 3²\n120 = 2³ × 3 × 5\nCommon factors: 2¹ and 3¹\nHCF = 2 × 3 = 6.'
+          }
+        },
+        {
+          id: 'rn-2019-3',
+          type: 'subjective',
+          text: 'Prove that √5 - 3 is irrational number.',
+          solution: 'Let √5 - 3 be rational, equal to a/b (where a and b are co-prime integers, b ≠ 0).\na/b = √5 - 3\na/b + 3 = √5\n(a + 3b) / b = √5\nSince a, b are integers, (a + 3b)/b is rational. Hence, √5 is rational.\nBut √5 is irrational. This contradiction proves that √5 - 3 is irrational.'
+        }
+      ]
+    },
+    {
+      year: '2020',
+      questions: [
+        {
+          id: 'rn-2020-1',
+          type: 'mcq',
+          text: 'The H.C.F. of 12, 15 and 21 is:',
+          options: ['420', '210', '9', '3'],
+          answer: '3',
+          solution: '12 = 2² × 3\n15 = 3 × 5\n21 = 3 × 7\nH.C.F. = smallest power of common factor = 3¹ = 3. Correct option is (d) 3.'
+        },
+        {
+          id: 'rn-2020-2',
+          type: 'subjective',
+          text: 'Find the HCF of 96 and 404 by the prime factorisation method.',
+          solution: '96 = 2⁵ × 3\n404 = 2² × 101\nH.C.F. = 2² = 4.'
+        },
+        {
+          id: 'rn-2020-3',
+          type: 'subjective',
+          text: 'Prove that 3 + 2√5 is irrational number.',
+          solution: 'Let 3 + 2√5 be rational, equal to a/b (co-prime integers, b ≠ 0).\n3 + 2√5 = a/b\n2√5 = a/b - 3 = (a - 3b)/b\n√5 = (a - 3b)/(2b)\nSince a, b are integers, (a - 3b)/(2b) is rational, requiring √5 to be rational.\nBut √5 is irrational. Hence, 3 + 2√5 is irrational.',
+          orQuestion: {
+            text: 'Given that HCF (306, 657) = 9, find LCM (306, 657).',
+            solution: 'HCF × LCM = Product of two numbers\n9 × LCM = 306 × 657\nLCM = (306 × 657)/9 = 34 × 657 = 22,338.'
+          }
+        },
+        {
+          id: 'rn-2020-4',
+          type: 'mcq',
+          text: 'For some integers m, every even integer is of the form:',
+          options: ['m', 'm+1', '2m', '2m+1'],
+          answer: '2m',
+          solution: 'An even integer is any integer divisible by 2. Thus, it can lead to the form 2m for an integer m.'
+        },
+        {
+          id: 'rn-2020-5',
+          type: 'subjective',
+          text: 'Find the LCM and HCF of 8, 9 and 25 by the prime factorisation method.',
+          solution: '8 = 2³\n9 = 3²\n25 = 5²\nHCF = 1 (no common factors)\nLCM = 2³ × 3² × 5² = 8 × 9 × 25 = 1800.'
+        },
+        {
+          id: 'rn-2020-6',
+          type: 'subjective',
+          text: 'Prove that √3 is irrational number.',
+          solution: 'Assume √3 = a/b is rational (co-prime, b ≠ 0).\n3 = a²/b² ⇒ a² = 3b² (so 3 divides a² and 3 divides a)\nLet a = 3c ⇒ (3c)² = 3b² ⇒ 9c² = 3b² ⇒ b² = 3c² (so 3 divides b² and 3 divides b)\nThis means 3 is a common factor, which contradicts that a and b are co-prime. Hence, √3 is irrational.'
+        },
+        {
+          id: 'rn-2020-7',
+          type: 'tf',
+          text: '√2 is rational number (True/False)',
+          answer: 'False',
+          solution: '√2 is irrational. It cannot be expressed as p/q. Thus, the statement is False.'
+        }
+      ]
+    },
+    {
+      year: '2021',
+      questions: [
+        {
+          id: 'rn-2021-1',
+          type: 'tf',
+          text: '√5 is rational number (True/False).',
+          answer: 'False',
+          solution: '√5 is irrational, so the statement "√5 is rational" is False.'
+        },
+        {
+          id: 'rn-2021-2',
+          type: 'subjective',
+          text: 'Express number 140 as a product of its Prime factors.',
+          solution: '140 = 2 × 70 = 2 × 2 × 35 = 2 × 2 × 5 × 7 = 2² × 5 × 7.',
+          orQuestion: {
+            text: 'Find the LCM and HCF of 8, 9 and 25 by the prime factorisation method.',
+            solution: '8 = 2³\n9 = 3²\n25 = 5²\nHCF = 1\nLCM = 2³ × 3² × 5² = 1800.'
+          }
+        },
+        {
+          id: 'rn-2021-3',
+          type: 'subjective',
+          text: 'Prove that √3 is irrational number.',
+          solution: 'Assume √3 = a/b is rational (co-prime, b ≠ 0).\n3b² = a² ⇒ 3 divides a.\nLet a = 3c ⇒ 3b² = 9c² ⇒ b² = 3c² ⇒ 3 divides b.\nThis contradicts that a, b are co-prime, so √3 is irrational.'
+        }
+      ]
+    },
+    {
+      year: '2022',
+      questions: [
+        {
+          id: 'rn-2022-1',
+          type: 'mcq',
+          text: 'HCF of (91,21) is:',
+          options: ['91', '21', '7', '13'],
+          answer: '7',
+          solution: '91 = 7 × 13\n21 = 3 × 7\nH.C.F. = common factor = 7. Correct option is (c) 7.'
+        },
+        {
+          id: 'rn-2022-2',
+          type: 'blank',
+          text: 'HCF(a,b) x LCM(a,b) = ________________',
+          answer: 'a * b',
+          solution: 'Product of two positive numbers is equal to the product of their HCF and LCM: a × b.'
+        },
+        {
+          id: 'rn-2022-3',
+          type: 'subjective',
+          text: 'Find the LCM and HCF of 6, 72 and 120 by the prime factorisation method.',
+          solution: '6 = 2 × 3\n72 = 2³ × 3²\n120 = 2³ × 3 × 5\nHCF = 2 × 3 = 6\nLCM = 2³ × 3² × 5 = 360.'
+        }
+      ]
+    },
+    {
+      year: '2023',
+      questions: [
+        {
+          id: 'rn-2023-1',
+          type: 'mcq',
+          text: 'HCF of (6,20) is:',
+          options: ['6', '20', '2', '120'],
+          answer: '2',
+          solution: '6 = 2 × 3\n20 = 2² × 5\nH.C.F. = 2. Correct option is (c) 2.'
+        },
+        {
+          id: 'rn-2023-2',
+          type: 'blank',
+          text: '√2 is a ________________ number. (rational / irrational)',
+          answer: 'irrational',
+          solution: '√2 cannot be written as p/q. It is an irrational number.'
+        },
+        {
+          id: 'rn-2023-3',
+          type: 'subjective',
+          text: 'Express number 140 as a product of its Prime factors',
+          solution: '140 = 2² × 5 × 7.',
+          orQuestion: {
+            text: 'Given that HCF (306, 657) = 9, find LCM (306, 657).',
+            solution: 'LCM = (306 × 657)/9 = 22,338.'
+          }
+        },
+        {
+          id: 'rn-2023-4',
+          type: 'subjective',
+          text: 'Show that 3 / √2 is irrational.',
+          solution: 'Let 3 / √2 = a/b is rational (co-prime, b ≠ 0).\n√2 = 3b/a.\nSince a, b are integers, 3b/a is rational, which translates to √2 being rational.\nContradictuon! Hence, 3 / √2 is irrational.',
+          orQuestion: {
+            text: 'Find the HCF of 17, 23 and 29.',
+            solution: '17, 23, and 29 are prime numbers, so they have no common factors except 1. HCF = 1.'
+          }
+        }
+      ]
+    },
+    {
+      year: '2024',
+      questions: [
+        {
+          id: 'rn-2024-1',
+          type: 'blank',
+          text: '√3 is a _________________ number.',
+          answer: 'irrational',
+          solution: '√3 is an irrational number.'
+        },
+        {
+          id: 'rn-2024-2',
+          type: 'subjective',
+          text: 'Find the H.C.F. of the numbers 6 and 20',
+          solution: '6 = 2 × 3, 20 = 2² × 5. H.C.F. = 2.',
+          orQuestion: {
+            text: 'Express the number 140 as a product of its prime factors.',
+            solution: '140 = 2² × 5 × 7.'
+          }
+        },
+        {
+          id: 'rn-2024-3',
+          type: 'subjective',
+          text: 'Find the L.C.M. and H.C.F. of 8, 9 and 25 by applying the prime factorization method.',
+          solution: '8 = 2³, 9 = 3², 25 = 5². HCF = 1, LCM = 8 × 9 × 25 = 1800.',
+          orQuestion: {
+            text: 'Prove that 7√5 is irrational number.',
+            solution: 'Let 7√5 = a/b is rational.\n√5 = a/(7b).\nSince a/(7b) is rational, √5 must be rational. But √5 is irrational. Hence, 7√5 is irrational.'
+          }
+        }
+      ]
+    },
+    {
+      year: '2025',
+      questions: [
+        {
+          id: 'rn-2025-1',
+          type: 'mcq',
+          text: 'HCF of (6,20) is:',
+          options: ['6', '20', '2', '120'],
+          answer: '2',
+          solution: '6 = 2 × 3\n20 = 2² × 5\nH.C.F. = 2. Correct option is (c) 2.'
+        },
+        {
+          id: 'rn-2025-2',
+          type: 'blank',
+          text: '√2 is a _________________ number.',
+          answer: 'irrational',
+          solution: '√2 is an irrational number.'
+        },
+        {
+          id: 'rn-2025-3',
+          type: 'subjective',
+          text: 'Find the HCF of 96 and 404 by the prime factorisation method.',
+          solution: '96 = 2⁵ × 3, 404 = 2² × 101. HCF = 2² = 4.',
+          orQuestion: {
+            text: 'Express the number 140 as a product of its prime factors.',
+            solution: '140 = 2² × 5 × 7.'
+          }
+        },
+        {
+          id: 'rn-2025-4',
+          type: 'subjective',
+          text: 'Write the Statement of fundamental theorem of Arithmetic',
+          solution: 'Fundamental Theorem of Arithmetic states that database factorizations of composite numbers are unique up to their ordering of prime factors: "Every composite number can be unique factorized into prime products."',
+          orQuestion: {
+            text: 'Explain why 7 × 11 × 13 + 13 and 7 × 6 × 5 × 4 × 3 × 2 × 1 + 5 are composite numbers.',
+            solution: '7 × 11 × 13 + 13 = 13 × (77 + 1) = 13 × 78 which is composite because it has factors other than 1 and itself.\n7 × 6 × 5 × 4 × 3 × 2 × 1 + 5 = 5 × (1008 + 1) = 5 × 1009 which is also composite.'
+          }
+        }
+      ]
+    },
+    {
+      year: '2026',
+      questions: [
+        {
+          id: 'rn-2026-1',
+          type: 'mcq',
+          text: 'H.C.F. of any two co-prime numbers is:',
+          options: ['1', '2', '0', '3'],
+          answer: '1',
+          solution: 'Co-prime numbers do not possess any mutual divisor other than 1. Thus their H.C.F. is 1. Option (a) 1 is correct.'
+        },
+        {
+          id: 'rn-2026-2',
+          type: 'subjective',
+          text: 'Find the H.C.F. of the numbers 6 and 20',
+          solution: '6 = 2 × 3, 20 = 2² × 5. H.C.F. = 2.',
+          orQuestion: {
+            text: 'Express the number 156 as a product of its prime factors.',
+            solution: '156 ÷ 2 = 78; 78 ÷ 2 = 39; 39 ÷ 3 = 13; 13 ÷ 13 = 1.\n156 = 2² × 3 × 13.'
+          }
+        },
+        {
+          id: 'rn-2026-3',
+          type: 'subjective',
+          text: 'Given that HCF (306, 657) = 9, find LCM (306, 657).',
+          solution: 'LCM(306, 657) = (306 × 657) / 9 = 22,338.',
+          orQuestion: {
+            text: 'Find the LCM and HCF of 6,72 and 120 by the prime factorisation method.',
+            solution: '6 = 2 × 3\n72 = 2³ × 3²\n120 = 2³ × 3 × 5\nHCF = 6\nLCM = 2³ × 3² × 5 = 360.'
+          }
+        }
+      ]
+    }
+  ],
+  'Polynomials': [
+    {
+      year: '2019',
+      questions: [
+        {
+          id: 'poly-2019-1',
+          type: 'mcq',
+          text: 'If α and β are the zeroes of the quadratic polynomial ax² + bx + c, then the value of α·β is:\nयदि α और β द्विघात बहुपद ax² + bx + c के शून्यक हैं, तो α·β का मान होगा:',
+          options: ['c/a', 'a/c', '-c/a', '-a/c'],
+          answer: 'c/a',
+          solution: 'The product of zeroes of a quadratic polynomial ax² + bx + c is given by:\nα·β = constant term / coefficient of x² = c/a.\nद्विघात बहुपद के शून्यकों का गुणनफल सूत्र:\nα·β = अचर पद / x² का गुणांक = c/a. अतः सही विकल्प (a) है।'
+        },
+        {
+          id: 'poly-2019-2',
+          type: 'mcq',
+          text: 'The zeroes of the polynomial x² - 3 will be:\nबहुपद x² - 3 के शून्यक होंगे:',
+          options: ['√3, -√3', '3, -3', '3, 3', '9, -9'],
+          answer: '√3, -√3',
+          solution: 'To find the zeroes, set the polynomial to 0:\nx² - 3 = 0 ⇒ x² = 3 ⇒ x = ±√3\nSo the zeroes are √3 and -√3.\nशून्यक ज्ञात करने के लिए बहुपद को 0 के बराबर रखें:\nx² - 3 = 0 ⇒ x² = 3 ⇒ x = ±√3\nअतः बहुपद के शून्यक √3 और -√3 हैं। सही विकल्प (a) है।'
+        },
+        {
+          id: 'poly-2019-3',
+          type: 'subjective',
+          text: 'Find a quadratic polynomial, the sum and product of whose zeroes are -3 and 2 respectively.\nएक द्विघात बहुपद ज्ञात कीजिए, जिसके शून्यकों का योग तथा गुणनफल क्रमशः -3 और 2 हैं।',
+          solution: 'Let the quadratic polynomial be k(x² - Sx + P), where S is the sum of zeroes and P is the product of zeroes.\nGiven:\nSum of zeroes (S) = -3\nProduct of zeroes (P) = 2\nRequired polynomial:\nx² - (-3)x + 2 = x² + 3x + 2 (taking k = 1).\nमाना द्विघात बहुपद k(x² - Sx + P) है, जहाँ S शून्यकों का योग और P शून्यकों का गुणनफल है।\nदिया है:\nशून्यकों का योग (S) = -3\nशून्यकों का गुणनफल (P) = 2\nअतः अभीष्ट बहुपद होगा:\nx² - (-3)x + 2 = x² + 3x + 2 (k = 1 लेने पर)।'
+        },
+        {
+          id: 'poly-2019-4',
+          type: 'subjective',
+          text: 'Find the zeroes of the quadratic polynomial x² + 7x + 10 and verify the relationship between the zeroes and the coefficients.\nद्विघात बहुपद x² + 7x + 10 के शून्यक ज्ञात कीजिए और शून्यकों तथा गुणांकों के बीच के संबंध की सत्यता की जांच कीजिए।',
+          solution: 'Factoring the polynomial:\nx² + 7x + 10 = x² + 5x + 2x + 10\n= x(x + 5) + 2(x + 5) = (x + 2)(x + 5)\nSo points where polynomial is 0 are x = -2 and x = -5.\nLet zeroes be α = -2 and β = -5.\nVerification of relationship:\n1) Sum of zeroes: α + β = -2 + (-5) = -7\nFormula: -b/a = -7 / 1 = -7. (Verified)\n2) Product of zeroes: α·β = (-2) × (-5) = 10\nFormula: c/a = 10 / 1 = 10. (Verified)\n\nबहुपद के गुणनखंड करने पर:\nx² + 7x + 10 = x² + 5x + 2x + 10 = (x + 2)(x + 5)\nइसलिए शून्यक α = -2 और β = -5 हैं।\nसंबंधों का सत्यापन:\n1) शून्यकों का योग: α + β = -2 + (-5) = -7, सूत्र -b/a = -7 / 1 = -7. (सत्यापित)\n2) शून्यकों का गुणनफल: α·β = (-2) × (-5) = 10, सूत्र c/a = 10 / 1 = 10. (सत्यापित)'
+        }
+      ]
+    },
+    {
+      year: '2020',
+      questions: [
+        {
+          id: 'poly-2020-1',
+          type: 'mcq',
+          text: 'Maximum number of zeroes in quadratic polynomial ax² + bx + c will be:\nद्विघात बहुपद ax² + bx + c में शून्यकों की अधिकतम संख्या होगी:',
+          options: ['4', '1', '3', '2'],
+          answer: '2',
+          solution: 'The maximum number of zeroes a polynomial can have is equal to its degree. Since a quadratic polynomial is of degree 2, it can have at most 2 zeroes. Hence, the correct option is (d) 2.\nकिसी बहुपद के शून्यकों की अधिकतम संख्या उसकी घात के समान होती है। चूंकि द्विघात बहुपद की घात 2 होती है, अतः इसके अधिकतम 2 शून्यक हो सकते हैं। सही विकल्प (d) 2 है।'
+        },
+        {
+          id: 'poly-2020-2',
+          type: 'blank',
+          text: 'The sum of two polynomials is always a ______________.\nदो बहुपदों का योग हमेशा एक ______________ होता है।',
+          answer: 'polynomial',
+          solution: 'The sum of two polynomials is always a polynomial.\nदो बहुपदों का योग हमेशा एक बहुपद (polynomial) होता है।'
+        },
+        {
+          id: 'poly-2020-3',
+          type: 'blank',
+          text: 'Sum of zeroes of the polynomial x² + 4x + 8 is ______________.\nबहुपद x² + 4x + 8 के शून्यकों का योग ______________ है।',
+          answer: '-4',
+          solution: 'Comparing to ax² + bx + c:\na = 1, b = 4, c = 8\nSum of zeroes (α+β) = -b/a = -4/1 = -4.\nबहुपद x² + 4x + 8 के लिए, a = 1, b = 4, c = 8.\nशून्यकों का योग = -b/a = -4/1 = -4.'
+        },
+        {
+          id: 'poly-2020-4',
+          type: 'subjective',
+          text: 'Find the zeroes of the quadratic polynomial x² - 5x + 6.\nद्विघात बहुपद x² - 5x + 6 के शून्यक ज्ञात कीजिए।',
+          solution: 'Splitting the middle term:\nx² - 5x + 6 = x² - 3x - 2x + 6\n= x(x - 3) - 2(x - 3) = (x - 2)(x - 3)\nEquating to 0, zeroes are x = 2 and x = 3.\nमध्य पद को विभाजित करने पर:\nx² - 5x + 6 = x² - 3x - 2x + 6 = (x - 2)(x - 3)\nशून्यक ज्ञात करने के लिए 0 के बराबर रखने पर, शून्यक x = 2 और x = 3 हैं।',
+          orQuestion: {
+            text: 'Find the sum and product of zeroes of quadratic polynomial 2x² - 8x + 7.\nद्विघात बहुपद 2x² - 8x + 7 के शून्यकों का योगफल और गुणनफल ज्ञात कीजिए।',
+            solution: 'Comparing 2x² - 8x + 7 with ax² + bx + c:\na = 2, b = -8, c = 7\nSum of zeroes (α + β) = -b/a = -(-8)/2 = 8 / 2 = 4\nProduct of zeroes (α·β) = c/a = 7 / 2 = 3.5.\nद्विघात बहुपद 2x² - 8x + 7 की तुलना ax² + bx + c से करने पर:\na = 2, b = -8, c = 7\nशून्यकों का योग (α + β) = -b/a = -(-8)/2 = 4\nशून्यकों का गुणनफल (α·β) = c/a = 7/2 = 3.5.'
+          }
+        }
+      ]
+    },
+    {
+      year: '2021',
+      questions: [
+        {
+          id: 'poly-2021-1',
+          type: 'blank',
+          text: 'Product of zeroes in polynomial ax² + bx + c = 0 is ______________.\nबहुपद ax² + bx + c = 0 में शून्यकों का गुणनफल _____________ होता है।',
+          answer: 'c/a',
+          solution: 'Product of zeroes α·β = c/a.\nशून्यकों का गुणनफल α·β = c/a होता है।'
+        },
+        {
+          id: 'poly-2021-2',
+          type: 'tf',
+          text: '1 and 4 are the zeroes of polynomial x² - 3x - 4. (True / False)\n1 और 4 बहुपद x² - 3x - 4 के शून्यक हैं। (सत्य / असत्य)',
+          answer: 'False',
+          solution: 'Let us test if x = 1 is a zero:\nP(1) = 1² - 3(1) - 4 = 1 - 3 - 4 = -6 ≠ 0. Since P(1) is not 0, 1 is not a zero. Thus the statement is False. (Actual zeroes are -1 and 4).\nयदि x = 1 को बहुपद में रखें:\nP(1) = 1² - 3(1) - 4 = -6 ≠ 0. चूंकि P(1) शून्य नहीं है, अतः 1 इस बहुपद का शून्यक नहीं है। इसलिए यह कथन असत्य (False) है (वास्तविक शून्यक -1 और 4 हैं)।'
+        },
+        {
+          id: 'poly-2021-3',
+          type: 'subjective',
+          text: 'Find the zeroes of the following polynomial and verify the relationship between the zeroes and the coefficients: 4s² - 4s + 1.\nनिम्न बहुपद के शून्यक ज्ञात कीजिए और शून्यकों तथा गुणांकों के बीच के संबंध की सत्यता की जांच कीजिए: 4s² - 4s + 1.',
+          solution: '4s² - 4s + 1 = (2s - 1)²\nSo, zeroes are s = 1/2 and s = 1/2.\nVerification:\n1) Sum of zeroes: 1/2 + 1/2 = 1. Formula -b/a = -(-4)/4 = 1. (Verified)\n2) Product of zeroes: 1/2 × 1/2 = 1/4. Formula c/a = 1/4. (Verified)\n\n4s² - 4s + 1 = (2s - 1)²\nअतः शून्यक s = 1/2 और s = 1/2 हैं।\nसंबंधों का सत्यापन:\nशून्यकों का योग = 1/2 + 1/2 = 1, सूत्र -b/a = -(-4)/4 = 1. (सत्यापित)\nशून्यकों का गुणनफल = 1/2 × 1/2 = 1/4, सूत्र c/a = 1/4. (सत्यापित)',
+          orQuestion: {
+            text: 'The graphs of y = P(x) are given in the figure. Find the number of zeroes of P(x).\nनीचे दी गई आकृति में y = P(x) का ग्राफ दिया गया है। P(x) के शून्यकों की संख्या ज्ञात कीजिए।',
+            renderSvgType: 'poly-graph-2021-3-or',
+            solution: 'Looking at the given graph, the curve P(x) intersects/crosses the horizontal x-axis at 4 distinct points. Therefore, the number of zeroes of P(x) is exactly 4.\nदिए गए ग्राफ को देखने पर, वक्र P(x) क्षैतिज x-अक्ष (x-axis) को 4 अलग-अलग बिंदुओं पर प्रतिच्छेद करता है। अतः, बहुपद P(x) के शून्यकों की संख्या 4 है।'
+          }
+        },
+        {
+          id: 'poly-2021-4',
+          type: 'subjective',
+          text: 'Find the zeroes of the quadratic polynomial x² + 7x + 10 and verify the relationship between the zeroes and the coefficients.\nद्विघात बहुपद x² + 7x + 10 के शून्यक ज्ञात कीजिए और शून्यकों तथा गुणांकों के बीच के संबंध की सत्यता की जांच कीजिए।',
+          solution: 'x² + 7x + 10 = (x + 2)(x + 5) ⇒ zeroes are -2 and -5.\nSum of zeroes: α + β = -2 + (-5) = -7, -b/a = -7 / 1 = -7. (Verified)\nProduct of zeroes: α·β = 10, c/a = 10. (Verified)\n\nx² + 7x + 10 = (x + 2)(x + 5) ⇒ शून्यक -2 और -5 हैं।\nयोग = -7 = -b/a, गुणनफल = 10 = c/a. सत्यापित।',
+          orQuestion: {
+            text: 'Find the zeroes of the polynomial x² - 3 and verify the relationship between the zeroes and the coefficients.\nबहुपद x² - 3 के शून्यक ज्ञात कीजिए और शून्यकों तथा गुणांकों के बीच के संबंध की सत्यता की जांच कीजिए।',
+            solution: 'x² - 3 = (x - √3)(x + √3) ⇒ zeroes are √3 and -√3.\nSum of zeroes: √3 + (-√3) = 0. -b/a = -0/1 = 0. (Verified)\nProduct of zeroes: √3 × (-√3) = -3. c/a = -3. (Verified)\n\nx² - 3 = (x - √3)(x + √3) ⇒ शून्यक √3 और -√3 हैं।\nयोग: 0 = -b/a, गुणनफल: -3 = c/a. सत्यापित।'
+          }
+        }
+      ]
+    },
+    {
+      year: '2022',
+      questions: [
+        {
+          id: 'poly-2022-1',
+          type: 'mcq',
+          text: 'The sum of the zeroes of the quadratic polynomial ax² + bx + c will be:\nद्विघात बहुपद ax² + bx + c के शून्यकों का योग होगा:',
+          options: ['b/a', '-b/a', 'c/a', '-c/a'],
+          answer: '-b/a',
+          solution: 'Sum of zeroes = -b/a. Correct option is (b).\nशून्यकों का योग = -b/a. सही विकल्प (b) है।'
+        },
+        {
+          id: 'poly-2022-2',
+          type: 'blank',
+          text: 'A polynomial of degree 3 is called a ____________ polynomial.\nघात 3 के बहुपद को ____________ बहुपद कहा जाता है।',
+          answer: 'cubic',
+          solution: 'A polynomial of degree 3 is called a cubic polynomial.\nघात 3 के बहुपद को त्रिघात (cubic) बहुपद कहा जाता है।'
+        },
+        {
+          id: 'poly-2022-3',
+          type: 'blank',
+          text: 'If a, b and c are real numbers and a ≠ 0, then the quadratic polynomial is of the form ____________.\nयदि a, b और c वास्तविक संख्याएँ हैं और a ≠ 0, तो द्विघात बहुपद ____________ रूप का होता है।',
+          answer: 'ax^2 + bx + c',
+          solution: 'The standard form is ax² + bx + c.\nद्विघात बहुपद का मानक रूप ax² + bx + c है।'
+        },
+        {
+          id: 'poly-2022-4',
+          type: 'tf',
+          text: 'The value of x in x(x - 1) = 0 are zero and one. (True / False)\nx(x - 1) = 0 में x के मान शून्य और एक हैं। (सत्य / असत्य)',
+          answer: 'True',
+          solution: 'x(x - 1) = 0 ⇒ x = 0 or x - 1 = 0 ⇒ x = 0, 1. The statement is True.\nx(x - 1) = 0 ⇒ x = 0 या x = 1. अतः यह कथन बिल्कुल सत्य (True) है।'
+        },
+        {
+          id: 'poly-2022-5',
+          type: 'subjective',
+          text: 'Find the zeroes of the quadratic polynomial 6x² - 3 - 7x.\nद्विघात बहुपद 6x² - 3 - 7x के शून्यक ज्ञात कीजिए।',
+          solution: 'Rearranging terms: 6x² - 7x - 3\nSplitting middle term: 6x² - 9x + 2x - 3\n= 3x(2x - 3) + 1(2x - 3) = (3x + 1)(2x - 3)\nZeroes are obtained when: 3x + 1 = 0 ⇒ x = -1/3, and 2x - 3 = 0 ⇒ x = 3/2.\nSo zeroes are -1/3 and 3/2.\n\nपदों को व्यवस्थित करने पर: 6x² - 7x - 3\nमध्य पद को विभाजित करने पर: 6x² - 9x + 2x - 3 = (3x + 1)(2x - 3)\nशून्यक x = -1/3 और x = 3/2 प्राप्त होते हैं।',
+          orQuestion: {
+            text: 'Find the quadratic polynomial, the sum and product of whose zeroes are 1 and 1 respectively.\nद्विघात बहुपद ज्ञात कीजिए, जिसके शून्यकों का योग और गुणनफल क्रमशः 1 और 1 हैं।',
+            solution: 'Sum S = 1, Product P = 1.\nQuadratic Polynomial: x² - Sx + P = x² - (1)x + 1 = x² - x + 1.\nयोग S = 1, गुणनफल P = 1.\nद्विघात बहुपद: x² - Sx + P = x² - x + 1.'
+          }
+        }
+      ]
+    },
+    {
+      year: '2023',
+      questions: [
+        {
+          id: 'poly-2023-1',
+          type: 'mcq',
+          text: 'Write the standard form of a quadratic equation:\nद्विघात समीकरण का मानक रूप लिखिए:',
+          options: ['a²x + bx + c = 0', 'ax² + bx + c', 'ax² + bx + c = 0', 'a²x + bx + c² = 0'],
+          answer: 'ax² + bx + c = 0',
+          solution: 'The standard form of a quadratic equation is ax² + bx + c = 0, where a ≠ 0.\nद्विघात समीकरण का मानक रूप ax² + bx + c = 0 होता है, जहाँ a ≠ 0 है। सही विकल्प (c) है।'
+        },
+        {
+          id: 'poly-2023-2',
+          type: 'subjective',
+          text: 'Find the zeroes of 4u² + 8u.\nबहुपद 4u² + 8u के शून्यक ज्ञात कीजिए।',
+          solution: '4u² + 8u = 4u(u + 2)\nSetting P(u) = 0:\n4u = 0 ⇒ u = 0\nu + 2 = 0 ⇒ u = -2\nSo zeroes are 0 and -2.\n\n4u² + 8u = 4u(u + 2) = 0 रखने पर, शून्यक u = 0 और u = -2 हैं।',
+          orQuestion: {
+            text: 'Find a quadratic polynomial as the sum of zeroes = -1 and product = √5.\nएक द्विघात बहुपद ज्ञात कीजिए जिसके शून्यकों का योगफल = -1 और गुणनफल = √5 है।',
+            solution: 'Sum S = -1, Product P = √5.\nQuadratic Polynomial: x² - Sx + P = x² - (-1)x + √5 = x² + x + √5.\nयोग S = -1, गुणनफल P = √5.\nद्विघात बहुपद: x² - Sx + P = x² + x + √5.'
+          }
+        },
+        {
+          id: 'poly-2023-3',
+          type: 'subjective',
+          text: 'Find the sum of zeroes of polynomial x² - 3.\nबहुपद x² - 3 के शून्यकों का योगफल ज्ञात कीजिए।',
+          solution: 'Comparing P(x) = x² - 3 with ax² + bx + c:\na = 1, b = 0, c = -3.\nSum of zeroes = -b/a = -0/1 = 0.\n\nx² - 3 की तुलना ax² + bx + c से करने पर, b = 0.\nशून्यकों का योग = -b/a = -0/1 = 0.'
+        }
+      ]
+    },
+    {
+      year: '2024',
+      questions: [
+        {
+          id: 'poly-2024-1',
+          type: 'mcq',
+          text: 'For quadratic polynomial ax² + bx + c, the graph found on a graph paper will be:\nद्विघात बहुपद ax² + bx + c के लिए, ग्राफ पेपर पर पायी जाने वाली आकृति होगी:',
+          options: ['straight line / सरल रेखा', 'parabolas / परवलय', 'parallel line / समानांतर रेखा', 'curve line / वक्र रेखा'],
+          answer: 'parabolas / परवलय',
+          solution: 'The graph of any quadratic function is a parabola. Correct option is (b).\nकिसी भी द्विघात बहुपद का ग्राफ एक परवलय (parabola) होता है। सही विकल्प (b) है।'
+        },
+        {
+          id: 'poly-2024-2',
+          type: 'blank',
+          text: 'P(x) is a polynomial in x, the highest power of x in P(x) is called ____________ of the polynomial.\nP(x), x में एक बहुपद है, P(x) में x की उच्चतम घात को बहुपद की ____________ कहा जाता है।',
+          answer: 'degree',
+          solution: 'The highest power of variable x is the degree of the polynomial.\nचर की उच्चतम घात को डिग्री या घात (degree) कहते हैं।'
+        },
+        {
+          id: 'poly-2024-3',
+          type: 'blank',
+          text: 'Write the formula of product of zeroes from quadratic polynomial ax² + bx + c.\nद्विघात बहुपद ax² + bx + c के शून्यकों का गुणनफल ज्ञात करने का सूत्र _____________ है।',
+          answer: 'c/a',
+          solution: 'Product of zeroes α·β = c/a.\nगुणनफल सूत्र α·β = c/a.'
+        },
+        {
+          id: 'poly-2024-4',
+          type: 'subjective',
+          text: 'Find the zeroes of the quadratic polynomial 3x² - x - 4.\nद्विघात बहुपद 3x² - x - 4 के शून्यक ज्ञात कीजिए।',
+          solution: '3x² - x - 4 = 3x² - 4x + 3x - 4\n= x(3x - 4) + 1(3x - 4) = (3x - 4)(x + 1)\nSo zeroes are x = 4/3 and x = -1.\n\n3x² - x - 4 = (3x - 4)(x + 1) = 0\nअतः शून्यक x = 4/3 और x = -1 हैं।',
+          orQuestion: {
+            text: 'Find a quadratic polynomial, the sum of zeroes is 4 and the product of zeroes is 1.\nएक द्विघात बहुपद ज्ञात कीजिए, जिसके शून्यकों का योगफल 4 और गुणनफल 1 है।',
+            solution: 'Sum S = 4, Product P = 1.\nRequired quadratic polynomial is x² - Sx + P = x² - 4x + 1.\nयोग S = 4, गुणनफल P = 1.\nद्विघात बहुपद: x² - Sx + P = x² - 4x + 1.'
+          }
+        }
+      ]
+    },
+    {
+      year: '2025',
+      questions: [
+        {
+          id: 'poly-2025-1',
+          type: 'subjective',
+          text: 'The graph y = P(x) is given below for some polynomial P(x). Find the number of zeroes of P(x).\nकिसी बहुपद P(x) के लिए, y = P(x) का ग्राफ नीचे दिया गया है। P(x) के शून्यकों की संख्या ज्ञात कीजिए।',
+          renderSvgType: 'poly-graph-2021-3-or',
+          solution: 'Looking at the curve, it intersects/crosses the horizontal x-axis at exactly 4 distinct points. Therefore, the number of zeroes of the polynomial P(x) is 4.\nग्राफ के अनुसार, P(x) का वक्र x-अक्ष को 4 बिंदुओं पर प्रतिच्छेद करता है। अतः, शून्यकों की संख्या 4 है।',
+          orQuestion: {
+            text: 'Find the zeroes of the Quadratic Polynomial x² - 3x - 10.\nद्विघात बहुपद x² - 3x - 10 के शून्यक ज्ञात कीजिए।',
+            solution: 'x² - 3x - 10 = x² - 5x + 2x - 10\n= x(x - 5) + 2(x - 5) = (x - 5)(x + 2)\nSetting to 0, zeroes are x = 5 and x = -2.\n\nx² - 3x - 10 = (x - 5)(x + 2) = 0\nअतः शून्यक x = 5 और x = -2 हैं।'
+          }
+        },
+        {
+          id: 'poly-2025-2',
+          type: 'subjective',
+          text: 'Find the zeroes of 4u² + 8u.\nबहुपद 4u² + 8u के शून्यक ज्ञात कीजिए।',
+          solution: '4u(u + 2) = 0 ⇒ u = 0, u = -2. So zeroes are 0 and -2.\n\n4u(u + 2) = 0 ⇒ शून्यक 0 और -2 हैं।',
+          orQuestion: {
+            text: 'Find a quadratic polynomial, if the sum and product of whose zeroes are -1/4 and 1/4 respectively.\nएक द्विघात बहुपद ज्ञात कीजिए, जिसके शून्यकों का योगफल और गुणनफल क्रमशः -1/4 और 1/4 हैं।',
+            solution: 'Sum S = -1/4, Product P = 1/4.\nPolynomial is k(x² - Sx + P) = k(x² - (-1/4)x + 1/4) = k(x² + x/4 + 1/4).\nFor k = 4, we get standard integer form: 4x² + x + 1.\nS = -1/4, P = 1/4.\nबहुपद: x² - (-1/4)x + 1/4 = x² + x/4 + 1/4, (4 से गुणा करने पर) = 4x² + x + 1.'
+          }
+        }
+      ]
+    },
+    {
+      year: '2026',
+      questions: [
+        {
+          id: 'poly-2026-1',
+          type: 'mcq',
+          text: 'Zero of the linear polynomial ax + b, a ≠ 0 is:\nरैखिक बहुपद ax + b, a ≠ 0 का शून्यक है:',
+          options: ['b/a', 'a/b', '-b/a', 'c/a'],
+          answer: '-b/a',
+          solution: 'Set ax + b = 0 ⇒ ax = -b ⇒ x = -b/a. Thus, correct option is (c) -b/a.\nशून्यक के लिए ax + b = 0 ⇒ x = -b/a. सही विकल्प (c) है।'
+        },
+        {
+          id: 'poly-2026-2',
+          type: 'blank',
+          text: 'Maximum zeroes of a cubic polynomial can be ______________.\nत्रिघात बहुपद के अधिकतम शून्यक ______________ हो सकते हैं।',
+          answer: '3',
+          solution: 'Cubic polynomial has a degree of 3, so it can have at most 3 zeroes.\nत्रिघात बहुपद की घात 3 होती है, अतः इसके अधिकतम 3 शून्यक हो सकते हैं।'
+        },
+        {
+          id: 'poly-2026-3',
+          type: 'tf',
+          text: 'αβ = c/a is true for any quadratic polynomial ax² + bx + c. (True / False)\nद्विघात बहुपद ax² + bx + c के लिए αβ = c/a सत्य है। (सत्य / असत्य)',
+          answer: 'True',
+          solution: 'The product of zeroes of a quadratic is indeed c/a. This is True.\nद्विघात बहुपद के शून्यकों का गुणनफल αβ = c/a है, जो कि बिल्कुल सत्य (True) है।'
+        },
+        {
+          id: 'poly-2026-4',
+          type: 'subjective',
+          text: 'Find the zeroes of the polynomial 3x² - x - 4.\nबहुपद 3x² - x - 4 के शून्यक ज्ञात कीजिए।',
+          solution: '3x² - x - 4 = (3x - 4)(x + 1) = 0 ⇒ zeroes are x = 4/3 and x = -1.\n\n3x² - x - 4 = (3x - 4)(x + 1) = 0 ⇒ शून्यक x = 4/3 और x = -1 हैं।',
+          orQuestion: {
+            text: 'Find a quadratic polynomial, if the sum and product of whose zeroes are 4 and 1 respectively.\nएक द्विघात बहुपद ज्ञात कीजिए, जिसके शून्यकों का योगफल और गुणनफल क्रमशः 4 और 1 हैं।',
+            solution: 'Sum S = 4, Product P = 1.\nRequired quadratic polynomial is x² - Sx + P = x² - 4x + 1.\nयोग S = 4, गुणनफल P = 1.\nद्विघात बहुपद: x² - Sx + P = x² - 4x + 1.'
+          }
+        }
+      ]
+    },
+    {
+      year: '2026 Standard',
+      questions: [
+        {
+          id: 'poly-2026s-1',
+          type: 'mcq',
+          text: 'If α and β are the zeroes of the quadratic polynomial ax² + bx + c, then the value of α + β is:\nयदि α और β द्विघात बहुपद ax² + bx + c के शून्यक हैं, तो α + β का मान होगा:',
+          options: ['b/a', '-b/a', 'c/a', '-c/a'],
+          answer: '-b/a',
+          solution: 'Sum of zeroes of a quadratic polynomial ax² + bx + c is given by -b/a. Correct option is (b).\nद्विघात बहुपद के शून्यकों का योगफल = -b/a होता है। सही विकल्प (b) है।'
+        },
+        {
+          id: 'poly-2026s-2',
+          type: 'blank',
+          text: 'Maximum zeroes of a cubic polynomial are ______________.\nत्रिघात बहुपद के शून्यकों की अधिकतम संख्या ______________ होती है।',
+          answer: '3',
+          solution: 'A cubic polynomial can have a maximum of 3 zeroes.\nत्रिघात बहुपद के शून्यों की अधिकतम संख्या 3 होती है।'
+        },
+        {
+          id: 'poly-2026s-3',
+          type: 'blank',
+          text: 'The graph of any quadratic polynomial is a ______________.\nकिसी भी द्विघात बहुपद का ग्राफ एक ______________ होता है।',
+          answer: 'parabola',
+          solution: 'The graph of a quadratic polynomial is a parabola.\nद्विघात बहुपद का ग्राफ एक परवलय (parabola) होता है।'
+        },
+        {
+          id: 'poly-2026s-4',
+          type: 'subjective',
+          text: 'Find the zeroes of the polynomial 6x² - 3 - 7x.\nबहुपद 6x² - 3 - 7x के शून्यक ज्ञात कीजिए।',
+          solution: 'Rearranging: 6x² - 7x - 3 = 0\nFactoring: 6x² - 9x + 2x - 3 = 3x(2x - 3) + 1(2x - 3) = (3x + 1)(2x - 3) = 0\nZeroes are x = -1/3 and x = 3/2.\n\nव्यवस्थित करने पर: 6x² - 7x - 3 = 0\nगुणनखंड: (3x + 1)(2x - 3) = 0 ⇒ शून्यक x = -1/3 और x = 3/2 हैं।'
+        },
+        {
+          id: 'poly-2026s-5',
+          type: 'subjective',
+          text: 'Find a quadratic polynomial, the sum and product of whose zeroes are √2 and 1/3 respectively.\nएक द्विघात बहुपद ज्ञात कीजिए, जिसके शून्यकों का योगफल और गुणनफल क्रमशः √2 और 1/3 हैं।',
+          solution: 'Sum S = √2, Product P = 1/3.\nRequired polynomial is k(x² - Sx + P) = k(x² - √2x + 1/3).\nFor k = 3, we get standard integer form: 3x² - 3√2x + 1.\nयोग S = √2, गुणनफल P = 1/3.\nबहुपद: x² - √2x + 1/3, (3 से गुणा करने पर) = 3x² - 3√2x + 1.'
+        }
+      ]
+    }
+  ],
+  'Pair of Linear Equations in Two Variables': [
+    {
+      year: '2019',
+      questions: [
+        {
+          id: 'lin-2019-1',
+          type: 'mcq',
+          text: 'When a₁/a₂ = b1/b₂ ≠ c₁/c₂ then the system of equations a₁x + b1y + c₁ = 0 and a₂x + b₂y + c₂ = 0 has:\nजब a₁/a₂ = b1/b₂ ≠ c₁/c₂ हो, तो समीकरण निकाय a₁x + b1y + c₁ = 0 और a₂x + b₂y + c₂ = 0:',
+          options: [
+            'two solutions / दो हल',
+            'no solution / कोई हल नहीं',
+            'infinitely many solutions / अनंततः अनेक हल',
+            'unique solution / अद्वितीय हल'
+          ],
+          answer: 'no solution / कोई हल नहीं',
+          solution: 'When a₁/a₂ = b1/b₂ ≠ c₁/c₂, the lines are parallel. Since parallel lines never intersect, the system of equations has no solution.\nजब a₁/a₂ = b1/b₂ ≠ c₁/c₂ होता है, तो रेखाएँ समानांतर होती हैं। समानांतर रेखाएँ कभी प्रतिच्छेद नहीं करती हैं, इसलिए समीकरण निकाय का कोई हल नहीं होता है।'
+        },
+        {
+          id: 'lin-2019-2',
+          type: 'mcq',
+          text: 'Lines x - 2y = 0 and 3x + 4y - 20 = 0 are:\nरेखाएँ x - 2y = 0 और 3x + 4y - 20 = 0 हैं:',
+          options: [
+            'Intersecting / प्रतिच्छेदी',
+            'Coincident / संपाती',
+            'Parallel / समानांतर',
+            'None / इनमें से कोई नहीं'
+          ],
+          answer: 'Intersecting / प्रतिच्छेदी',
+          solution: 'Comparing coefficients we get a₁/a₂ = 1/3 and b₁/b₂ = -2/4 = -1/2. Since a₁/a₂ ≠ b₁/b₂, the lines intersect at a unique point.\ncoeff का मिलान करने पर: a₁/a₂ = 1/3 और b₁/b₂ = -1/2 है। चूँकि a₁/a₂ ≠ b₁/b₂ है, अतः रेखाएँ प्रतिच्छेदी (Intersecting) हैं।'
+        },
+        {
+          id: 'lin-2019-3',
+          type: 'subjective',
+          text: 'Use Elimination method to find all possible solutions of the following pair of linear equations: 2x + 3y = 8 ; 4x + 6y = 7\nविलोपन विधि का प्रयोग करके रैखिक समीकरण युग्म के सभी संभावित हल ज्ञात कीजिए: 2x + 3y = 8 ; 4x + 6y = 7',
+          solution: 'Let 2x + 3y = 8 ---(1) and 4x + 6y = 7 ---(2)\nMultiply (1) by 2: 4x + 6y = 16 ---(3)\nSubtracting (2) from (3): (4x - 4x) + (6y - 6y) = 16 - 7 ⇒ 0 = 9 (which is false).\nTherefore, the pair of equations has no solution.\n\nमाना 2x + 3y = 8 ---(1) और 4x + 6y = 7 ---(2)\nसमीकरण (1) को 2 से गुणा करने पर: 4x + 6y = 16 ---(3)\nसमीकरण (3) में से (2) को घटाने पर: 0 = 9 (जो कि एक असत्य कथन है)।\nअतः इस समीकरण युग्म का कोई हल नहीं है।',
+          orQuestion: {
+            text: 'The cost of 5 oranges and 3 apples is Rs. 35 and the cost of 2 oranges and 4 apples is Rs. 28. Find the cost of an orange and an apple.\n5 संतरों और 3 सेबों का मूल्य 35 रुपये है और 2 संतरों और 4 सेबों का मूल्य 28 रुपये है। एक संतरे और एक सेब का मूल्य ज्ञात कीजिए।',
+            solution: 'Let the cost of one orange be Rs x and one apple be Rs y.\n5x + 3y = 35 ---(1)\n2x + 4y = 28 ---(2) ⇒ x + 2y = 14 ⇒ x = 14 - 2y ---(3)\nSubstitute (3) in (1):\n5(14 - 2y) + 3y = 35 ⇒ 70 - 7y = 35 ⇒ 7y = 35 ⇒ y = 5.\nSubstitute y = 5 in (3):\nx = 14 - 2(5) = 4.\nTherefore, the cost of one orange is Rs 4, and cost of one apple is Rs 5.\n\nमाना एक संतरे का मूल्य x रुपये तथा एक सेब का मूल्य y रुपये है।\n5x + 3y = 35 ---(1)\n2x + 4y = 28 ---(2) ⇒ x + 2y = 14 ⇒ x = 14 - 2y ---(3)\nसमीकरण (3) का मान (1) में रखने पर:\n5(14 - 2y) + 3y = 35 ⇒ 70 - 7y = 35 ⇒ 7y = 35 ⇒ y = 5.\ny का मान (3) में रखने पर:\nx = 14 - 2(5) = 4.\nअतः एक संतरे का मूल्य = 4 रुपये, और एक सेब का मूल्य = 5 रुपये है।'
+          }
+        }
+      ]
+    },
+    {
+      year: '2020',
+      questions: [
+        {
+          id: 'lin-2020-1',
+          type: 'mcq',
+          text: 'The condition for the lines whose equations are a₁x + b1y + c₁ = 0 and a₂x + b₂y + c₂ = 0 to be intersecting is:\nसमीकरणों a₁x + b1y + c₁ = 0 और a₂x + b₂y + c₂ = 0 वाली रेखाओं के प्रतिच्छेदी होने की शर्त है:',
+          options: [
+            'a₁/a₂ = b₁/b₂ = c₁/c₂',
+            'a₁/a₂ ≠ b₁/b₂',
+            'a₁/a₂ = b₁/b₂ ≠ c₁/c₂',
+            'a₁/a₂ = b₁/b₂'
+          ],
+          answer: 'a₁/a₂ ≠ b₁/b₂',
+          solution: 'For two linear equations to have intersecting lines (a unique solution), the condition is a₁/a₂ ≠ b₁/b₂.\nदो रैखिक समीकरणों के प्रतिच्छेदी होने (अद्वितीय हल होने) के लिए शर्त a₁/a₂ ≠ b₁/b₂ है। अतः विकल्प (b) सही है।'
+        },
+        {
+          id: 'lin-2020-2',
+          type: 'blank',
+          text: 'There are ______________ solutions for a system of coincident lines.\nसंपाती रेखाओं के समीकरण के ______________ हल होते हैं।',
+          answer: 'infinitely many',
+          solution: 'There are infinitely many solutions of the coincident lines.\nसंपाती रेखाओं के समीकरण के अपरिमित रूप से अनेक / अनंत (infinitely many) हल होते हैं।'
+        },
+        {
+          id: 'lin-2020-3',
+          type: 'subjective',
+          text: 'Use Elimination method to find all possible solutions of the following pair of linear equations: x + y = 5 ; 2x - 3y = 4\nविलोपन विधि का प्रयोग करके निम्न रैखिक समीकरण युग्म के सभी संभावित हल ज्ञात कीजिए : x + y = 5 ; 2x - 3y = 4',
+          solution: 'x + y = 5 ---(1)\n2x - 3y = 4 ---(2)\nMultiply (1) by 3:\n3x + 3y = 15 ---(3)\nAdd (2) and (3):\n5x = 19 ⇒ x = 19/5\nSubstitute x = 19/5 in (1):\n19/5 + y = 5 ⇒ y = 5 - 19/5 = 6/5\nThus, x = 19/5, y = 6/5.\n\nमाना x + y = 5 ---(1) और 2x - 3y = 4 ---(2)\nसमीकरण (1) को 3 से गुणा करने पर:\n3x + 3y = 15 ---(3)\nसमीकरण (2) और (3) को जोड़ने पर:\n5x = 19 ⇒ x = 19/5\nx का मान (1) में रखने पर:\n19/5 + y = 5 ⇒ y = 5 - 19/5 = 6/5.\nअतः x = 19/5, y = 6/5.',
+          orQuestion: {
+            text: 'For which value of k will the following pair of linear equations have no solution? 3x + y = 1 ; (2k - 1)x + (k - 1)y = 2k + 1\nk के किस मान के लिए निम्न रैखिक समीकरण युग्म का कोई हल नहीं होगा? 3x + y = 1 ; (2k - 1)x + (k - 1)y = 2k + 1',
+            solution: 'For no solution: a₁/a₂ = b₁/b₂ ≠ c₁/c₂\n3 / (2k - 1) = 1 / (k - 1)\n3(k - 1) = 2k - 1\n3k - 3 = 2k - 1 ⇒ k = 2.\nCheck for c₁/c₂: -1/-(2(2)+1) = 1/5 (Not equal to 1). Thus, k = 2 is the correct value.\n\nकोई हल न होने की शर्त: a₁/a₂ = b₁/b₂ ≠ c₁/c₂\n3 / (2k - 1) = 1 / (k - 1)\n3(k - 1) = 2k - 1\n3k - 3 = 2k - 1 ⇒ k = 2.\nc₁/c₂ = 1/5 (जो कि 1 के बराबर नहीं है)। अतः k = 2 अभीष्ट मान है।'
+          }
+        }
+      ]
+    },
+    {
+      year: '2020 Paper 2',
+      questions: [
+        {
+          id: 'lin-2020p2-1',
+          type: 'mcq',
+          text: 'When a₁/a₂ = b1/b₂ ≠ c₁/c₂ then the system of equations a₁x + b1y + c₁ = 0 and a₂x + b₂y + c₂ = 0 has:\nजब a₁/a₂ = b1/b₂ ≠ c₁/c₂ हो, तो समीकरण निकाय a₁x + b1y + c₁ = 0 और a₂x + b₂y + c₂ = 0:',
+          options: [
+            'unique solution / अद्वितीय हल',
+            'no solution / कोई हल नहीं',
+            'two solutions / दो हल',
+            'infinitely many solutions / अनंततः अनेक हल'
+          ],
+          answer: 'no solution / कोई हल नहीं',
+          solution: 'When a₁/a₂ = b₁/b₂ ≠ c₁/c₂, the lines are parallel. Parallel lines never meet, hence there is no solution.\nजब a₁/a₂ = b₁/b₂ ≠ c₁/c₂ हो, तब रेखाएँ समांतर होती हैं और कोई भी साझा बिंदु नहीं होने से कोई हल नहीं होता है।'
+        },
+        {
+          id: 'lin-2020p2-2',
+          type: 'subjective',
+          text: 'For which value of k will the following pair of linear equations have no solution? 3x + y = 1 and (2k - 1)x + (k - 1)y = 2k + 1\nk के किस मान के लिए निम्न रैखिक समीकरण युग्म का कोई हल नहीं होगा? 3x + y = 1 और (2k - 1)x + (k - 1)y = 2k + 1',
+          solution: 'For no solution: a₁/a₂ = b₁/b₂ ≠ c₁/c₂\n3 / (2k - 1) = 1 / (k - 1) ⇒ 3k - 3 = 2k - 1 ⇒ k = 2.\nThus, k = 2 is the correct value for which equations have no solution.\n\nकोई हल न होने की शर्त: a₁/a₂ = b₁/b₂ ≠ c₁/c₂\n3 / (2k - 1) = 1 / (k - 1)\n3(k - 1) = 2k - 1 ⇒ k = 2. अतः k = 2 अभीष्ट मान है।',
+          orQuestion: {
+            text: 'The larger of two supplementary angles exceeds the smaller by 18 degrees. Find them.\nदो संपूरक कोणों में बड़ा कोण छोटे कोण से 18 डिग्री अधिक है। उन्हें ज्ञात कीजिए।',
+            solution: 'Let the larger angle be x and the smaller angle be y.\nSince they are supplementary angles: x + y = 180 ---(1)\nGiven: x = y + 18 ⇒ x - y = 18 ---(2)\nAdding (1) and (2):\n2x = 198 ⇒ x = 99\nSubstituting x = 99 in (1):\n99 + y = 180 ⇒ y = 81\nTherefore, the angles are 99° and 81°.\n\nमाना बड़ा कोण x और छोटा कोण y है।\nचूँकि दोनों कोण संपूरक हैं: x + y = 180 ---(1)\nदिया है: x - y = 18 ---(2)\nदोनों समीकरणों को जोड़ने पर: \n2x = 198 ⇒ x = 99\nx का मान (1) में रखने पर: \n99 + y = 180 ⇒ y = 81\nअतः संपूरक कोण 99° और 81° हैं।'
+          }
+        }
+      ]
+    },
+    {
+      year: '2021',
+      questions: [
+        {
+          id: 'lin-2021-1',
+          type: 'mcq',
+          text: 'The system of equations a₁x + b1y + c₁ = 0 and a₂x + b₂y + c₂ = 0 has a unique solution if:\nसमीकरण निकाय a₁x + b1y + c₁ = 0 और a₂x + b₂y + c₂ = 0 का एक अद्वितीय हल होता है यदि:',
+          options: [
+            'a₁/a₂ = b₁/b₂ = c₁/c₂',
+            'a₁/a₂ ≠ b₁/b₂',
+            'a₁/a₂ = b₁/b₂ ≠ c₁/c₂',
+            'a₁/a₂ = b₁/b₂'
+          ],
+          answer: 'a₁/a₂ ≠ b₁/b₂',
+          solution: 'A unique solution exists when the coefficients ratio of x and y are not equal initially, i.e., a₁/a₂ ≠ b₁/b₂.\nअद्वितीय हल के लिए शर्त a₁/a₂ ≠ b₁/b₂ है। अतः विकल्प (b) सही है।'
+        },
+        {
+          id: 'lin-2021-2',
+          type: 'subjective',
+          text: 'If x + y = 5 and x = 1, then find the value of y.\nयदि x + y = 5 और x = 1 हो, तो y का मान ज्ञात कीजिए।',
+          solution: 'Substitute x = 1 into x + y = 5:\n1 + y = 5 ⇒ y = 4.\n\nx + y = 5 में x = 1 रखने पर:\n1 + y = 5 ⇒ y = 4.'
+        },
+        {
+          id: 'lin-2021-3',
+          type: 'subjective',
+          text: 'Solve the following pair of linear equations by the elimination method: 3x + 4y = 10 ; 2x - 2y = 2\nनिम्न रैखिक समीकरण युग्म को विलोपन विधि से हल कीजिए : 3x + 4y = 10 ; 2x - 2y = 2',
+          solution: '3x + 4y = 10 ---(1)\n2x - 2y = 2 ---(2)\nMultiply (2) by 2: 4x - 4y = 4 ---(3)\nAdding (1) and (3):\n7x = 14 ⇒ x = 2\nSubstitute x = 2 in (2):\n2(2) - 2y = 2 ⇒ 4 - 2 = 2y ⇒ 2y = 2 ⇒ y = 1\nThus, x = 2, y = 1.\n\n3x + 4y = 10 ---(1)\n2x - 2y = 2 ---(2)\nसमीकरण (2) को 2 से गुणा करने पर: 4x - 4y = 4 ---(3)\nसमीकरण (1) और (3) को जोड़ने पर:\n7x = 14 ⇒ x = 2\nx का मान (2) में रखने पर:\n2(2) - 2y = 2 ⇒ 2y = 2 ⇒ y = 1\nअतः x = 2, y = 1.',
+          orQuestion: {
+            text: 'Solve the following pair of linear equations by the substitution method: x + y = 14 ; x - y = 4\nनिम्न रैखिक समीकरण युग्म को प्रतिस्थापन विधि से हल कीजिए : x + y = 14 ; x - y = 4',
+            solution: 'x + y = 14 ---(1)\nx - y = 4 ---(2) ⇒ x = y + 4 ---(3)\nSubstitute (3) in (1):\n(y + 4) + y = 14 ⇒ 2y + 4 = 14 ⇒ 2y = 10 ⇒ y = 5\nSubstitute y = 5 in (3):\nx = 5 + 4 = 9.\nThus, x = 9, y = 5.\n\nमाना x + y = 14 ---(1) और x - y = 4 ---(2)\nसमीकरण (2) से: x = y + 4 ---(3)\nसमीकरण (3) का मान (1) में प्रतिस्थापित करने पर:\n(y + 4) + y = 14 ⇒ 2y = 10 ⇒ y = 5\ny का मान (3) में रखने पर:\nx = 5 + 4 = 9.\nअतः x = 9, y = 5.'
+          }
+        }
+      ]
+    },
+    {
+      year: '2022',
+      questions: [
+        {
+          id: 'lin-2022-1',
+          type: 'mcq',
+          text: 'The pair of equations x + 2y + 5 = 0 and -3x - 6y + 1 = 0 has:\nसमीकरण युग्म x + 2y + 5 = 0 और -3x - 6y + 1 = 0 का हल है:',
+          options: [
+            'a unique solution / एक अद्वितीय हल',
+            'no solution / कोई हल नहीं',
+            'infinitely many solutions / अनंततः अनेक हल',
+            'two solutions / दो हल'
+          ],
+          answer: 'no solution / कोई हल नहीं',
+          solution: 'a₁/a₂ = -1/3, b₁/b₂ = -1/3, and c₁/c₂ = 5. Since a₁/a₂ = b₁/b₂ ≠ c₁/c₂, the lines are parallel and have no solution.\nयहाँ a₁/a₂ = b₁/b₂ = -1/3 लेकिन c₁/c₂ = 5 है। चूँकि a₁/a₂ = b₁/b₂ ≠ c₁/c₂ है, अतः इन रेखाओं का कोई हल नहीं है (समानांतर रेखाएँ)।'
+        },
+        {
+          id: 'lin-2022-2',
+          type: 'blank',
+          text: 'In the equation x + y = 8 if x = 3 then y = ______________.\nसमीकरण x + y = 8 में यदि x = 3 हो, तो y = ______________।',
+          answer: '5',
+          solution: 'Substitute x = 3 into x + y = 8:\n3 + y = 8 ⇒ y = 5.\n\nx + y = 8 में x = 3 रखने पर:\n3 + y = 8 ⇒ y = 5.'
+        },
+        {
+          id: 'lin-2022-3',
+          type: 'subjective',
+          text: 'Solve the following pair of linear equations by the elimination method: 3x + y = 10 and 2x + 2y = 12.\nनिम्न रैखिक समीकरण युग्म को विलोपन विधि से हल कीजिए : 3x + y = 10 और 2x + 2y = 12.',
+          solution: '3x + y = 10 ---(1)\n2x + 2y = 12 ⇒ x + y = 6 ---(2)\nSubtract (2) from (1):\n2x = 4 ⇒ x = 2\nSubstitute x = 2 in (2):\n2 + y = 6 ⇒ y = 4.\nThus, x = 2, y = 4.\n\n3x + y = 10 ---(1)\n2x + 2y = 12 ⇒ x + y = 6 ---(2)\nसमीकरण (1) में से (2) को घटाने पर:\n2x = 4 ⇒ x = 2\nx का मान (2) में रखने पर:\n2 + y = 6 ⇒ y = 4\nअतः x = 2, y = 4.',
+          orQuestion: {
+            text: 'Solve the following pair of linear equations by the substitution method: x + y = 5 and 2x - 3y = 4.\nनिम्न रैखिक समीकरण युग्म को प्रतिस्थापन विधि से हल कीजिए : x + y = 5 और 2x - 3y = 4.',
+            solution: 'x + y = 5 ⇒ x = 5 - y ---(1)\n2x - 3y = 4 ---(2)\nSubstitute (1) in (2):\n2(5 - y) - 3y = 4 ⇒ 10 - 5y = 4 ⇒ 5y = 6 ⇒ y = 6/5\nSubstitute y = 6/5 in (1):\nx = 5 - 6/5 = 19/5.\nThus, x = 19/5, y = 6/5.\n\nमाना x + y = 5 ⇒ x = 5 - y ---(1)\n2x - 3y = 4 ---(2)\nसमीकरण (1) का मान (2) में स्थापित करने पर:\n2(5 - y) - 3y = 4 ⇒ 10 - 5y = 4 ⇒ 5y = 6 ⇒ y = 6/5\ny का मान (1) में रखने पर:\nx = 5 - 6/5 = 19/5.\nअतः x = 19/5, y = 6/5.'
+          }
+        }
+      ]
+    },
+    {
+      year: '2023',
+      questions: [
+        {
+          id: 'lin-2023-1',
+          type: 'mcq',
+          text: 'Write the condition for unique solution of pair of equations a₁x + b1y + c₁ = 0 and a₂x + b₂y + c₂ = 0:\nसमीकरणों a₁x + b1y + c₁ = 0 और a₂x + b₂y + c₂ = 0 के अद्वितीय हल होने की शर्त लिखिए:',
+          options: [
+            'a₁/a₂ = b₁/b₂ = c₁/c₂',
+            'a₁/a₂ ≠ b₁/b₂',
+            'a₁/a₂ = b₁/b₂ ≠ c₁/c₂',
+            'a₁/a₂ = b₁/b₂'
+          ],
+          answer: 'a₁/a₂ ≠ b₁/b₂',
+          solution: 'The condition for a unique solution is a₁/a₂ ≠ b₁/b₂.\nअद्वितीय हल होने की शर्त a₁/a₂ ≠ b₁/b₂ है। अतः सही विकल्प (b) है.'
+        },
+        {
+          id: 'lin-2023-2',
+          type: 'subjective',
+          text: 'Find the ratio a₁/a₂, b₁/b₂ and c₁/c₂ for the pair of linear equations: 3x + 2y = 5 , 2x - 8y = 7\nसमीकरणों 3x + 2y = 5 , 2x - 8y = 7 के लिए अनुपातों a₁/a₂, b₁/b₂ और c₁/c₂ को ज्ञात कीजिए।',
+          solution: 'Standard form:\n3x + 2y - 5 = 0 ⇒ a₁ = 3, b₁ = 2, c₁ = -5\n2x - 8y - 7 = 0 ⇒ a₂ = 2, b₂ = -8, c₂ = -7\nRatios:\na₁/a₂ = 3/2, b₁/b₂ = 2/-8 = -1/4, c₁/c₂ = -5/-7 = 5/7.\n\nमानक रूप:\n3x + 2y - 5 = 0 ⇒ a₁ = 3, b₁ = 2, c₁ = -5\n2x - 8y - 7 = 0 ⇒ a₂ = 2, b₂ = -8, c₂ = -7\nअनुपात:\na₁/a₂ = 3/2, b₁/b₂ = 2/-8 = -1/4, c₁/c₂ = -5/-7 = 5/7.'
+        },
+        {
+          id: 'lin-2023-3',
+          type: 'subjective',
+          text: 'Solve the pair of linear equations: x + y = 14 ; x - y = 4\nरैखिक समीकरण युग्म को हल कीजिए: x + y = 14 ; x - y = 4',
+          solution: 'Adding the equations:\n(x + y) + (x - y) = 14 + 4 ⇒ 2x = 18 ⇒ x = 9\nSubstitute x = 9 in first equation:\n9 + y = 14 ⇒ y = 5.\n\nदोनों समीकरणों को जोड़ने पर:\n2x = 18 ⇒ x = 9\nx = 9 पहले समीकरण में रखने पर:\n9 + y = 14 ⇒ y = 5.'
+        },
+        {
+          id: 'lin-2023-4',
+          type: 'subjective',
+          text: 'The difference between two numbers is 26 and one number is three times the other. Find them.\nदो संख्याओं का अंतर 26 है और एक संख्या दूसरी संख्या की तीन गुनी है। उन्हें ज्ञात कीजिए।',
+          solution: 'Let the two numbers be x and y with x > y.\nx - y = 26 ---(1)\nx = 3y ---(2)\nSubstitute (2) in (1):\n3y - y = 26 ⇒ 2y = 26 ⇒ y = 13.\nSubstitute y = 13 in (2):\nx = 3(13) = 39.\nTherefore, the numbers are 39 and 13.\n\nमाना दो संख्याएँ x और y हैं जहाँ x > y.\nx - y = 26 ---(1)\nx = 3y ---(2)\nसमीकरण (2) का मान (1) में रखने पर:\n3y - y = 26 ⇒ 2y = 26 ⇒ y = 13.\ny का मान (2) में रखने पर:\nx = 3(13) = 39.\nअतः वे संख्याएँ 39 और 13 हैं।',
+          orQuestion: {
+            text: 'Solve the pair of linear equations: 3x - 5y - 4 = 0 ; 9x = 2y + 7\nरैखिक समीकरण युग्म को हल कीजिए: 3x - 5y - 4 = 0 ; 9x = 2y + 7',
+            solution: 'Equation 1: 3x - 5y = 4 ---(1)\nEquation 2: 9x - 2y = 7 ---(2)\nMultiply (1) by 3: 9x - 15y = 12 ---(3)\nSubtract (3) from (2):\n13y = -5 ⇒ y = -5/13.\nSubstitute y = -5/13 in (1):\n3x - 5(-5/13) = 4 ⇒ 3x + 25/13 = 4 ⇒ 3x = 27/13 ⇒ x = 9/13.\nThus, x = 9/13, y = -5/13.\n\nसमीकरण 1: 3x - 5y = 4 ---(1)\nसमीकरण 2: 9x - 2y = 7 ---(2)\nसमीकरण (1) को 3 से गुणा करने पर: 9x - 15y = 12 ---(3)\nसमीकरण (2) में से (3) को घटाने पर:\n13y = -5 ⇒ y = -5/13\ny का मान (1) में रखने पर:\n3x - 5(-5/13) = 4 ⇒ 3x = 27/13 ⇒ x = 9/13\nअतः x = 9/13, y = -5/13.'
+          }
+        }
+      ]
+    },
+    {
+      year: '2024',
+      questions: [
+        {
+          id: 'lin-2024-1',
+          type: 'mcq',
+          text: 'The pair of linear equations a₁x + b1y + c₁ = 0 and a₂x + b₂y + c₂ = 0 is dependent and consistent if:\nरैखिक समीकरण युग्म a₁x + b1y + c₁ = 0 और a₂x + b₂y + c₂ = 0 आश्रित और संगत होता है यदि:',
+          options: [
+            'a₁/a₂ = b₁/b₂ = c₁/c₂',
+            'a₁/a₂ ≠ b₁/b₂',
+            'a₁/a₂ = b₁/b₂ ≠ c₁/c₂',
+            'a₁/a₂ = b₁/b₂'
+          ],
+          answer: 'a₁/a₂ = b₁/b₂ = c₁/c₂',
+          solution: 'A dependent and consistent system represents coincident lines, for which the ratio condition is a₁/a₂ = b₁/b₂ = c₁/c₂.\nआश्रित और संगत समीकरण युग्म संपाती रेखाओं को दर्शाता है, जिसके लिए अनुपात की स्थिति a₁/a₂ = b₁/b₂ = c₁/c₂ है। अतः विकल्प (a) सही है।'
+        },
+        {
+          id: 'lin-2024-2',
+          type: 'subjective',
+          text: 'Find the ratio a₁/a₂, b₁/b₂ and c₁/c₂ for the following pair of linear equations and say whether it is consistent or inconsistent: 5x - 4y + 8 = 0 ; 7x + 6y - 9 = 0\nनिम्न रैखिक समीकरण युग्म के लिए अनुपातों a₁/a₂, b₁/b₂ और c₁/c₂ की तुलना कर ज्ञात कीजिए कि समीकरण युग्म संगत है या असंगत: 5x - 4y + 8 = 0 ; 7x + 6y - 9 = 0',
+          solution: 'a₁ = 5, b₁ = -4, c₁ = 8\na₂ = 7, b₂ = 6, c₂ = -9\na₁/a₂ = 5/7, b₁/b₂ = -4/6 = -2/3.\nSince a₁/a₂ ≠ b₁/b₂, the pair of linear equations has a unique solution and is consistent.\n\nयहाँ a₁/a₂ = 5/7 और b₁/b₂ = -2/3.\nचूँकि a₁/a₂ ≠ b₁/b₂ है, अतः युग्म प्रतिच्छेदी और संगत (consistent) है।',
+          orQuestion: {
+            text: 'Solve the pair of linear equations: x + y = 14 ; x - y = 4\nरैखिक समीकरण युग्म को हल कीजिए: x + y = 14 ; x - y = 4',
+            solution: 'Adding: 2x = 18 ⇒ x = 9.\nSubstitute x = 9: 9 + y = 14 ⇒ y = 5.\nThus, x = 9, y = 5.\n\nजोड़ने पर: 2x = 18 ⇒ x = 9.\nx = 9 रखने पर: 9 + y = 14 ⇒ y = 5.\nअतः x = 9, y = 5.'
+          }
+        },
+        {
+          id: 'lin-2024-3',
+          type: 'subjective',
+          text: 'Solve the pair of linear equations: 3x + 4y = 10 and 2x - 2y = 2\nरैखिक समीकरण युग्म को हल कीजिए: 3x + 4y = 10 और 2x - 2y = 2',
+          solution: 'Multiply second equation by 2:\n4x - 4y = 4\nAdd to first equation:\n(3x + 4x) = 14 ⇒ 7x = 14 ⇒ x = 2.\nSubstitute x = 2 in second equation: 2(2) - 2y = 2 ⇒ 2y = 2 ⇒ y = 1.\nThus, x = 2, y = 1.\n\nसमीकरण 2 को 2 से गुणा करके समीकरण 1 में जोड़ने पर:\n7x = 14 ⇒ x = 2.\n2(2) - 2y = 2 ⇒ 2y = 2 ⇒ y = 1.\nअतः x = 2, y = 1.',
+          orQuestion: {
+            text: 'The sum of the digits of a two digit number is 9. Also, nine times this number is twice the number obtained by reversing the order of the digits. Find the number.\nदो अंकों की संख्या के अंकों का योग 9 है। इस संख्या का नौ गुना, संख्या के अंकों को पलटने से बनी संख्या का दो गुना है। वह संख्या ज्ञात कीजिए।',
+            solution: 'Let the tens digit be x and units digit be y.\nSo the number is 10x + y.\nSum of digits: x + y = 9 ---(1)\nReversed number is 10y + x.\nGiven: 9(10x + y) = 2(10y + x) ⇒ 90x + 9y = 20y + 2x ⇒ 88x = 11y ⇒ y = 8x ---(2)\nSubstitute (2) in (1):\nx + 8x = 9 ⇒ 9x = 9 ⇒ x = 1 ⇒ y = 8.\nTherefore, the number is 10(1) + 8 = 18.\n\nमाना दहाई का अंक x व इकाई का अंक y है। संख्या = 10x + y.\nअंकों का योग: x + y = 9 ---(1)\nउलटने पर संख्या = 10y + x.\nदिया है: 9 × (10x + y) = 2 × (10y + x) ⇒ 88x = 11y ⇒ y = 8x\nसमीकरण (2) का मान (1) में रखने पर:\nx + 8x = 9 ⇒ x = 1 ⇒ y = 8.\nअतः संख्या = 18 है।'
+          }
+        }
+      ]
+    },
+    {
+      year: '2025',
+      questions: [
+        {
+          id: 'lin-2025-1',
+          type: 'mcq',
+          text: 'When a₁/a₂ = b1/b₂ = c₁/c₂ then the system of equations a₁x + b1y + c₁ = 0 and a₂x + b₂y + c₂ = 0 has:\nजब a₁/a₂ = b1/b₂ = c₁/c₂ हो, तो समीकरण निकाय a₁x + b1y + c₁ = 0 और a₂x + b₂y + c₂ = 0:',
+          options: [
+            'two solutions / दो हल',
+            'no solution / कोई हल नहीं',
+            'infinitely many solutions / अनंततः अनेक हल',
+            'unique solution / अद्वितीय हल'
+          ],
+          answer: 'infinitely many solutions / अनंततः अनेक हल',
+          solution: 'When a₁/a₂ = b1/b₂ = c₁/c₂, the lines are coincident and lie exactly on top of each other. Therefore, they have infinitely many solutions.\nजब a₁/a₂ = b1/b₂ = c₁/c₂ हो, तब रेखाएं संपाती होती हैं तथा एक-दूसरे के ऊपर स्थित होती हैं। इसलिए इनके अपरिमित रूप से अनेक (अनंत) हल होते हैं।'
+        },
+        {
+          id: 'lin-2025-2',
+          type: 'subjective',
+          text: 'Solve the following pair of linear equations: x + 2y = 8 and x - y = 8\nनिम्न रैखिक समीकरण युग्म को हल कीजिए : x + 2y = 8 और x - y = 8',
+          solution: 'Subtracting second equation from first:\n(x + 2y) - (x - y) = 8 - 8 ⇒ 3y = 0 ⇒ y = 0.\nSubstitute y = 0 in the second equation:\nx - 0 = 8 ⇒ x = 8.\nThus, x = 8, y = 0.\n\nसमीकरण 1 में से समीकरण 2 को घटाने पर:\n(x + 2y) - (x - y) = 8 - 8 ⇒ 3y = 0 ⇒ y = 0.\ny का मान समीकरण 2 में रखने पर:\nx - 0 = 8 ⇒ x = 8.\nअतः x = 8, y = 0.'
+        },
+        {
+          id: 'lin-2025-3',
+          type: 'subjective',
+          text: 'On comparing ratios a₁/a₂, b₁/b₂ and c₁/c₂, find out whether the pair of linear equations 2x - 3y = 8 and 4x - 6y = 9 is consistent or inconsistent:\nअनुपातों a₁/a₂, b₁/b₂ और c₁/c₂ की तुलना कर ज्ञात कीजिए कि रैखिक समीकरण युग्म 2x - 3y = 8 और 4x - 6y = 9 संगत है या असंगत :',
+          solution: 'a₁/a₂ = 2/4 = 1/2, b₁/b₂ = -3/-6 = 1/2, and c₁/c₂ = 8/9.\nSince a₁/a₂ = b₁/b₂ ≠ c₁/c₂, the lines are parallel. Therefore, the system is inconsistent.\n\na₁/a₂ = 2/4 = 1/2, b₁/b₂ = -3/-6 = 1/2, और c₁/c₂ = 8/9.\nचूँकि a₁/a₂ = b₁/b₂ ≠ c₁/c₂ है, अतः रेखाएँ समांतर हैं और यह समीकरण युग्म असंगत (inconsistent) है.'
+        },
+        {
+          id: 'lin-2025-4',
+          type: 'subjective',
+          text: 'A fraction becomes 9/11, if 2 is added to both the numerator and the denominator. If 3 is added to both the numerator and the denominator it becomes 5/6. Find the fraction.\nयदि किसी भिन्न के अंश और हर दोनों में 2 जोड़ दिया जाए, तो वह 9/11 हो जाती है। यदि अंश और हर दोनों में 3 जोड़ दिया जाए, तो वह 5/6 हो जाती है। वह भिन्न ज्ञात कीजिए।',
+          solution: 'Let the fraction be x/y.\nCondition 1: (x + 2)/(y + 2) = 9/11 ⇒ 11x + 22 = 9y + 18 ⇒ 11x - 9y = -4 ---(1)\nCondition 2: (x + 3)/(y + 3) = 5/6 ⇒ 6x + 18 = 5y + 15 ⇒ 6x - 5y = -3 ---(2)\nFrom (2): 5y = 6x + 3 ⇒ y = (6x + 3)/5 ---(3)\nSubstitute (3) in (1):\n11x - 9(6x + 3)/5 = -4 ⇒ 55x - 54x - 27 = -20 ⇒ x = 7.\nSubstitute x = 7 in (3):\ny = (6(7) + 3)/5 = 9.\nThus, the fraction is 7/9.\n\nमाना वह भिन्न x/y है।\nशर्त 1: (x + 2)/(y + 2) = 9/11 ⇒ 11x - 9y = -4 ---(1)\nशर्त 2: (x + 3)/(y + 3) = 5/6 ⇒ 6x - 5y = -3 ---(2)\nसमीकरण (2) से: y = (6x + 3)/5\nसमीकरण (3) का मान (1) में रखने पर: x = 7.\ny का मान (3) में रखने पर: y = 9.\nअतः वह भिन्न 7/9 है.'
+        },
+        {
+          id: 'lin-2025-5',
+          type: 'subjective',
+          text: 'Solve the following pair of linear equations by elimination method: x + y = 5 ; 2x - 3y = 4\nनिम्न रैखिक समीकरण युग्म को विलोपन विधि से हल कीजिए : x + y = 5 ; 2x - 3y = 4',
+          solution: 'Multiply first equation by 3: 3x + 3y = 15. Add to second: 5x = 19 ⇒ x = 19/5.\nSubstitute back: y = 5 - 19/5 = 6/5.\nThus, x = 19/5, y = 6/5.\n\nपहले समीकरण को 3 से गुणा करने पर: 3x + 3y = 15. दूसरे में जोड़ने पर: 5x = 19 ⇒ x = 19/5.\nमान पुनः रखने पर: y = 5 - 19/5 = 6/5.\nअतः x = 19/5, y = 6/5.'
+        }
+      ]
+    }
+  ]
+};
+
+const renderQuestionGraph = (type?: string) => {
+  if (!type) return null;
+  if (type === 'poly-graph-2021-3-or') {
+    return (
+      <div className="my-4 p-4 bg-white border border-slate-150 rounded-xl max-w-sm mx-auto shadow-sm">
+        <p className="text-center text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider">Graph of / ग्राफ of y = P(x)</p>
+        <svg viewBox="0 0 320 220" className="w-full h-auto bg-slate-50 rounded-lg overflow-visible font-mono">
+          <defs>
+            <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+              <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e2e8f0" strokeWidth="0.5" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#grid)" className="rounded-lg" />
+          
+          {/* X axis (Y = 110) */}
+          <line x1="10" y1="110" x2="310" y2="110" stroke="#64748b" strokeWidth="2" />
+          {/* Y axis (X = 160) */}
+          <line x1="160" y1="10" x2="160" y2="210" stroke="#64748b" strokeWidth="2" />
+          
+          {/* Axis Labels */}
+          <text x="305" y="105" className="text-[11px] font-black fill-slate-600">X</text>
+          <text x="5" y="105" className="text-[11px] font-black fill-slate-600">X'</text>
+          <text x="165" y="20" className="text-[11px] font-black fill-slate-600">Y</text>
+          <text x="165" y="205" className="text-[11px] font-black fill-slate-600">Y'</text>
+          <text x="145" y="123" className="text-[10px] font-black fill-slate-400">O</text>
+
+          {/* Smooth Polynomial Curve crossing x-axis exactly 4 times! */}
+          <path 
+            d="M 40,30 Q 60,30 80,110 T 140,110 T 210,110 T 280,110 Q 290,50 300,50" 
+            fill="none" 
+            stroke="#f97316" 
+            strokeWidth="3.5" 
+            strokeLinecap="round"
+          />
+
+          {/* Red/Amber highlight dots on the 4 intersection points! */}
+          <circle cx="80" cy="110" r="5" fill="#ef4444" stroke="white" strokeWidth="1.5" />
+          <circle cx="140" cy="110" r="5" fill="#ef4444" stroke="white" strokeWidth="1.5" />
+          <circle cx="210" cy="110" r="5" fill="#ef4444" stroke="white" strokeWidth="1.5" />
+          <circle cx="280" cy="110" r="5" fill="#ef4444" stroke="white" strokeWidth="1.5" />
+
+          {/* Subtitle labels for the dots */}
+          <text x="75" y="100" className="text-[10px] font-black fill-rose-600">1</text>
+          <text x="135" y="100" className="text-[10px] font-black fill-rose-600">2</text>
+          <text x="205" y="100" className="text-[10px] font-black fill-rose-600">3</text>
+          <text x="275" y="100" className="text-[10px] font-black fill-rose-600">4</text>
+        </svg>
+      </div>
+    );
+  }
+  return null;
+};
+
 export const Downloads: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'blueprint' | 'pyq'>('blueprint');
   const [downloadingId, setDownloadingId] = useState<string | null>(null);
@@ -74,7 +1055,11 @@ export const Downloads: React.FC = () => {
   const [activePyqPaper, setActivePyqPaper] = useState<PastPaper | null>(null);
   const [activePyqSectionIdx, setActivePyqSectionIdx] = useState<number>(0);
   const [rollNumber, setRollNumber] = useState<string>('');
-  const [showToast, setShowToast] = useState<{ year: string } | null>(null);
+  const [showToast, setShowToast] = useState<{ year?: string; subject?: string; subjectHi?: string } | null>(null);
+  const [selectedPyqSubject, setSelectedPyqSubject] = useState<string | null>(null);
+  const [selectedPyqChapter, setSelectedPyqChapter] = useState<{ en: string; hi: string } | null>(null);
+  const [userAnswers, setUserAnswers] = useState<{[questionId: string]: string}>({});
+  const [showSolutions, setShowSolutions] = useState<{[questionId: string]: boolean}>({});
 
   const handleYearFilterClick = (year: string) => {
     if (['2026', '2025', '2024', '2023', '2022'].includes(year)) {
@@ -87,6 +1072,107 @@ export const Downloads: React.FC = () => {
     } else {
       setPyqYearFilter(year);
     }
+  };
+
+  const handleSubjectClick = (subjId: string) => {
+    setSelectedPyqSubject(subjId);
+    setSelectedPyqChapter(null);
+  };
+
+  const getSubjectChapters = (subjectId: string) => {
+    if (subjectId === 'math') {
+      return [
+        { en: 'Real Numbers', hi: 'वास्तविक संख्याएँ' },
+        { en: 'Polynomials', hi: 'बहुपद' },
+        { en: 'Pair of Linear Equations in Two Variables', hi: 'दो चरों वाले रैखिक समीकरण युग्म' },
+        { en: 'Quadratic Equations', hi: 'द्विघात समीकरण' },
+        { en: 'Arithmetic Progressions', hi: 'समान्तर श्रेढ़ी' },
+        { en: 'Triangles', hi: 'त्रिभुज' },
+        { en: 'Coordinate Geometry', hi: 'निर्देशांक ज्यामिति' },
+        { en: 'Introduction to Trigonometry', hi: 'त्रिकोणमिति का परिचय' },
+        { en: 'Some Applications of Trigonometry', hi: 'त्रिकोणमिति के कुछ अनुप्रयोग' },
+        { en: 'Circles', hi: 'वृत्त' },
+        { en: 'Areas Related to Circles', hi: 'वृत्तों से संबंधित क्षेत्रफल' },
+        { en: 'Surface Areas and Volumes', hi: 'पृष्ठीय क्षेत्रफल और आयतन' },
+        { en: 'Statistics', hi: 'सांख्यिकी' },
+        { en: 'Probability', hi: 'प्रायिकता' },
+      ];
+    }
+    if (subjectId === 'science') {
+      return [
+        { en: 'Chemical Reactions and Equations', hi: 'रासायनिक अभिक्रियाएँ एवं समीकरण' },
+        { en: 'Acids, Bases and Salts', hi: 'अम्ल, क्षारक एवं लवण' },
+        { en: 'Metals and Non-metals', hi: 'धातु एवं अधातु' },
+        { en: 'Carbon and its Compounds', hi: 'कार्बन एवं उसके यौगिक' },
+        { en: 'Life Processes', hi: 'जैव प्रक्रम' },
+        { en: 'Control and Coordination', hi: 'नियंत्रण एवं समन्वय' },
+        { en: 'How do Organisms Reproduce?', hi: 'जीव जनन कैसे करते हैं?' },
+        { en: 'Heredity', hi: 'आनुवंशिकता' },
+        { en: 'Light - Reflection and Refraction', hi: 'प्रकाश - परावर्तन तथा अपवर्तन' },
+        { en: 'Human Eye and Colorful World', hi: 'मानव नेत्र तथा रंगबिरंगा संसार' },
+        { en: 'Electricity', hi: 'विद्युत' },
+        { en: 'Magnetic Effects of Electric Current', hi: 'विद्युत धारा के चुंबकीय प्रभाव' },
+        { en: 'Our Environment', hi: 'हमारा पर्यावरण' }
+      ];
+    }
+    if (subjectId === 'english') {
+      return [
+        { en: 'A Letter to God (Prose)', hi: 'अ लेटर टू गॉड' },
+        { en: 'Nelson Mandela: Long Walk to Freedom', hi: 'नेल्सन मंडेला: लॉन्ग वॉक टू फ्रीडम' },
+        { en: 'Two Stories about Flying', hi: 'टू स्टोरीज अबाउट फ्लाइंग' },
+        { en: 'From the Diary of Anne Frank', hi: 'फ्रॉम द डायरी ऑफ़ एनी फ्रैंक' },
+        { en: 'Glimpses of India', hi: 'ग्लिम्पसेज ऑफ़ इंडिया' },
+        { en: 'Mijbil the Otter', hi: 'मिजबिल द ऑटर' },
+        { en: 'Madam Rides the Bus', hi: 'मैडम राइड्स द बस' },
+        { en: 'The Sermon at Benares', hi: 'द सरमन एट बनारस' },
+        { en: 'The Proposal (Play)', hi: 'द प्रपोजल' },
+        { en: 'Dust of Snow (Poem)', hi: 'डस्ट ऑफ़ स्नो' },
+        { en: 'Fire and Ice (Poem)', hi: 'फायर एंड आइस' }
+      ];
+    }
+    if (subjectId === 'hindi') {
+      return [
+        { en: 'Surdas ke Pad (Kavyakhand)', hi: 'सूरदास के पद' },
+        { en: 'Tulsidas - Ram Lakshman Parashuram Samvad', hi: 'तुलसीदास - राम-लक्ष्मण-परशुराम संवाद' },
+        { en: 'Suryakant Tripathi Nirala - उत्साह / अट नहीं रही है', hi: 'सूर्यकांत त्रिपाठी निराला - उत्साह / अट नहीं रही है' },
+        { en: 'Nagarjun - यह दंतुरित मुस्कान / फसल', hi: 'नागार्जुन - यह दंतुरित मुस्कान / फसल' },
+        { en: 'Manglesh Dabral - संगतकार', hi: 'मंगलेश डबराल - संगतकार' },
+        { en: 'Swayam Prakash - नेताजी का चश्मा (Gadyakhand)', hi: 'स्वयं प्रकाश - नेताजी का चश्मा' },
+        { en: 'Ramvriksha Benipuri - बालगोबिन भगत', hi: 'रामवृक्ष बेनीपुरी - बालगोबिन भगत' },
+        { en: 'Yashpal - लखनवी अंदाज़', hi: 'यशपाल - लखनवी अंदाज़' },
+        { en: 'Manu Bhandari - एक कहानी यह भी', hi: 'मन्नू भंडारी - एक कहानी यह भी' }
+      ];
+    }
+    if (subjectId === 'social_science') {
+      return [
+        { en: 'Resources and Development (Geography)', hi: 'संसाधन एवं विकास' },
+        { en: 'Forest and Wildlife Resources', hi: 'वन एवं वन्य जीव संसाधन' },
+        { en: 'Water Resources', hi: 'जल संसाधन' },
+        { en: 'Agriculture', hi: 'कृषि' },
+        { en: 'Minerals and Energy Resources', hi: 'खनिज तथा ऊर्जा संसाधन' },
+        { en: 'Manufacturing Industries', hi: 'विनिर्माण उद्योग' },
+        { en: 'Lifelines of National Economy', hi: 'राष्ट्रीय अर्थव्यवस्था की जीवन रेखाएँ' },
+        { en: 'The Rise of Nationalism in Europe (History)', hi: 'यूरोप में राष्ट्रवाद का उदय' },
+        { en: 'Nationalism in India', hi: 'भारत में राष्ट्रवाद' },
+        { en: 'Power Sharing (Democratic Politics)', hi: 'सत्ता की साझेदारी' },
+        { en: 'Federalism', hi: 'संघवाद' },
+        { en: 'Development (Economics)', hi: 'विकास' },
+        { en: 'Sectors of the Indian Economy', hi: 'भारतीय अर्थव्यवस्था के क्षेत्रक' }
+      ];
+    }
+    if (subjectId === 'sanskrit') {
+      return [
+        { en: 'Shuchiparyavaranam', hi: 'शुचिपर्यावरणम्‌' },
+        { en: 'Buddhirbalavatee Sada', hi: 'बुद्धिर्बलवती सदा' },
+        { en: 'Shishulalanam', hi: 'शिशुलालनम्‌' },
+        { en: 'Jananee Tulyavatsala', hi: 'जननी तुल्यवत्सला' },
+        { en: 'Subhashitani', hi: 'सुभाषितानि' },
+        { en: 'Sauhardam Prakriteh Shobha', hi: 'सौहार्दं प्रकृतेः शोभा' },
+        { en: 'Vichitrah Sakshee', hi: 'विचित्रः साक्षी' },
+        { en: 'Suktayah', hi: 'सूक्तयः' }
+      ];
+    }
+    return [];
   };
 
   const subjects: SubjectBlueprint[] = [
@@ -348,537 +1434,9 @@ export const Downloads: React.FC = () => {
       sections: [
         {
           titleEn: 'Section A - Objective Type Questions',
-          titleHi: `खण्ड 'अ' - वस्तुनिष्ठ प्रश्न (1-4)`,
+          titleHi: "खण्ड 'अ' - वस्तुनिष्ठ प्रश्न",
           questions: [
-            `प्रश्न 1: 'सूरसागर' के रचनाकार कौन हैं? \n(अ) सूरदास (ब) कबीरदास (स) तुलसीदास (द) रसखान ।\nउत्तर विकल्प चुनें और रोल नंबर प्रविष्ट कर जाँचें।`,
-            `प्रश्न 2: रामचरितमानस की भाषा कौन सी है? \n(अ) अवधी (ब) ब्रजभाषा (स) खड़ीबोली (द) बुंदेली।`,
-            `प्रश्न 3: शांत रस का स्थायी भाव क्या है? \n(अ) निर्वेद (ब) रति (स) शोक (द) क्रोध।`,
-            `प्रश्न 4: रिक्त स्थानों की पूर्ति कीजिए:\n(क) नेताजी का चश्मा विधा की रचना _______ (कहानी / संस्मरण) है।\n(ख) चौपाई छन्द के प्रत्येक चरण में _______ (16 / 24) मात्राएँ होती हैं।`
-          ]
-        },
-        {
-          titleEn: 'Section B - Short Answer Type Questions',
-          titleHi: `खण्ड 'ब' - अति लघु उत्तरीय प्रश्न`,
-          questions: [
-            `प्रश्न 5: सूरदास अथवा जयशंकर प्रसाद की काव्यगत विशेषताएँ निम्न बिन्दुओं के आधार पर लिखिए:\n(i) दो रचनाएँ  (ii) कला पक्ष / भाव पक्ष।`,
-            `प्रश्न 6: लक्ष्मण ने वीर योद्धा की क्या-क्या विशेषताएँ बताई हैं? कोई दो विशेषताएँ विस्तार से लिखिए।`,
-            `प्रश्न 7: गोपियों के अनुसार राजा का धर्म क्या होना चाहिए?`,
-            `प्रश्न 8: महाकाव्य और खण्डकाव्य में कोई दो मुख्य अंतर स्पष्ट कीजिए।`
-          ]
-        },
-        {
-          titleEn: 'Section C - Long Answer Type Questions',
-          titleHi: `खण्ड 'स' - गद्य खण्ड एवं भाषा बोध`,
-          questions: [
-            `प्रश्न 9: सेनानी न होते हुए भी चश्मेवाले को लोग कैप्टन क्यों कहते थे?`,
-            `प्रश्न 10: बालगोबिन भगत की पुत्रवधू उन्हें अकेले क्यों नहीं छोड़ना चाहती थी?`,
-            `प्रश्न 11: संधि और समास में कोई तीन मुख्य अंतर उदाहरण सहित समझाइए।`,
-            `प्रश्न 12: मुहावरों का अर्थ स्पष्ट कर वाक्य में प्रयोग कीजिए:\n(क) आँखों का तारा होना  (ख) ईद का चाँद होना।`
-          ]
-        },
-        {
-          titleEn: 'Section D - Letter & Essay Writing',
-          titleHi: `खण्ड 'द' - पत्र लेखन, अपठित एवं निबंध सस्वर`,
-          questions: [
-            `प्रश्न 13: अपने विद्यालय के प्राचार्य को 'शाला शुल्क मुक्ति' (Fee Waiver) हेतु एक प्रार्थना पत्र विस्तार से लिखिए।`,
-            `प्रश्न 14: अनुज को अपने जन्मदिन पर आमंत्रित करने हेतु आमंत्रण पत्र औपचारिक रूप से प्रेषित करें।`,
-            `प्रश्न 15: निम्नलिखित विषयों में से किसी एक पर लगभग 120 शब्दों में रूपरेखा सहित सारगर्भित निबंध लिखिए:\n(अ) विद्यार्थी और अनुशासन\n(ब) विज्ञान: वरदान या अभिशाप\n(स) पर्यावरण प्रदूषण और निवारण\n(द) मेरी प्रिय पुस्तक।`
-          ]
-        }
-      ]
-    },
-    {
-      id: 'ma_2024',
-      subjectId: 'math',
-      subjectNameEn: 'Mathematics',
-      subjectNameHi: 'गणित',
-      year: 2024,
-      fileSize: '1.4 MB',
-      totalMarks: 75,
-      duration: '3 Hours',
-      examType: 'Main Board Exam',
-      examTypeHi: 'मुख्य वार्षिक परीक्षा',
-      color: 'from-rose-500 to-pink-500',
-      sections: [
-        {
-          titleEn: 'Section A - Objective Type Questions (MCQs)',
-          titleHi: `खण्ड 'अ' - सही विकल्प चुनिए`,
-          questions: [
-            `प्रश्न 1: 96 और 404 का HCF (महत्तम समापवर्तक) क्या होगा? \n(अ) 4 (ब) 120 (स) 8 (द) 2।`,
-            `प्रश्न 2: यदि द्विघात बहुपद $ax^2 + bx + c$ के शून्यक $\\alpha$ और $\\beta$ हों, तो $\\alpha\\cdot\\beta$ का मान होगा:\n(अ) $c/a$ (ब) $-b/a$ (स) $a/c$ (द) $-c/a$।`,
-            `प्रश्न 3: समीकरण $x - 2y = 0$ और $3x + 4y - 20 = 0$ की रेखाएँ होंगी:\n(अ) प्रतिच्छेद करती हैं (ब) सम्पाती हैं (स) समान्तर हैं (द) कोई नहीं।`,
-            `प्रश्न 4: श्रेणी 2, 7, 12, ... का 10वाँ पद ज्ञात कीजिए:\n(अ) 45 (ब) 47 (स) 49 (द) 50।`
-          ]
-        },
-        {
-          titleEn: 'Section B - Very Short Answer Type Questions',
-          titleHi: `खण्ड 'ब' - अति लघु उत्तरीय प्रश्न`,
-          questions: [
-            `प्रश्न 5: जाँच कीजिए कि क्या $(x-2)(x+1) = (x-1)(x+3)$ एक द्विघात समीकरण है?`,
-            `प्रश्न 6: द्विघात बहुपद $t^2 - 15$ के शून्यक ज्ञात कीजिए तथा शून्यकों एवं गुणांकों के बीच संबंध की सत्यता की जाँच कीजिए।`,
-            `प्रश्न 7: बिन्दुओं $P(2, 3)$ और $Q(4, 1)$ के बीच की दूरी ज्ञात कीजिए।`
-          ]
-        },
-        {
-          titleEn: 'Section C - Calculations and Proofs',
-          titleHi: `खण्ड 'स' - ज्यामितीय एवं बीजगणितीय गणनाएँ`,
-          questions: [
-            `प्रश्न 8: प्रतिस्थापन विधि द्वारा निम्न रैखिक समीकरण युग्म को हल कीजिए:\n$7x - 15y = 2$\n$x + 2y = 3$`,
-            `प्रश्न 9: सिद्ध कीजिए कि दो संकेंद्रीय वृत्तों में बड़े वृत्त की जीवा, जो छोटे वृत्त को स्पर्श करती है, स्पर्श बिन्दु पर समविभाजित होती है।`,
-            `प्रश्न 10: भूमि के एक बिन्दु से, जो मीनार के पाद-बिन्दु से 30 मीटर की दूरी पर है, मीनार के शिखर का उन्नयन कोण $30^\\circ$ है। मीनार की ऊँचाई ज्ञात कीजिए।`
-          ]
-        },
-        {
-          titleEn: 'Section D - Analytical & High Scoring Questions',
-          titleHi: `खण्ड 'द' - सांख्यिकी, प्रायिकता एवं दीर्घ प्रश्न`,
-          questions: [
-            `प्रश्न 11: सिद्ध कीजिए कि $\\sqrt{3}$ एक अपरिमेय संख्या है।`,
-            `प्रश्न 12: एक ठोस खिलौना एक अर्धगोले के आकार का है जिस पर एक लम्ब वृत्तीय शंकु आरोपित है। शंकु की ऊँचाई 2 सेमी है और आधार का व्यास 4 सेमी है। इस अर्धगोलीय खिलौने का आयतन ज्ञात कीजिए।`,
-            `प्रश्न 13: किसी फैक्टरी के 50 श्रमिकों की दैनिक मजदूरी के बंटन के लिए माध्य दैनिक मजदूरी ज्ञात कीजिए।`
-          ]
-        }
-      ]
-    },
-    {
-      id: 'sc_2024',
-      subjectId: 'science',
-      subjectNameEn: 'Science',
-      subjectNameHi: 'विज्ञान',
-      year: 2024,
-      fileSize: '1.3 MB',
-      totalMarks: 75,
-      duration: '3 Hours',
-      examType: 'Main Board Exam',
-      examTypeHi: 'मुख्य वार्षिक परीक्षा',
-      color: 'from-emerald-500 to-teal-500',
-      sections: [
-        {
-          titleEn: 'Section A - Basic Concepts & Chemical Equations',
-          titleHi: `खण्ड 'अ' - रासायनिक क्रियाएँ एवं बहुविकल्पीय`,
-          questions: [
-            `प्रश्न 1: लोहे के चूर्ण पर तनु हाइड्रोक्लोरिक अम्ल डालने से क्या होता है? \n(अ) Hydrogen गैस एवं आयरन क्लोराइड बनता है।\n(ब) Chlorine गैस एवं आयरन हाइड्रोक्साइड बनता है।\n(स) कोई अभिक्रिया नहीं होती।\n(द) आयरन लवण एवं जल बनता है।`,
-            `प्रश्न 2: खाद्य पदार्थ के डिब्बों पर जिंक की बजाय टिन का लेप होता है क्योंकि:\n(अ) टिन की अपेक्षा जिंक अधिक क्रियाशील है।\n(ब) जिंक का गलनांक अधिक है।\n(स) टिन की अपेक्षा जिंक कम क्रियाशील है।\n(द) टिन महंगा है।`
-          ]
-        },
-        {
-          titleEn: 'Section B - Life Processes & Human Biology',
-          titleHi: `खण्ड 'ब' - जैव प्रक्रम एवं जीव विज्ञान`,
-          questions: [
-            `प्रश्न 3: स्वपोषी पोषण एवं विषमपोषी पोषण में आवश्यक अंतर लिखिए।`,
-            `प्रश्न 4: हमारे शरीर में वसा का पाचन कैसे होता है? यह प्रक्रम कहाँ पूरा होता है?`,
-            `प्रश्न 5: तंत्रिका कोशिका (Neuron) का स्वच्छ एवं नामांकित चित्र बनाइए।`
-          ]
-        },
-        {
-          titleEn: 'Section C - Physics & Light Phenomenon',
-          titleHi: `खण्ड 'स' - प्रकाश परावर्तन, अपवर्तन एवं लेंस सूत्र`,
-          questions: [
-            `प्रश्न 6: अवतल दर्पण के मुख्य फोकस की परिभाषा लिखिए तथा एक उपयोग बताइए।`,
-            `प्रश्न 7: किसी ऑटोमोबाइल में पीछे का दृश्य देखने के लिए उपयोग होने वाले उत्तल दर्पण की वक्रता त्रिज्या 3.00 मीटर है। यदि एक बस इस दर्पण से 5.00 मीटर की दूरी पर स्थित है, तो प्रतिबिम्ब की स्थिति, प्रकृति तथा आकार ज्ञात कीजिए।`
-          ]
-        },
-        {
-          titleEn: 'Section D - Electricity & Magnetism',
-          titleHi: `खण्ड 'द' - विद्युत प्रभाव एवं चुम्बकीय क्षेत्र`,
-          questions: [
-            `प्रश्न 8: ओम का नियम लिखिए। किसी चालक का प्रतिरोध किन-किन कारकों पर निर्भर करता है? विस्तार से समझाइए।`,
-            `प्रश्न 9: फ्लेमिंग का वामहस्त (Left hand) का नियम क्या है? संक्षेप में समझाइए।`,
-            `प्रश्न 10: ओजोन परत के क्षय होने के क्या कारण हैं? इसके बचाव के उपाय सुझाइए।`
-          ]
-        }
-      ]
-    },
-    {
-      id: 'hi_2023',
-      subjectId: 'hindi',
-      subjectNameEn: 'Hindi',
-      subjectNameHi: 'हिंदी',
-      year: 2023,
-      fileSize: '1.1 MB',
-      totalMarks: 75,
-      duration: '3 Hours',
-      examType: 'Past Board Exam',
-      examTypeHi: 'वार्षिक परीक्षा 2023',
-      color: 'from-orange-400 to-amber-500',
-      sections: [
-        {
-          titleEn: 'Section A - Basic Grammar',
-          titleHi: `खण्ड 'अ' - काव्य बोध एवं वस्तुनिष्ठ`,
-          questions: [
-            `प्रश्न 1: रौद्र रस का स्थायी भाव क्या है? \n(अ) विस्मय (ब) क्रोध (स) निर्वेद (द) भयो।`,
-            `प्रश्न 2: राम-लक्ष्मण-परशुराम संवाद मुख्य रूप से किस ग्रंथ से उधृत है? \n(अ) रामचरितमानस (ब) कवितावली (स) गीतावली (द) विनयपत्रिका।`
-          ]
-        },
-        {
-          titleEn: 'Section B - Textbook Questions',
-          titleHi: `खण्ड 'ब' - पाठ्यपुस्तक क्षितिज भाग-2 काव्य`,
-          questions: [
-            `प्रश्न 3: उद्धव द्वारा दिए गए योग के संदेश ने गोपियों की विरहाग्नि में घी का काम कैसे किया?`,
-            `प्रश्न 4: कवि जयशंकर प्रसाद ने अपनी आत्मकथा न लिखने के क्या कारण बताए हैं?`
-          ]
-        }
-      ]
-    },
-    {
-      // Social Science 2024
-      id: 'ss_2024',
-      subjectId: 'social_science',
-      subjectNameEn: 'Social Science',
-      subjectNameHi: 'सामाजिक विज्ञान',
-      year: 2024,
-      fileSize: '1.4 MB',
-      totalMarks: 75,
-      duration: '3 Hours',
-      examType: 'Main Board Exam',
-      examTypeHi: 'मुख्य वार्षिक परीक्षा',
-      color: 'from-amber-500 to-yellow-600',
-      sections: [
-        {
-          titleEn: 'Section A - Map Work & Resources',
-          titleHi: `खण्ड 'अ' - पर्यावरण, मृदा एवं मानचित्र अंकन`,
-          questions: [
-            `प्रश्न 1: भारत में काली मिट्टी मुख्य रूप से किस राज्य में पाई जाती है? \n(अ) महाराष्ट्र (ब) उत्तर प्रदेश (स) पंजाब (द) राजस्थान।`,
-            `प्रश्न 2: भारत के दिए गए रेखा-मानचित्र में तापीय ऊर्जा केन्द्र 'सिंगरौली' एवं लौह अयस्क क्षेत्र 'बैलाडीला' को चिन्हित कीजिए।`
-          ]
-        },
-        {
-          titleEn: 'Section B - Indian History & Movements',
-          titleHi: `खण्ड 'ब' - भारत में राष्ट्रवाद एवं असहयोग आन्दोलन`,
-          questions: [
-            `प्रश्न 3: गांधीजी ने असहयोग आन्दोलन को वापस लेने का फैसला क्यों लिया? चौरी-चौरा की घटना का महत्व बताइए।`,
-            `प्रश्न 4: 'सिल्क मार्ग' (Silk Route) से आप क्या समझते हैं? प्राचीन विश्व व्यापार में इसका महत्व समझाइए।`
-          ]
-        }
-      ]
-    },
-    {
-      // English 2024
-      id: 'en_2024',
-      subjectId: 'english',
-      subjectNameEn: 'English',
-      subjectNameHi: 'अंग्रेजी',
-      year: 2024,
-      fileSize: '1.2 MB',
-      totalMarks: 75,
-      duration: '3 Hours',
-      examType: 'Main Board Exam',
-      examTypeHi: 'मुख्य वार्षिक परीक्षा',
-      color: 'from-blue-500 to-indigo-500',
-      sections: [
-        {
-          titleEn: 'Section A - Reading & Comprehension Passage',
-          titleHi: `खण्ड 'अ' - अपठित अनसीन पैसेज`,
-          questions: [
-            `Question 1: Read the passage carefully and answer the questions:\n"Nature is a great teacher..."\n(a) What is the great teacher? \n(b) How does silence heal our mind?`,
-            `Question 2: Read the passage and make notes on it, also suggest a suitable title.`
-          ]
-        },
-        {
-          titleEn: 'Section B - Writing Skills & Grammar',
-          titleHi: `खण्ड 'ब' - निबंध लेखन, पत्र एवं ग्रामर`,
-          questions: [
-            `Question 3: Write an essay in about 150 words on "Wonders of Science" or "Value of Games and Sports".`,
-            `Question 4: Fill in the correct option:\n(a) Mount Everest is _______ highest peak. (a/an/the)\n(b) He died _______ cancer. (of / off / by)\n(c) Look _______ you leap. (before/after).`
-          ]
-        }
-      ]
-    },
-    {
-      id: 'ma_2026',
-      subjectId: 'math',
-      subjectNameEn: 'Mathematics (Practice Paper)',
-      subjectNameHi: 'गणित (अभ्यास प्रश्न पत्र)',
-      year: 2026,
-      fileSize: '1.5 MB',
-      totalMarks: 75,
-      duration: '3 Hours',
-      examType: 'Practice Paper',
-      examTypeHi: 'अभ्यास परीक्षा 2026',
-      color: 'from-rose-500 to-pink-500',
-      sections: [
-        {
-          titleEn: 'Section A - Multi-Choice Questions',
-          titleHi: `खण्ड 'अ' - सही विकल्प चुनिए`,
-          questions: [
-            `प्रश्न 1: शून्यकों की संख्या ज्ञात कीजिए यदि वक्र x-अक्ष को तीन बिंदुओं पर प्रतिच्छेद करता है।\n(अ) 1 (ब) 2 (स) 3 (द) 4`,
-            `प्रश्न 2: क्या $x^2 + 5x + 6 = 0$ के वास्तविक मूल हैं?\n(अ) हाँ (ब) नहीं (स) दोनों (द) कह नहीं सकते।`
-          ]
-        },
-        {
-          titleEn: 'Section B - Objective and Concepts',
-          titleHi: `खण्ड 'ब' - अति लघु उत्तरीय एवं प्रमेय`,
-          questions: [
-            `प्रश्न 3: समांतर श्रेढ़ी 5, 8, 11, 14... का सार्व अंतर (d) क्या होगा?`,
-            `प्रश्न 4: पाइथागोरस प्रमेय का कथन लिखिए।`
-          ]
-        }
-      ]
-    },
-    {
-      id: 'hi_2026',
-      subjectId: 'hindi',
-      subjectNameEn: 'Hindi (Practice Paper)',
-      subjectNameHi: 'हिंदी (अभ्यास प्रश्न पत्र)',
-      year: 2026,
-      fileSize: '1.2 MB',
-      totalMarks: 75,
-      duration: '3 Hours',
-      examType: 'Practice Paper',
-      examTypeHi: 'अभ्यास परीक्षा 2026',
-      color: 'from-orange-500 to-amber-500',
-      sections: [
-        {
-          titleEn: 'Section A - Objective Questions',
-          titleHi: `खण्ड 'अ' - सही जोड़ी बनाइए एवं वस्तुनिष्ठ`,
-          questions: [
-            `प्रश्न 1: 'कबीर ग्रन्थावली' किस कवि के पदों का संग्रह है?\n(अ) कबीरदास (ब) तुलसीदास (स) सूरदास (द) जायसी।`,
-            `प्रश्न 2: 'महाकाव्य' में कम से कम कितने सर्ग होने चाहिए?\n(अ) 8 (ब) 4 (स) 5 (द) 10।`
-          ]
-        },
-        {
-          titleEn: 'Section B - Prose and Grammar',
-          titleHi: `खण्ड 'ब' - गद्य एवं व्याकरण बोध`,
-          questions: [
-            `प्रश्न 3: बालगोबिन भगत के संगीत को लेखक ने जादू क्यों कहा है?`,
-            `प्रश्न 4: द्वंद्व समास की सोदाहरण परिभाषा लिखिए।`
-          ]
-        }
-      ]
-    },
-    {
-      id: 'sc_2025',
-      subjectId: 'science',
-      subjectNameEn: 'Science',
-      subjectNameHi: 'विज्ञान',
-      year: 2025,
-      fileSize: '1.3 MB',
-      totalMarks: 75,
-      duration: '3 Hours',
-      examType: 'Main Board Exam',
-      examTypeHi: 'वार्षिक परीक्षा 2025',
-      color: 'from-emerald-500 to-teal-500',
-      sections: [
-        {
-          titleEn: 'Section A - Interactive Objective Revision',
-          titleHi: `खण्ड 'अ' - महत्वपूर्ण बहुविकल्पीय प्रश्न`,
-          questions: [
-            `प्रश्न 1: धोने के सोडा का रासायनिक सूत्र क्या है? \n(अ) Na2CO3.10H2O (ब) NaHCO3 (स) NaOH (द) CaOCl2.`,
-            `प्रश्न 2: टमाटर में कौन सा अम्ल उपस्थित होता है?\n(अ) ऑक्सेलिक अम्ल (ब) सिट्रिक अम्ल (स) टार्टरिक अम्ल (द) मेथेनॉइक अम्ल।`
-          ]
-        },
-        {
-          titleEn: 'Section B - Physics & Chemistry Basic',
-          titleHi: `खण्ड 'ब' - भौतिकी एवं रसायन लघु उत्तरीय`,
-          questions: [
-            `प्रश्न 3: उदासीनीकरण अभिक्रिया किसे कहते हैं? एक रासायनिक समीकरण लिखिए।`,
-            `प्रश्न 4: तारे क्यों टिमटिमाते हैं? सचित्र व्याख्या कीजिए।`
-          ]
-        }
-      ]
-    },
-    {
-      id: 'ss_2025',
-      subjectId: 'social_science',
-      subjectNameEn: 'Social Science',
-      subjectNameHi: 'सामाजिक विज्ञान',
-      year: 2025,
-      fileSize: '1.5 MB',
-      totalMarks: 75,
-      duration: '3 Hours',
-      examType: 'Past Board Exam',
-      examTypeHi: 'वार्षिक परीक्षा 2025',
-      color: 'from-amber-500 to-yellow-600',
-      sections: [
-        {
-          titleEn: 'Section A - Geographics & Economics',
-          titleHi: `खण्ड 'अ' - भूगोल और संसाधन विश्लेषण`,
-          questions: [
-            `प्रश्न 1: भारत में वन्य जीव संरक्षण अधिनियम कब लागू किया गया?\n(अ) 1972 (ब) 1980 (स) 1992 (द) 2002।`,
-            `प्रश्न 2: सूचना अधिकार (RTI) भारत में कब लागू हुआ?\n(अ) अक्टूबर 2005 (ब) जनवरी 2006 (स) मार्च 2004 (द) दिसंबर 2005।`
-          ]
-        },
-        {
-          titleEn: 'Section B - History And Politics',
-          titleHi: `खण्ड 'ब' - इतिहास और नागरिक शास्त्र`,
-          questions: [
-            `प्रश्न 3: जलियांवाला बाग हत्याकांड पर संक्षिप्त टिप्पणी लिखिए।`,
-            `प्रश्न 4: लोकतंत्र में राजनीतिक दलों की आवश्यकता क्यों है?`
-          ]
-        }
-      ]
-    },
-    {
-      id: 'ma_2022',
-      subjectId: 'math',
-      subjectNameEn: 'Mathematics',
-      subjectNameHi: 'गणित',
-      year: 2022,
-      fileSize: '1.4 MB',
-      totalMarks: 75,
-      duration: '3 Hours',
-      examType: 'Past Board Exam',
-      examTypeHi: 'वार्षिक परीक्षा 2022',
-      color: 'from-rose-500 to-pink-500',
-      sections: [
-        {
-          titleEn: 'Section A - Numerical Ability',
-          titleHi: `खण्ड 'अ' - संख्यात्मक योग्यता बहुविकल्पी`,
-          questions: [
-            `प्रश्न 1: द्विघात समीकरण $ax^2 + bx + c = 0$ के दो बराबर वास्तविक मूल होते हैं यदि विभेदक (D):\n(अ) $b^2 - 4ac = 0$ (ब) $b^2 - 4ac > 0$ (स) $b^2 - 4ac < 0$ (द) $b^2 + 4ac = 0$।`,
-            `प्रश्न 2: वृत्त के क्षेत्रफल का सूत्र क्या होगा?\n(अ) $\\pi r^2$ (ब) $2\\pi r$ (स) $\\pi r$ (द) $2\\pi r^2$।`
-          ]
-        },
-        {
-          titleEn: 'Section B - Geometry Theorems',
-          titleHi: `खण्ड 'ब' - ज्यामिति और त्रिकोणमिति`,
-          questions: [
-            `प्रश्न 3: $\\sin 60^\\circ \\cos 30^\\circ + \\sin 30^\\circ \\cos 60^\\circ$ का मान ज्ञात कीजिए।`,
-            `प्रश्न 4: वृत्त के किसी बिन्दु पर स्पर्श रेखा स्पर्श बिन्दु से जाने वाली त्रिज्या पर लम्ब होती है, सिद्ध कीजिए।`
-          ]
-        }
-      ]
-    },
-    {
-      id: 'en_2022',
-      subjectId: 'english',
-      subjectNameEn: 'English',
-      subjectNameHi: 'अंग्रेजी',
-      year: 2022,
-      fileSize: '1.2 MB',
-      totalMarks: 75,
-      duration: '3 Hours',
-      examType: 'Past Board Exam',
-      examTypeHi: 'वार्षिक परीक्षा 2022',
-      color: 'from-blue-500 to-indigo-500',
-      sections: [
-        {
-          titleEn: 'Section A - Reading Comprehension',
-          titleHi: `खण्ड 'अ' - अपठित गद्यांश (Unseen Passage)`,
-          questions: [
-            `Question 1: Read the passage carefully and choose the correct answer:\n"Discipline is the key to success..."\n(a) What is the key to success? \n(b) Why is discipline important for students?`
-          ]
-        },
-        {
-          titleEn: 'Section B - Functional Grammar',
-          titleHi: `खण्ड 'ब' - व्याकरण एवं वाक्य निर्माण`,
-          questions: [
-            `Question 2: Fill in the blanks with correct prepositions:\n(a) The book is _______ the table. (on/at/in)\n(b) She has been studying _______ morning. (since/for).`
-          ]
-        }
-      ]
-    },
-    {
-      id: 'hi_2021',
-      subjectId: 'hindi',
-      subjectNameEn: 'Hindi',
-      subjectNameHi: 'हिंदी',
-      year: 2021,
-      fileSize: '1.1 MB',
-      totalMarks: 75,
-      duration: '3 Hours',
-      examType: 'Past Board Exam',
-      examTypeHi: 'वार्षिक परीक्षा 2021',
-      color: 'from-orange-500 to-amber-500',
-      sections: [
-        {
-          titleEn: 'Section A - Literary History',
-          titleHi: `खण्ड 'अ' - हिंदी साहित्य का इतिहास`,
-          questions: [
-            `प्रश्न 1: छायावाद के जनक किसे माना जाता है?\n(अ) जयशंकर प्रसाद (ब) सुमित्रानंदन पंत (स) सूर्यकांत त्रिपाठी निराला (द) महादेवी वर्मा।`,
-            `प्रश्न 2: काव्य के कितने भेद होते हैं? \n(अ) 2 (ब) 3 (स) 4 (द) 5।`
-          ]
-        },
-        {
-          titleEn: 'Section B - Textbook Explanations',
-          titleHi: `खण्ड 'ब' - पाठ्यपुस्तक सस्वर व्याख्या`,
-          questions: [
-            `प्रश्न 3: परशुराम के क्रोध करने पर लक्ष्मण ने धनुष के टूट जाने के लिए कौन-कौन से तर्क दिए?`,
-            `प्रश्न 4: वीर रस की परिभाषा उद्धरण सहित लिखिए।`
-          ]
-        }
-      ]
-    },
-    {
-      id: 'sc_2021',
-      subjectId: 'science',
-      subjectNameEn: 'Science',
-      subjectNameHi: 'विज्ञान',
-      year: 2021,
-      fileSize: '1.3 MB',
-      totalMarks: 75,
-      duration: '3 Hours',
-      examType: 'Past Board Exam',
-      examTypeHi: 'वार्षिक परीक्षा 2021',
-      color: 'from-emerald-500 to-teal-500',
-      sections: [
-        {
-          titleEn: 'Section A - Basic Scientific Formulae',
-          titleHi: `खण्ड 'अ' - आधारभूत वैज्ञानिक अवधारणाएँ`,
-          questions: [
-            `प्रश्न 1: प्रकाश के अपवर्तन का नियम क्या है? \n(अ) स्नेल का नियम (ब) न्यूटन का नियम (स) ओम का नियम (द) चार्ल्स का नियम।`,
-            `प्रश्न 2: मानव रक्त का pH मान कितना होता है?\n(अ) 7.4 (ब) 6.0 (स) 8.2 (द) 7.0।`
-          ]
-        },
-        {
-          titleEn: 'Section B - Conceptual Explanation',
-          titleHi: `खण्ड 'ब' - रासायनिक एवं जैविक प्रक्रियाएँ`,
-          questions: [
-            `प्रश्न 3: धमनी और शिरा में कोई तीन मुख्य अंतर लिखिए।`,
-            `प्रश्न 4: प्रकाश संश्लेषण प्रक्रिया के रासायनिक समीकरण को लिखिए तथा मुख्य चरणों को समझाइए।`
-          ]
-        }
-      ]
-    },
-    {
-      id: 'en_2021',
-      subjectId: 'english',
-      subjectNameEn: 'English (Special)',
-      subjectNameHi: 'अंग्रेजी (विशिष्ट)',
-      year: 2021,
-      fileSize: '1.5 MB',
-      totalMarks: 100,
-      duration: '3 Hours',
-      examType: 'Past Board Exam',
-      examTypeHi: 'वार्षिक परीक्षा 2021',
-      color: 'from-blue-600 to-indigo-600',
-      sections: [
-        {
-          titleEn: 'SECTION-A (Reading)',
-          titleHi: 'खण्ड \'अ\' - अपठित बोध (Reading)',
-          questions: [
-            `Question 1: Read the following passage carefully and answer the questions given below:\n\nWhen Alexander Fleming was sixteen, he had to work to earn his living. He found a job in a shipping office in London. The wages were small and the work rather uninteresting. He also worked as a volunteer soldier on weekends and holidays. It was soon discovered that the sturdy young man from Scotland was a fine shot and a very good swimmer.\n\nJust afterwards, a relative died, leaving him a small but useful sum of money. His brother Thomas advised him to give up the job at the shipping office and spend the money on his training as a doctor. Alexander said later, "My brother Thomas pushed me into medicine."\n\nSo he joined St. Mary's hospital school. He attended lectures and watched operations, he also swam and acted in plays. Yet he was always the top student in the examination. He won many prizes and scholarships. It came to be known about his memory that he could remember the whole book after reading it just once.\n\nQuestions:\n(i) Alexander Fleming was fond of :-\n(a) travelling  (b) hunting  (c) swimming  (d) music\n\n(ii) He had to work to earn his living when he was in :-\n(a) his teens  (b) his twenties  (c) his thirties  (d) his forties\n\n(iii) "Thomas advised him to give up the job at the shipping office." The meaning of the underlined phrasal verb 'give up' is:-\n(a) to hand over  (b) to abandon  (c) to surrender  (d) to delay\n\n(iv) Name the place where Alexander was born.\n(v) How did Fleming like the job?\n(vi) What made it possible for Fleming to become a doctor?`,
-            `Question 2: Read the following poem carefully and answer the questions given below:\n\nThe rain had fallen, the poet rose\nHe passed by the town and out of the street,\nA light wind blew from the gates of the sun,\nAnd waves of shadow went over the wheat,\nAnd he sat him down in a lonely place\nAnd chanted a melody loud and sweet\nThat made the wild swan pause in her cloud,\nAnd the lark drop down at his feet,\nThe swallow as he haunted the fly\nThe snake slid under a spray.\nThe wild hawk stood with the swan on his beak\nAnd stared with his foot on the prey.\nAnd the nightingale thought, "I have sung many songs"\nBut never a one so gay.\n\nQuestions:\n(a) The phrase 'gates of the sun' means:-\n(i) behind the hills\n(ii) the east direction\n(iii) the street in the town\n(iv) the gates of the town\n\n(b) Say whether the statement is 'true' or 'false':\n'The wild hawk was staring at its prey.'\n\n(c) What made the wild swan pause in her cloud ?\n(i) a sweet melody\n(ii) loud wind\n(iii) waves of shadow\n(iv) the swallow\n\n(d) How did the snake react to the poet's song ?\n(i) the snake danced\n(ii) the snake slid under flower\n(iii) the snake gave the tree a spray\n(iv) the snake slid under a small branch\n\n(e) What did the poet do when rain had fallen?\n(f) What did the nightingale think about the poet's song ?`,
-            `Question 3: Read the passage carefully and answer the questions given below it:\n\nWhy is it that there are very few women players in our orchestras ? If one could reply flatly sex determination they don't want women in orchestras that would be a definite answer. But one can't say that. As a matter of fact there are, if not many, a few women playing today in symphony orchestras. Nevertheless, it is true that male orchestral players are in an overwhelming majority. Why is that? I'm afraid, there is no one to answer. \n\nThere are physical reasons why women don't perform well on certain instruments. The average woman is not likely to possess sufficient lung power and sheer muscular strength to play the tuba just as an average woman's hands are not likely to be large enough to finger a double bass satisfactorily. But what about the other instruments ?\n\nI think social and family pressure have been very strong in keeping women out of orchestras. Think of the prejudice that existed half a century ago against the so called 'nice girls going on stage'. The stage was won out for the simple reason that it had to have women to play feminine roles in plays and operas, and was willing to offer a young woman more money than she could make in any other profession. Moreover, on stage, she was appearing as an individual, as a centre of attraction. This was gratifying to both her and her family. To this day, while the average parents are reconciled to seeing their daughter become an opera singer or concert artist, they don't like the idea of seeing her submerging her personality to become the member of a chorus of the orchestra.\n\nQuestions:\n(a) The word similar in meaning to 'a group of musicians' is -\n(i) orchestra\n(ii) chorus\n(iii) stage\n(iv) melody\n\n(b) Say 'True' or 'False':\nAs a matter of fact there are absolutely no women playing today in symphony.\n\n(c) The meaning of majority is -\n(i) very few in number\n(ii) dozen\n(iii) maximum in number\n(iv) a score\n\n(d) What is the prime reason for a few number of women in orchestras ? (in one word)\n(e) What are the genetic deficiencies in women for playing instruments ?\n(f) What are the reasons according to the narrator that keep women away from orchestras ?\n(g) What are the changing behaviours of parents now-a-days ?\n(h) Why were the parents not willing for women to appear on a stage ?\n(i) Why was the stage won out ?`
-          ]
-        },
-        {
-          titleEn: 'SECTION-B (Writing)',
-          titleHi: 'खण्ड \'ब\' - लेखन कौशल (Writing)',
-          questions: [
-            `Question 4: "Beauty strikes the eyes but goodness moves to heart." Explain your views.\nOR\n"United we stand, divided we fall" - Elaborate this thought.`,
-            `Question 5: Your school is going to organise social work for the welfare of the poor living in slum areas of your city. Draft a notice from the Principal of your school.\nOR\nWrite a telegram to your friend congratulating him on his success in the board examination.`,
-            `Question 6: Write an article for your school level competition on 'Say No to Polythene Bags'. Write it with the help of the points given below: (in about 150 words)\n(i) Say 'No to Polythene - A Campaign\n(ii) Harmful effects of the polythene\n(iii) Awareness among people\n(iv) Efforts and their implementations\n(v) Replacement of polythenes.\n\nOR\nLook at the environmental inputs showing plastic clutter and produce a text-based description about it. Write in 120-150 words.`,
-            `Question 7: You are Rohit Gupta, residing at 56, Gandhi Nagar, Rewa. Write a letter to your friend inviting him to spend a part of summer vacation with you at any hill station.\nOR\nWrite a letter to the District Health Officer drawing his attention to the insanitary conditions prevailing in your locality.`,
-            `Question 8: Write an essay on any one of the following topics in about 250 words:\n(i) Importance of Trees.\n(ii) Science in our daily life.\n(iii) Corona - A threat to our society.\n(iv) Value of Discipline.\n(v) Save Animals.\n(vi) Values of Games and Sports.`
-          ]
-        },
-        {
-          titleEn: 'SECTION-C (Grammar)',
-          titleHi: 'खण्ड \'स\' - व्यावहारिक व्याकरण (Grammar)',
-          questions: [
-            `Question 9: Fill in the blanks with suitable words given in the brackets: (any ten)\n\n(i) Diamond is ______ hardest of all metals. (a, an, the)\n(ii) I am not interested ______ politics. (to, of, in)\n(iii) Where there is a will, there ______ a way. (are, was, is)\n(iv) Look ______ you leap. (before, after, with)\n(v) There isn't ______ rice in the bowl. (much, many)\n(vi) Will it make ______ difference to you ? (some, any, many)\n(vii) Either Sita or Gita ______ come. (has, have, are)\n(viii) Speak slowly ______ you should listen. (lest, but, and)\n(ix) My father ______ cross the river, when he was young. (was, could, can)\n(x) We ______ to serve our nation. (should, ought, need)\n(xi) If you work hard you ______ be selected. (should, would, will)\n(xii) You must abide ______ the rules of road. (by, with, to)`,
-            `Question 10: Do as directed: (any five)\n\n(i) They went to school every day. (Change into interrogative)\n(ii) He does his work very neatly. (Change into negative)\n(iii) Reema said, "Dogs bark at strangers." (Rewrite the sentence into indirect speech)\n(iv) The garden has lovely flowers. The garden is in front of my house. (Combine the sentences using 'Relative Clause')\n(v) Twenty rupees are not a big amount. (Correct the sentence)\n(vi) She is so poor that she can not pay her fees. (Rewrite the sentence using 'too-to')\n(vii) I am glad that I have met my friend. (Rewrite the sentence using 'an infinitive')`
-          ]
-        },
-        {
-          titleEn: 'SECTION-D (Text Book)',
-          titleHi: 'खण्ड \'द\' - पाठ्यपुस्तक (Text Book)',
-          questions: [
-            `Question 11: Read the extract carefully from the poem and answer the questions given below:\n\n"Old man", said a fellow pilgrim, near\n"You are wasting strength with building here"\nYour journey will end with the ending day;\nYou never again must pass this way.\n\nQuestions:\n(a) This extract is taken from the poem....\n(i) The Bridge Builder  (ii) To the Cuckoo  (iii) Gitanjali\n\n(b) Who addressed the old man ?\n(i) A woman  (ii) A child  (iii) A fellow traveller\n\n(c) Who was building the bridge ? Where? Why ?`,
-            `Question 12: Read the extract of the poem and answer the questions given below:\n\nIn one salutation to thee, my God let\nall my senses spread out and touch this\nworld at thy feet like a rain-cloud of July hung low\nwith its burden of unshed showers\nall my mind bend down at thy door in one\nsalutation to thee.\n\nQuestions:\n(a) The poet of these lines is -\n(i) John Keats  (ii) Robert Frost  (iii) Rabindranath Tagore  (iv) William Wordsworth\n\n(b) The one word used for 'something loaded' in the extract is :\n(i) burden  (ii) mind  (iii) showers  (iv) door\n\n(c) What is the cloud burdened with ?`,
-            `Question 13: Answer any one of the following questions: (in about 120-150 words)\n(i) What were the qualities of Wasserkopf that the Principal and the Masters evaluated ?\nOR\n(ii) Describe how Jean and Pierre managed to get the pie.`,
-            `Question 14: Answer any four of the following questions in about 30-40 words:\n(a) What happened to the statue of the Happy Prince at last ?\n(b) What is Bacon's advice on extraordinary expenses ?\n(c) What did the author see when he looked through the glass partition?\n(d) How did Behrman save Johnsy's life ?\n(e) What would Helen like to see in the eyes of her teacher ?`,
-            `Question 15: Answer any one of the questions in about 75-100 words:\n(i) What do the Jataka stories recount?\nOR\nWrite a note on the importance of hard work in life.`
+            "प्रश्न 1: 'सूरसागर' के रचनाकार कौन हैं? \n(अ) सूरदास (ब) कबीरदास (स) तुलसीदास (द) रसखान ।"
           ]
         }
       ]
@@ -995,7 +1553,10 @@ export const Downloads: React.FC = () => {
         <div className="flex justify-center mb-10">
           <div className="bg-white p-1.5 rounded-2xl md:rounded-3xl shadow-xl border border-slate-100 flex gap-2">
             <button
-              onClick={() => setActiveTab('blueprint')}
+              onClick={() => {
+                setActiveTab('blueprint');
+                setSelectedPyqSubject(null);
+              }}
               className={`px-5 py-3 rounded-xl md:rounded-2xl text-xs md:text-sm font-black uppercase tracking-wider transition-all cursor-pointer flex items-center gap-2 ${
                 activeTab === 'blueprint'
                   ? 'bg-brand-navy text-white shadow-lg'
@@ -1006,7 +1567,10 @@ export const Downloads: React.FC = () => {
               <span>Syllabus Blueprint / ब्लूप्रिंट class 10th</span>
             </button>
             <button
-              onClick={() => setActiveTab('pyq')}
+              onClick={() => {
+                setActiveTab('pyq');
+                setSelectedPyqSubject(null);
+              }}
               className={`px-5 py-3 rounded-xl md:rounded-2xl text-xs md:text-sm font-black uppercase tracking-wider transition-all cursor-pointer flex items-center gap-2 ${
                 activeTab === 'pyq'
                   ? 'bg-brand-navy text-white shadow-lg'
@@ -1014,7 +1578,7 @@ export const Downloads: React.FC = () => {
               }`}
             >
               <FileQuestion size={16} className={activeTab === 'pyq' ? 'text-brand-orange animate-pulse' : ''} />
-              <span>Previous Papers / पुराने पेपर</span>
+              <span>Previous Papers / पुराने पेपर class 10th</span>
             </button>
           </div>
         </div>
@@ -1129,199 +1693,419 @@ export const Downloads: React.FC = () => {
               transition={{ duration: 0.25 }}
               className="space-y-8 animate-fade-in"
             >
-              {/* FILTERS & SEARCH CONTROL PANEL */}
-              <div className="bg-white rounded-3xl p-6 shadow-xl border border-slate-100 space-y-6">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                  <div className="flex items-center gap-2">
-                    <Filter className="text-brand-orange" size={20} />
-                    <h2 className="text-xl font-black text-brand-navy uppercase tracking-tight">
-                      Search & Filters <span className="text-brand-orange">/</span> खोजें
-                    </h2>
-                  </div>
-                  
-                  {/* Dynamic Search Bar */}
-                  <div className="relative w-full md:max-w-xs">
-                    <input
-                      type="text"
-                      placeholder="Search subject / year..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-100 rounded-2xl pl-10 pr-4 py-3 text-xs font-bold text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-orange/20 focus:bg-white transition-all shadow-inner"
-                    />
-                    <Search className="absolute left-3.5 top-3.5 text-slate-400" size={16} />
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap gap-4 items-center pt-2 border-t border-slate-50">
-                  {/* Subject Selector */}
-                  <div className="flex items-center gap-2">
-                    <BookOpen size={14} className="text-brand-orange" />
-                    <span className="text-xs font-black text-brand-navy uppercase tracking-wider">Subject:</span>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {[
-                      { key: 'hindi', label: 'Hindi' },
-                      { key: 'english', label: 'English' },
-                      { key: 'math', label: 'Mathematics' },
-                      { key: 'science', label: 'Science' },
-                      { key: 'social_science', label: 'SST' }
-                    ].map((subj) => (
+              {selectedPyqSubject ? (
+                selectedPyqChapter ? (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.98 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="space-y-6"
+                  >
+                    {/* Header with back button */}
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-3xl shadow-md border border-slate-100">
+                      <div>
+                        <div className="flex items-center gap-2 text-xs font-black text-brand-orange uppercase tracking-wider mb-1">
+                          <span>Chapter Wise Past Papers / अध्यायवार पुराने पेपर</span>
+                        </div>
+                        <h2 className="text-2xl sm:text-3xl font-black text-brand-navy">
+                          {selectedPyqChapter.en} <span className="text-brand-orange font-normal">|</span> {selectedPyqChapter.hi}
+                        </h2>
+                      </div>
                       <button
-                        key={subj.key}
-                        onClick={() => setPyqSubjectFilter(subj.key)}
-                        className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer border ${
-                          pyqSubjectFilter === subj.key
-                            ? 'bg-brand-orange text-white border-brand-orange/30 shadow-md'
-                            : 'bg-slate-50 text-slate-600 border-slate-100 hover:bg-slate-100'
-                        }`}
+                        onClick={() => setSelectedPyqChapter(null)}
+                        className="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-2 cursor-pointer transition-colors"
                       >
-                        {subj.label}
+                        <ArrowLeft size={14} />
+                        <span>Back to Chapters / अध्यायों की सूची</span>
                       </button>
-                    ))}
-                  </div>
-                </div>
+                    </div>
 
-                <div className="flex flex-wrap gap-4 items-center pt-2 border-t border-slate-50">
-                  {/* Year Selector */}
-                  <div className="flex items-center gap-2">
-                    <Calendar size={14} className="text-brand-navy" />
-                    <span className="text-xs font-black text-brand-navy uppercase tracking-wider">Year:</span>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {['all', '2026', '2025', '2024', '2023', '2022', '2021'].map((year) => {
-                      const isComingSoon = ['2026', '2025', '2024', '2023', '2022'].includes(year);
-                      return (
-                        <button
-                          key={year}
-                          onClick={() => handleYearFilterClick(year)}
-                          className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer border flex items-center gap-1 ${
-                            pyqYearFilter === year
-                              ? 'bg-brand-navy text-white border-brand-navy/30 shadow-md'
-                              : isComingSoon
-                              ? 'bg-slate-50 text-slate-400 border-slate-100 hover:bg-slate-100 italic'
-                              : 'bg-slate-50 text-slate-600 border-slate-100 hover:bg-slate-100'
-                          }`}
-                        >
-                          <span>{year === 'all' ? 'All Years' : `${year} Exam`}</span>
-                          {isComingSoon && (
-                            <span className="text-[8px] bg-amber-500/15 text-amber-600 px-1 py-0.2 rounded font-black tracking-wider uppercase">
-                              Soon
-                            </span>
-                          )}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
+                    {/* Questions Display */}
+                    {mathChapterQuestions[selectedPyqChapter.en] ? (
+                      <div className="space-y-8">
+                        {mathChapterQuestions[selectedPyqChapter.en].map((group, gIdx) => (
+                          <div key={gIdx} className="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-100 space-y-6">
+                            {/* Year Indicator */}
+                            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                              <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 rounded-xl bg-brand-orange/10 text-brand-orange flex items-center justify-center font-black">
+                                  <Calendar size={18} />
+                                </div>
+                                <div>
+                                  <h3 className="text-lg font-black text-brand-navy">
+                                    Board Examination {group.year}
+                                  </h3>
+                                  <p className="text-xs font-bold text-slate-400 uppercase mt-0.5">
+                                    Official Board Exam Questions / बोर्ड परीक्षा प्रश्न
+                                  </p>
+                                </div>
+                              </div>
+                              <span className="text-xs font-black px-4 py-1.5 bg-brand-navy text-white rounded-full uppercase tracking-wider">
+                                Year {group.year}
+                              </span>
+                            </div>
 
-              {/* PAST PAPERS GRID CONTAINER */}
-              {filteredPapers.length > 0 ? (
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredPapers.map((paper, index) => {
-                    const isDownloading = downloadingId === paper.id;
-                    const isDownloaded = downloadedIds.includes(paper.id);
+                            {/* Questions list */}
+                            <div className="space-y-6">
+                              {group.questions.map((question, qIdx) => {
+                                const isOptionSelected = (opt: string) => userAnswers[question.id] === opt;
+                                const isCorrectAnswerSelected = userAnswers[question.id] === question.answer;
+                                const hasAnswered = !!userAnswers[question.id];
 
-                    return (
-                      <motion.div
-                        key={paper.id}
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: index * 0.05 }}
-                        className="bg-white rounded-3xl p-6 shadow-xl border border-slate-100 flex flex-col justify-between hover:shadow-2xl transition-all duration-300 relative overflow-hidden group"
-                      >
-                        <div className={`absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r ${paper.color}`} />
-                        
-                        <div>
-                          {/* Year and Type display */}
-                          <div className="flex justify-between items-center mb-4 mt-2">
-                            <span className="text-[10px] font-black text-brand-orange bg-brand-orange/10 px-3 py-1 rounded-full uppercase tracking-wider">
-                              Board Exam ${paper.year}
-                            </span>
-                            <span className="text-xs font-bold text-slate-400">
-                              &nbsp;${paper.fileSize}
-                            </span>
+                                return (
+                                  <div key={question.id} className="p-5 sm:p-6 bg-slate-50 rounded-2xl border border-slate-150 relative space-y-4">
+                                    {/* Question Type Badge */}
+                                    <div className="flex justify-between items-center">
+                                      <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 bg-white border border-slate-100 px-3 py-1 rounded-full">
+                                        Question {qIdx + 1} • {question.type === 'mcq' ? 'Multiple Choice (MCQ)' : question.type === 'tf' ? 'True / False' : question.type === 'blank' ? 'Fill in the Blank' : 'Subjective Question'}
+                                      </span>
+                                    </div>
+
+                                    {/* Question Text */}
+                                    <h4 className="text-base sm:text-lg font-extrabold text-brand-navy leading-relaxed whitespace-pre-line">
+                                      {question.text}
+                                    </h4>
+
+                                    {/* SVG Graph rendering if specified */}
+                                    {renderQuestionGraph(question.renderSvgType)}
+
+                                    {/* Options for MCQ */}
+                                    {question.type === 'mcq' && question.options && (
+                                      <div className="grid sm:grid-cols-2 gap-3 pt-2">
+                                        {question.options.map((option, oIdx) => {
+                                          const optionLetter = String.fromCharCode(97 + oIdx); // a, b, c, d
+                                          const isSelected = isOptionSelected(option);
+                                          const isCorrect = option === question.answer;
+
+                                          let buttonClass = "w-full flex items-center gap-3 p-3.5 rounded-xl border text-sm font-extrabold transition-all cursor-pointer text-left ";
+                                          if (hasAnswered) {
+                                            if (isCorrect) {
+                                              buttonClass += "bg-emerald-50 border-emerald-300 text-emerald-800 shadow-sm";
+                                            } else if (isSelected) {
+                                              buttonClass += "bg-rose-50 border-rose-300 text-rose-800 shadow-sm";
+                                            } else {
+                                              buttonClass += "bg-white border-slate-150 text-slate-400 opacity-60";
+                                            }
+                                          } else {
+                                            buttonClass += "bg-white border-slate-200 text-slate-700 hover:bg-brand-orange/5 hover:border-brand-orange/30";
+                                          }
+
+                                          return (
+                                            <button
+                                              key={oIdx}
+                                              disabled={hasAnswered}
+                                              onClick={() => {
+                                                setUserAnswers(prev => ({ ...prev, [question.id]: option }));
+                                              }}
+                                              className={buttonClass}
+                                            >
+                                              <span className={`w-6 h-6 rounded-lg flex items-center justify-center font-bold text-xs shrink-0 ${isSelected ? 'bg-current text-white' : 'bg-slate-100 text-slate-500'}`}>
+                                                {optionLetter.toUpperCase()}
+                                              </span>
+                                              <span>{option}</span>
+                                            </button>
+                                          );
+                                        })}
+                                      </div>
+                                    )}
+
+                                    {/* True/False Options */}
+                                    {question.type === 'tf' && (
+                                      <div className="flex gap-4 pt-2">
+                                        {['True', 'False'].map((option) => {
+                                          const isSelected = userAnswers[question.id] === option;
+                                          const isCorrect = option === question.answer;
+
+                                          let buttonClass = "flex-1 sm:flex-none px-6 py-2.5 rounded-xl border text-sm font-extrabold transition-all cursor-pointer ";
+                                          if (hasAnswered) {
+                                            if (isCorrect) {
+                                              buttonClass += "bg-emerald-50 border-emerald-300 text-emerald-800";
+                                            } else if (isSelected) {
+                                              buttonClass += "bg-rose-50 border-rose-300 text-rose-800";
+                                            } else {
+                                              buttonClass += "bg-white border-slate-150 text-slate-400 opacity-60";
+                                            }
+                                          } else {
+                                            buttonClass += "bg-white border-slate-200 text-slate-700 hover:bg-brand-orange/5 hover:border-brand-orange/30";
+                                          }
+
+                                          return (
+                                            <button
+                                              key={option}
+                                              disabled={hasAnswered}
+                                              onClick={() => {
+                                                setUserAnswers(prev => ({ ...prev, [question.id]: option }));
+                                              }}
+                                              className={buttonClass}
+                                            >
+                                              {option === 'True' ? 'सत्य / True' : 'असत्य / False'}
+                                            </button>
+                                          );
+                                        })}
+                                      </div>
+                                    )}
+
+                                    {/* Fill in the Blanks Feedback */}
+                                    {question.type === 'blank' && (
+                                      <div className="pt-2">
+                                        {!hasAnswered ? (
+                                          <button
+                                            onClick={() => {
+                                              setUserAnswers(prev => ({ ...prev, [question.id]: question.answer || 'answered' }));
+                                            }}
+                                            className="px-5 py-2 bg-white hover:bg-slate-100 border border-slate-200 rounded-xl text-xs font-black uppercase tracking-wider text-brand-navy transition-all cursor-pointer"
+                                          >
+                                            Reveal Answer / उत्तर देखें
+                                          </button>
+                                        ) : (
+                                          <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-sm font-bold flex items-center gap-2">
+                                            <CheckCircle size={16} className="text-emerald-600 shrink-0" />
+                                            <span>Correct Answer / सही उत्तर: <strong>{question.answer}</strong></span>
+                                          </div>
+                                        )}
+                                      </div>
+                                    )}
+
+                                    {/* Show feedback if answered */}
+                                    {hasAnswered && (question.type === 'mcq' || question.type === 'tf') && (
+                                      <div className="mt-2 text-xs font-bold leading-none">
+                                        {isCorrectAnswerSelected ? (
+                                          <span className="text-emerald-600">✓ Correct! Excellent job.</span>
+                                        ) : (
+                                          <span className="text-rose-600">✗ Incorrect. Correct answer was: {question.answer}.</span>
+                                        )}
+                                      </div>
+                                    )}
+
+                                    {/* OR alternative question */}
+                                    {question.orQuestion && (
+                                      <div className="border-t border-dashed border-slate-200 pt-4 mt-4">
+                                        <div className="inline-block bg-amber-500/10 text-amber-600 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider mb-3">
+                                          OR / अथवा
+                                        </div>
+                                        <h5 className="text-base font-extrabold text-brand-navy leading-relaxed">
+                                          {question.orQuestion.text}
+                                        </h5>
+
+                                        {/* SVG Graph rendering if specified */}
+                                        {renderQuestionGraph(question.orQuestion.renderSvgType)}
+                                      </div>
+                                    )}
+
+                                    {/* Solution toggle button */}
+                                    <div className="pt-2">
+                                      <button
+                                        onClick={() => setShowSolutions(prev => ({ ...prev, [question.id]: !prev[question.id] }))}
+                                        className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-brand-orange hover:text-brand-orange/80 transition-colors cursor-pointer"
+                                      >
+                                        {showSolutions[question.id] ? 'Hide Solution / हल छिपाएं' : 'Show Complete Solution / संपूर्ण हल देखें'}
+                                      </button>
+
+                                      {/* Expanded step-by-step solution */}
+                                      <AnimatePresence>
+                                        {showSolutions[question.id] && (
+                                          <motion.div
+                                            initial={{ opacity: 0, height: 0 }}
+                                            animate={{ opacity: 1, height: 'auto' }}
+                                            exit={{ opacity: 0, height: 0 }}
+                                            className="mt-3 p-4 bg-amber-500/5 border border-amber-500/15 rounded-xl space-y-4 overflow-hidden"
+                                          >
+                                            <div>
+                                              <span className="text-[10px] font-black uppercase tracking-widest text-amber-700 block mb-2">
+                                                Master Solution / मुख्य हल:
+                                              </span>
+                                              <p className="text-sm font-semibold text-slate-700 whitespace-pre-line leading-relaxed">
+                                                {question.solution}
+                                              </p>
+                                            </div>
+
+                                            {question.orQuestion?.solution && (
+                                              <div className="border-t border-slate-200/50 pt-3">
+                                                <span className="text-[10px] font-black uppercase tracking-widest text-amber-700 block mb-2">
+                                                  Alternative Question Solution (OR) / अथवा प्रश्न का हल:
+                                                </span>
+                                                <p className="text-sm font-semibold text-slate-700 whitespace-pre-line leading-relaxed">
+                                                  {question.orQuestion.solution}
+                                                </p>
+                                              </div>
+                                            )}
+                                          </motion.div>
+                                        )}
+                                      </AnimatePresence>
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
                           </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="bg-white rounded-3xl p-8 shadow-xl border border-slate-100 text-center py-16 space-y-4">
+                        <div className="w-16 h-16 bg-brand-orange/10 text-brand-orange rounded-full flex items-center justify-center mx-auto mb-4">
+                          <Sparkles size={28} className="animate-pulse" />
+                        </div>
+                        <h3 className="text-2xl font-black text-brand-navy">
+                          Practice Set Preparing! / तैयारी शुरू है!
+                        </h3>
+                        <p className="text-base text-slate-500 max-w-lg mx-auto font-bold leading-relaxed">
+                          इस अध्याय (Chapter) के पिछले वर्षों के बोर्ड प्रश्न पत्र और विस्तृत हल विशेषज्ञ टीम द्वारा तैयार किए जा रहे हैं। शीघ्र ही यहाँ अपलोड कर दिए जाएंगे। अपनी तैयारी जारी रखें!
+                        </p>
+                        <button
+                          onClick={() => setSelectedPyqChapter(null)}
+                          className="px-6 py-2.5 bg-brand-navy hover:bg-brand-navy/95 text-white rounded-xl text-xs font-black uppercase tracking-wider cursor-pointer transition-colors"
+                        >
+                          Show Other Chapters / अन्य पाठ देखें
+                        </button>
+                      </div>
+                    )}
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.98 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="space-y-6"
+                  >
+                    {/* Back button and title */}
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-3xl shadow-md border border-slate-100">
+                      <div>
+                        <div className="flex items-center gap-2 text-xs font-black text-brand-orange uppercase tracking-wider mb-1">
+                          <span>Previous Papers / पुराने पेपर</span>
+                        </div>
+                        <h2 className="text-2xl sm:text-3xl font-black text-brand-navy">
+                          {subjects.find(s => s.id === selectedPyqSubject)?.nameEn} <span className="text-brand-orange font-normal">|</span> {subjects.find(s => s.id === selectedPyqSubject)?.nameHi}
+                        </h2>
+                      </div>
+                      <button
+                        onClick={() => setSelectedPyqSubject(null)}
+                        className="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-2 cursor-pointer transition-colors"
+                      >
+                        <ArrowLeft size={14} />
+                        <span>Back to Subjects / वापस जाएं</span>
+                      </button>
+                    </div>
 
-                          {/* Titles */}
-                          <div className="mb-4">
-                            <h3 className="text-2xl font-black text-brand-navy group-hover:text-brand-orange transition-colors">
-                              ${paper.subjectNameEn}
-                            </h3>
-                            <p className="text-xs font-black text-slate-400 uppercase tracking-widest mt-0.5">
-                              ${paper.subjectNameHi}
+                    {/* Chapters List */}
+                    <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-100 space-y-6">
+                      <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
+                        <div className="p-2 bg-brand-orange/10 text-brand-orange rounded-xl">
+                          <BookOpen size={20} />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-black text-brand-navy uppercase tracking-tight">
+                            Chapters List / अध्याय सूची
+                          </h3>
+                          <p className="text-xs font-bold text-slate-400 uppercase mt-0.5">
+                            Board Syllabus Chapters for Class 10th
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="grid gap-3">
+                        {getSubjectChapters(selectedPyqSubject).map((chapter, idx) => (
+                          <motion.div
+                            key={idx}
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: idx * 0.03 }}
+                            onClick={() => setSelectedPyqChapter(chapter)}
+                            className="flex items-center justify-between p-4 bg-slate-50 hover:bg-brand-orange/5 rounded-2xl border border-slate-100 hover:border-brand-orange/30 transition-all group duration-200 cursor-pointer"
+                          >
+                            <div className="flex items-center gap-4">
+                              <div className="w-12 h-12 rounded-xl bg-brand-navy text-white flex flex-col items-center justify-center font-black text-[10px] shrink-0 shadow-sm leading-none">
+                                <span className="text-[8px] uppercase text-brand-orange">CH</span>
+                                <span className="text-sm font-extrabold mt-0.5">{idx + 1}</span>
+                              </div>
+                              <div>
+                                <h4 className="font-extrabold text-base text-brand-navy group-hover:text-brand-orange transition-colors">
+                                  {chapter.en}
+                                </h4>
+                                <p className="text-xs font-semibold text-slate-500 mt-0.5">
+                                  {chapter.hi}
+                                </p>
+                              </div>
+                            </div>
+                            
+                            <div className="flex items-center gap-2">
+                              <span className="text-[10px] bg-emerald-500/10 text-emerald-600 px-2.5 py-1 rounded-lg font-bold uppercase tracking-wider">
+                                Practice Set
+                              </span>
+                            </div>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                )
+              ) : (
+                <>
+                  {/* Modern Intro Greeting Header */}
+                  <div className="bg-gradient-to-r from-brand-navy to-slate-900 rounded-3xl p-8 md:p-10 text-white shadow-xl relative overflow-hidden">
+                    <div className="absolute right-0 top-0 w-64 h-64 bg-brand-orange/15 rounded-full blur-3xl" />
+                    <div className="relative z-10 max-w-2xl space-y-4">
+                      <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-brand-orange/20 border border-brand-orange/30 rounded-full text-xs font-black text-brand-orange uppercase tracking-wider">
+                        <Sparkles size={12} className="animate-pulse" />
+                        <span>Class 10th Board Portal</span>
+                      </div>
+                      <h2 className="text-4xl md:text-5xl font-black tracking-tight leading-none text-white font-sans">
+                        Class 10th <span className="text-brand-orange">Previous Papers</span>
+                      </h2>
+                      <p className="text-sm md:text-base font-bold text-slate-300 leading-relaxed font-sans">
+                        कक्षा 10वीं के सभी विषयों के पिछले वर्षों के बोर्ड प्रश्न पत्र, मॉडल समाधान एवं अभ्यास पत्र यहाँ संकलित किए जा रहे हैं। अपनी पसंद के विषय को नीचे चुनें।
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Dynamic Grid Listing All Subjects */}
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {subjects.map((subject, index) => {
+                      return (
+                        <motion.div
+                          key={subject.id}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.05, duration: 0.3 }}
+                          whileHover={{ y: -5 }}
+                          onClick={() => handleSubjectClick(subject.id)}
+                          className="bg-white rounded-3xl p-6 border border-slate-100 shadow-lg hover:shadow-2xl hover:border-brand-orange/20 transition-all duration-300 flex flex-col justify-between group relative overflow-hidden cursor-pointer"
+                        >
+                          <div className={`absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r ${subject.color}`} />
+                          
+                          <div className="space-y-4">
+                            {/* Subject Top Badge / Icon with clean wrapper */}
+                            <div className="flex items-center justify-between">
+                              <div className={`w-12 h-12 rounded-2xl ${subject.iconBg} flex items-center justify-center border font-bold text-lg shadow-sm`}>
+                                <BookOpen size={20} />
+                              </div>
+                              <span className="text-[10px] bg-brand-orange/10 text-brand-orange px-3 py-1 rounded-full font-black uppercase tracking-wider">
+                                Uploading
+                              </span>
+                            </div>
+
+                            {/* Text labels in English and Hindi */}
+                            <div>
+                              <h3 className="text-xl font-black text-brand-navy group-hover:text-brand-orange transition-colors font-sans">
+                                {subject.nameEn}
+                              </h3>
+                              <p className="text-sm font-black text-slate-400 uppercase tracking-wider mt-0.5 font-sans">
+                                {subject.nameHi}
+                              </p>
+                            </div>
+
+                            <p className="text-xs text-slate-500 font-bold leading-relaxed line-clamp-2">
+                              {subject.description || `कक्षा 10वीं ${subject.nameHi} के बोर्ड संकलन, वस्तुनिष्ठ प्रश्न एवं हल पत्र।`}
                             </p>
                           </div>
 
-                          {/* Quick details */}
-                          <div className="bg-slate-50 rounded-2xl p-4 mb-6 space-y-2 text-xs font-bold text-slate-500">
-                            <div className="flex justify-between">
-                              <span>Maximum Marks / पूर्णांक:</span>
-                              <span className="text-brand-navy font-black">${paper.totalMarks} Marks</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span>Time Duration / समय:</span>
-                              <span className="text-brand-navy font-black">${paper.duration}</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span>Exam Type / श्रेणी:</span>
-                              <span className="text-brand-orange font-black">${paper.examTypeHi}</span>
-                            </div>
+                          {/* View Button Footer */}
+                          <div className="pt-6 border-t border-slate-50 mt-5 flex items-center justify-between text-brand-navy group-hover:text-brand-orange font-black text-xs uppercase tracking-widest transition-colors">
+                            <span>Browse Papers / देखें</span>
+                            <ChevronRight size={16} className="transform group-hover:translate-x-1.5 transition-transform" />
                           </div>
-                        </div>
-
-                        {/* Interactive Buttons footer */}
-                        <div className="space-y-2.5">
-                          {/* Quick interactive test view booklet */}
-                          <button
-                            onClick={() => {
-                              setActivePyqPaper(paper);
-                            }}
-                            className="w-full py-3 bg-brand-navy text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-brand-navy/90 transition-all flex items-center justify-center gap-2 cursor-pointer border border-brand-navy shadow-md shadow-brand-navy/10"
-                          >
-                            <ZoomIn size={14} className="text-brand-orange" />
-                            <span>Quick Practice / देखें</span>
-                          </button>
-
-                          {/* Download PDF simulation */}
-                          <button
-                            onClick={() => handlePyqDownload(paper.id)}
-                            disabled={isDownloading}
-                            className={`w-full py-3 rounded-2xl font-black uppercase text-xs tracking-widest transition-all cursor-pointer flex items-center justify-center gap-2 border ${
-                              isDownloading
-                                ? 'bg-slate-100 text-slate-400 border-slate-100 cursor-not-allowed'
-                                : isDownloaded
-                                ? 'bg-emerald-50 text-emerald-600 border-emerald-100 hover:bg-emerald-100'
-                                : 'bg-slate-100 text-brand-navy border-slate-200/60 hover:bg-slate-200'
-                            }`}
-                          >
-                            {isDownloading ? (
-                              <>
-                                <div className="w-4 h-4 border-2 border-slate-400 border-t-transparent rounded-full animate-spin" />
-                                <span>Generating...</span>
-                              </>
-                            ) : isDownloaded ? (
-                              <>
-                                <CheckCircle size={14} />
-                                <span>Downloaded PDF / डाउनलोड सफल</span>
-                              </>
-                            ) : (
-                              <>
-                                <Download size={14} />
-                                <span>Download PDF / पीडीएफ</span>
-                              </>
-                            )}
-                          </button>
-                        </div>
-                      </motion.div>
-                    );
-                  })}
-                </div>
-              ) : (
-                <div className="text-center bg-white rounded-3xl p-12 border border-slate-100 shadow-md">
-                  <FileText className="mx-auto text-slate-300 mb-4" size={48} />
-                  <p className="text-slate-400 font-bold">No results found matching your query.</p>
-                </div>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                </>
               )}
             </motion.div>
           )}
@@ -1696,10 +2480,12 @@ export const Downloads: React.FC = () => {
                   </button>
                 </div>
                 <p className="text-base font-black text-white mt-1 font-sans">
-                  {showToast.year} Paper Uploading...
+                  {showToast.year ? `${showToast.year} Paper Uploading...` : `${showToast.subject} Content Preparing...`}
                 </p>
-                <p className="text-xs text-slate-300 mt-1.5 font-bold leading-relaxed">
-                  बोर्ड परीक्षा {showToast.year} के प्रश्न पत्र और अंक योजना जल्द ही आ रहे हैं! हमारे साथ तैयारी जारी रखें।
+                <p className="text-xs text-slate-300 mt-1.5 font-bold leading-relaxed font-sans">
+                  {showToast.year 
+                    ? `बोर्ड परीक्षा ${showToast.year} के प्रश्न पत्र और अंक योजना जल्द ही आ रहे हैं! हमारे साथ तैयारी जारी रखें।`
+                    : `${showToast.subjectHi || showToast.subject} विषय के बोर्ड परीक्षा प्रश्न पत्र और समाधान जल्द ही उपलब्ध कराए जाएंगे!`}
                 </p>
               </div>
             </div>
