@@ -7,7 +7,6 @@ import { Hero } from './components/Hero';
 import { Courses } from './components/Courses';
 import { About } from './components/About';
 import { Founder } from './components/Founder';
-import { Results } from './components/Results';
 import { Feedback } from './components/Feedback';
 import { Legal } from './components/Legal';
 import { StudentDashboard } from './components/StudentDashboard';
@@ -20,13 +19,11 @@ import { Footer } from './components/Footer';
 import { Downloads } from './components/Downloads';
 import { AuthMode } from './types';
 import { AnimatePresence } from 'motion/react';
-import { MapPin, Phone, Mail } from 'lucide-react';
-
 export default function App() {
   const [user, setUser] = useState<FirebaseUser | null>(null);
   const [authMode, setAuthMode] = useState<AuthMode>('none');
   const [isInitializing, setIsInitializing] = useState(true);
-  const [currentView, setCurrentView] = useState<'home' | 'courses' | 'about' | 'results' | 'feedback' | 'legal' | 'contact' | 'signup' | 'dashboard' | 'downloads' | 'gallery'>('home');
+  const [currentView, setCurrentView] = useState<'home' | 'courses' | 'about' | 'feedback' | 'legal' | 'signup' | 'dashboard' | 'downloads' | 'gallery'>('home');
   const [selectedCourseCategory, setSelectedCourseCategory] = useState<string>('all');
 
   const hasRedirectedRef = React.useRef(false);
@@ -107,11 +104,11 @@ export default function App() {
       case 'signup':
         return <Register onCancel={() => setView('home')} onComplete={() => setView('dashboard')} />;
       case 'dashboard':
-        return user ? <StudentDashboard onBackToWebsite={() => setView('home')} /> : <Hero />;
+        return user ? <StudentDashboard onBackToWebsite={() => setView('home')} /> : <Hero onScrollToCourses={() => setView('courses')} />;
       case 'home':
         return (
           <>
-            <Hero />
+            <Hero onScrollToCourses={() => setView('courses')} />
             <Features />
             {/* CTA section integrated into home */}
             <section className="py-20 bg-brand-navy text-white overflow-hidden relative">
@@ -150,7 +147,7 @@ export default function App() {
       case 'courses':
         return (
           <>
-            <Courses initialCategory={selectedCourseCategory} />
+            <Courses initialCategory={selectedCourseCategory} onEnroll={() => setView('signup')} />
             <PosterGallery />
           </>
         );
@@ -163,56 +160,12 @@ export default function App() {
             <Founder />
           </>
         );
-      case 'results':
-        return <Results />;
       case 'downloads':
         return <Downloads />;
       case 'feedback':
         return <Feedback />;
       case 'legal':
         return <Legal />;
-      case 'contact':
-        return (
-          <div className="py-20 bg-slate-50">
-            <div className="max-w-7xl mx-auto px-6">
-              <div className="text-center mb-12">
-                <h2 className="text-4xl font-bold text-brand-navy mb-4">Contact Us</h2>
-                <div className="w-20 h-1 bg-brand-orange mx-auto rounded-full" />
-              </div>
-              <div id="contact-info" className="bg-white rounded-3xl p-12 shadow-xl border border-slate-100 max-w-2xl mx-auto">
-                <div className="space-y-8">
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 bg-brand-orange/10 rounded-xl text-brand-orange italic-none">
-                      <MapPin size={24} />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-lg text-brand-navy">Location</h4>
-                      <p className="text-slate-600">Near Shiv Mandir, Mahaveer Residency, Jhansi Road, Tikamgarh, 472001</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 bg-brand-orange/10 rounded-xl text-brand-orange italic-none">
-                      <Phone size={24} />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-lg text-brand-navy">Phone</h4>
-                      <p className="text-slate-600">+91 8602306316, +91 8827230149</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 bg-brand-orange/10 rounded-xl text-brand-orange italic-none">
-                      <Mail size={24} />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-lg text-brand-navy">Email</h4>
-                      <p className="text-slate-600">anayscholasticinstitute@gmail.com</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
       default:
         return null;
     }
@@ -228,8 +181,6 @@ export default function App() {
           setView('courses');
         }} 
         onScrollToAbout={() => setView('about')}
-        onScrollToResults={() => setView('results')}
-        onScrollToContact={() => setView('contact')}
         onScrollToDashboard={() => setView('dashboard')}
         onScrollToDownloads={() => setView('downloads')}
         onScrollToGallery={() => setView('gallery')}
@@ -243,7 +194,6 @@ export default function App() {
       {currentView !== 'dashboard' && (
         <Footer 
           onAboutClick={() => setView('about')}
-          onResultsClick={() => setView('results')}
           onFeedbackClick={() => setView('feedback')} 
           onLegalClick={() => setView('legal')}
         />

@@ -11,8 +11,6 @@ interface NavbarProps {
   onOpenAuth: (mode: AuthMode) => void;
   onScrollToCourses: (courseCategory?: string) => void;
   onScrollToAbout: () => void;
-  onScrollToResults: () => void;
-  onScrollToContact: () => void;
   onScrollToDashboard: () => void;
   onScrollToDownloads: () => void;
   onScrollToGallery: () => void;
@@ -24,8 +22,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenAuth, 
   onScrollToCourses, 
   onScrollToAbout, 
-  onScrollToResults, 
-  onScrollToContact, 
   onScrollToDashboard, 
   onScrollToDownloads,
   onScrollToGallery,
@@ -115,10 +111,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             onMouseLeave={handleCoursesMouseLeave}
           >
             <button 
-              onClick={() => handleNavClick(() => onScrollToCourses('all'))}
+              onClick={() => handleNavClick(() => onScrollToCourses('school'))}
               className="hover:text-brand-orange transition-colors flex items-center gap-1 py-1 font-medium"
             >
-              All Courses
+              Courses
               <ChevronDown size={14} className={`transition-transform duration-300 ${isCoursesOpen ? 'rotate-180' : ''}`} />
             </button>
             
@@ -191,22 +187,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             About
           </button>
           <button 
-            onClick={onScrollToResults}
-            className="hover:text-brand-orange transition-colors"
-          >
-            Results
-          </button>
-          <button 
             onClick={onScrollToGallery}
             className="hover:text-brand-orange transition-colors font-bold text-brand-navy"
           >
-            Infrastructure / सुविधाएं
-          </button>
-          <button 
-            onClick={onScrollToContact}
-            className="hover:text-brand-orange transition-colors"
-          >
-            Contact
+            Infrastructure
           </button>
 
           {user && (
@@ -277,7 +261,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   onClick={() => setIsMobileCoursesOpen(!isMobileCoursesOpen)}
                   className="text-left py-3 px-4 rounded-xl hover:bg-slate-50 text-slate-600 font-bold flex items-center justify-between group"
                 >
-                  <span>All Courses</span>
+                  <span>Courses</span>
                   <ChevronDown size={18} className={`transition-transform text-slate-400 ${isMobileCoursesOpen ? 'rotate-180' : ''}`} />
                 </button>
                 <AnimatePresence>
@@ -288,12 +272,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                       exit={{ height: 0, opacity: 0 }}
                       className="ml-4 pl-4 border-l-2 border-slate-100 flex flex-col gap-1 overflow-hidden"
                     >
-                      <button
-                        onClick={() => handleNavClick(() => onScrollToCourses('all'))}
-                        className="text-left py-2 text-slate-500 font-bold hover:text-brand-orange text-sm flex items-center justify-between"
-                      >
-                        <span>All Programs</span>
-                      </button>
                       <div className="flex flex-col">
                         <button
                           onClick={() => setIsMobileSchoolClassesOpen(!isMobileSchoolClassesOpen)}
@@ -353,27 +331,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span className="w-1.5 h-1.5 rounded-full bg-brand-orange opacity-0 group-hover:opacity-100 transition-opacity" />
               </button>
               <button 
-                onClick={() => handleNavClick(onScrollToResults)}
-                className="text-left py-3 px-4 rounded-xl hover:bg-slate-50 text-slate-600 font-bold flex items-center justify-between group"
-              >
-                <span>Results</span>
-                <span className="w-1.5 h-1.5 rounded-full bg-brand-orange opacity-0 group-hover:opacity-100 transition-opacity" />
-              </button>
-              <button 
                 onClick={() => handleNavClick(onScrollToGallery)}
                 className="text-left py-3 px-4 rounded-xl hover:bg-slate-50 text-brand-navy font-black flex items-center justify-between group border-l-4 border-brand-orange pl-3"
               >
-                <span>Infrastructure / सुविधाएं</span>
+                <span>Infrastructure</span>
                 <span className="animate-pulse bg-brand-orange text-white text-[8px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider">
                   Tour
                 </span>
-              </button>
-              <button 
-                onClick={() => handleNavClick(onScrollToContact)}
-                className="text-left py-3 px-4 rounded-xl hover:bg-slate-50 text-slate-600 font-bold flex items-center justify-between group"
-              >
-                <span>Contact</span>
-                <span className="w-1.5 h-1.5 rounded-full bg-brand-orange opacity-0 group-hover:opacity-100 transition-opacity" />
               </button>
 
               {user && (

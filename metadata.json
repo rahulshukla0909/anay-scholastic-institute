@@ -2,5 +2,5 @@
   "name": " Anay Scholastic Institute",
   "description": "A comprehensive coaching institute website featuring student registration, login, and academic resources with a focus on user-friendly interface and branded design.",
   "requestFramePermissions": [],
-  "majorCapabilities": []
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

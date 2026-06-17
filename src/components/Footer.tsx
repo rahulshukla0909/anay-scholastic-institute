@@ -4,12 +4,11 @@ import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from 'luc
 
 interface FooterProps {
   onAboutClick?: () => void;
-  onResultsClick?: () => void;
   onFeedbackClick?: () => void;
   onLegalClick?: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onAboutClick, onResultsClick, onFeedbackClick, onLegalClick }) => {
+export const Footer: React.FC<FooterProps> = ({ onAboutClick, onFeedbackClick, onLegalClick }) => {
   return (
     <footer className="bg-brand-navy text-white pt-20 pb-10">
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-12 border-b border-white/10 pb-12 mb-12">
@@ -46,14 +45,6 @@ export const Footer: React.FC<FooterProps> = ({ onAboutClick, onResultsClick, on
             <li><a href="#" className="hover:text-brand-orange transition-colors">Academic Programs</a></li>
             <li><a href="#" className="hover:text-brand-orange transition-colors">Admission Process</a></li>
             <li><a href="#" className="hover:text-brand-orange transition-colors">Faculty Directory</a></li>
-            <li>
-              <button 
-                onClick={onResultsClick}
-                className="hover:text-brand-orange transition-colors cursor-pointer text-left w-full"
-              >
-                Success Stories
-              </button>
-            </li>
           </ul>
         </div>
 

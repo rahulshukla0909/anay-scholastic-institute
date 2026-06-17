@@ -37,52 +37,12 @@ const campusImages: GalleryItem[] = [
     category: 'library'
   },
   {
-    url: 'images/library (2).jpg',
-    title: 'Digital Focus Study Cabins',
-    titleHindi: 'डिजिटल स्टडी केबिन',
-    description: 'Individual modular cabins equipped with charging sockets, silent partitions and study light support.',
-    descriptionHindi: 'चार्जिंग सॉकेट, शांत पार्टिशन और रीडिंग लाइट्स से लैस व्यक्तिगत शिक्षा केबिन।',
-    category: 'library'
-  },
-  {
     url: 'images/class2.jpg',
     title: 'Admissions & Mentorship Desk',
     titleHindi: 'प्रवेश एवं परामर्श डेस्क',
     description: 'A dedicated space for dynamic student counseling, career guidance, and general inquiries.',
     descriptionHindi: 'विद्यार्थियों के करियर मार्गदर्शन, प्रवेश संबंधी जानकारी और शंका समाधान हेतु समर्पित स्थान।',
     category: 'classroom'
-  },
-  {
-    url: 'https://images.unsplash.com/photo-1575467141241-25536443fbff?auto=format&fit=crop&w=800&q=80',
-    title: 'Digital High-Speed 5G Wi-Fi',
-    titleHindi: 'हाई-स्पीड 5G वाई-फाई जोन',
-    description: 'Continuous ultra high-speed internet support enabling students to download online PDF files and give mock tests.',
-    descriptionHindi: 'बिना रुकावट हाई-स्पीड इंटरनेट कनेक्टिविटी ताकि छात्र उपयोगी पीडीएफ़ और टेस्ट सीरीज हल कर सकें।',
-    category: 'infrastructure'
-  },
-  {
-    url: 'https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=800&q=80',
-    title: '24/7 CCTV Campus Protection',
-    titleHindi: '24/7 सीसीटीवी सुरक्षा कवरेज',
-    description: 'Multiple active digital cameras keeping the classrooms, lobby and entry-points fully secure at all times.',
-    descriptionHindi: 'सुरक्षित वातावरण सुनिश्चित करने हेतु पूरे हॉल, कक्षों और प्रवेश द्वारों पर लगातार तीसरी आंख की नजर।',
-    category: 'infrastructure'
-  },
-  {
-    url: 'https://images.unsplash.com/photo-1523362628745-0c100150b504?auto=format&fit=crop&w=800&q=80',
-    title: 'Pure RO Chilled Water Station',
-    titleHindi: 'शुद्ध आरओ शीतल पेयजल संयंत्र',
-    description: 'Strict hygiene control with certified RO water purification plant providing cold and safe drinking water.',
-    descriptionHindi: 'छात्रों के अच्छे स्वास्थ्य हेतु विशेष रूप से ठंडा और शुद्ध पीने का पानी उपलब्ध कराने वाली आरओ यूनिट।',
-    category: 'infrastructure'
-  },
-  {
-    url: 'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?auto=format&fit=crop&w=800&q=80',
-    title: '100% Continuous Power Generator Backup',
-    titleHindi: '100% निर्बाध पावर बैकअप सुविधा',
-    description: 'Heavy duty inverter power configuration ensuring learning sessions never stop during sudden electricity cuts.',
-    descriptionHindi: 'अनपेक्षित बिजली कटौती से निपटने के लिए भारी जनरेटर और इन्वर्टर सेटअप ताकि पढ़ाई कभी न रुके।',
-    category: 'infrastructure'
   }
 ];
 
@@ -174,7 +134,7 @@ export const CampusGallery: React.FC = () => {
               <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-orange"></span>
             </span>
             <ShieldCheck size={15} className="group-hover/btn:rotate-12 transition-transform duration-300" />
-            <span>State-of-the-Art Infrastructure / आधुनिक सुविधाएं</span>
+            <span>Infrastructure</span>
             <span className="bg-brand-navy text-[8px] text-white font-extrabold px-1.5 py-0.5 rounded-md leading-none tracking-widest ml-1 group-hover/btn:scale-105 transition-transform">
               NEW
             </span>
