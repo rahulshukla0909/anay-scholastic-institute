@@ -34,9 +34,10 @@ type ActiveTab = 'dashboard' | 'courses' | 'attendance' | 'performance' | 'tests
 
 interface StudentDashboardProps {
   onBackToWebsite?: () => void;
+  visitorCount?: number | null;
 }
 
-export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onBackToWebsite }) => {
+export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onBackToWebsite, visitorCount }) => {
   const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -390,7 +391,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onBackToWebs
                     onPhotoUpload={handlePhotoUpload} 
                   />
                 )}
-                {activeTab === 'admin' && <AdminTools key="admin" profile={profile} />}
+                {activeTab === 'admin' && <AdminTools key="admin" profile={profile} visitorCount={visitorCount} />}
               </>
             )}
           </AnimatePresence>
@@ -1115,7 +1116,7 @@ const SettingsSection: React.FC<{
   );
 };
 
-const AdminTools: React.FC<{ profile: UserProfile }> = ({ profile }) => {
+const AdminTools: React.FC<{ profile: UserProfile, visitorCount?: number | null }> = ({ profile, visitorCount }) => {
   const [isImporting, setIsImporting] = useState(false);
   const [status, setStatus] = useState<any>(null);
 
@@ -1163,6 +1164,16 @@ const AdminTools: React.FC<{ profile: UserProfile }> = ({ profile }) => {
              <p className="text-4xl font-black text-brand-orange">12</p>
              <div className="flex gap-2 items-center text-slate-400 text-xs font-bold mt-2">
                 Across 8 courses
+             </div>
+          </div>
+          <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100">
+             <h4 className="font-black text-brand-navy mb-4 uppercase text-xs tracking-widest text-slate-400">Website Visitors</h4>
+             <p className="text-4xl font-black text-emerald-500">
+                {visitorCount !== null && visitorCount !== undefined ? visitorCount.toLocaleString() : 'Loading...'}
+             </p>
+             <div className="flex gap-1.5 items-center text-emerald-500 text-xs font-bold mt-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                Real-time active tracking
              </div>
           </div>
        </div>

@@ -6,9 +6,10 @@ interface FooterProps {
   onAboutClick?: () => void;
   onFeedbackClick?: () => void;
   onLegalClick?: () => void;
+  visitorCount?: number | null;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onAboutClick, onFeedbackClick, onLegalClick }) => {
+export const Footer: React.FC<FooterProps> = ({ onAboutClick, onFeedbackClick, onLegalClick, visitorCount }) => {
   return (
     <footer className="bg-brand-navy text-white pt-20 pb-10">
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-12 border-b border-white/10 pb-12 mb-12">
@@ -110,6 +111,12 @@ export const Footer: React.FC<FooterProps> = ({ onAboutClick, onFeedbackClick, o
       
       <div className="text-center text-slate-500 text-xs">
         <p>© 2024 ANAY SCHOLASTIC INSTITUTE. All rights reserved. Designed for Excellence.</p>
+        {visitorCount !== undefined && visitorCount !== null && (
+          <div className="flex justify-center items-center gap-2 mt-4 text-slate-400 text-xs font-mono bg-white/5 py-1.5 px-4 rounded-full w-fit mx-auto border border-white/5 hover:border-brand-orange/20 transition-all">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span>We have welcomed <strong>{visitorCount.toLocaleString()}</strong> visitors</span>
+          </div>
+        )}
       </div>
     </footer>
   );

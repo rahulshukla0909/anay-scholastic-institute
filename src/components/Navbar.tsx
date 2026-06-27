@@ -14,6 +14,7 @@ interface NavbarProps {
   onScrollToDashboard: () => void;
   onScrollToDownloads: () => void;
   onScrollToGallery: () => void;
+  onScrollToResults?: () => void;
   onResetView: () => void;
 }
 
@@ -25,6 +26,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onScrollToDashboard, 
   onScrollToDownloads,
   onScrollToGallery,
+  onScrollToResults,
   onResetView 
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -187,6 +189,12 @@ export const Navbar: React.FC<NavbarProps> = ({
             About
           </button>
           <button 
+            onClick={onScrollToResults}
+            className="hover:text-brand-orange transition-colors font-bold text-brand-navy"
+          >
+            Results
+          </button>
+          <button 
             onClick={onScrollToGallery}
             className="hover:text-brand-orange transition-colors font-bold text-brand-navy"
           >
@@ -328,6 +336,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                 className="text-left py-3 px-4 rounded-xl hover:bg-slate-50 text-slate-600 font-bold flex items-center justify-between group"
               >
                 <span>About</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-brand-orange opacity-0 group-hover:opacity-100 transition-opacity" />
+              </button>
+              <button 
+                onClick={() => handleNavClick(onScrollToResults)}
+                className="text-left py-3 px-4 rounded-xl hover:bg-slate-50 text-slate-600 font-bold flex items-center justify-between group"
+              >
+                <span>Results</span>
                 <span className="w-1.5 h-1.5 rounded-full bg-brand-orange opacity-0 group-hover:opacity-100 transition-opacity" />
               </button>
               <button 

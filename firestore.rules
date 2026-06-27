@@ -94,8 +94,8 @@ service cloud.firestore {
 
     // Counters Collection
     match /counters/{counterId} {
-      allow read: if isSignedIn();
-      allow create, update: if isSignedIn() && isValidCounter(incoming());
+      allow read: if (counterId == 'visitors') || isSignedIn();
+      allow create, update: if (counterId == 'visitors' && request.resource.data.lastId != null) || (isSignedIn() && isValidCounter(incoming()));
     }
 
     // Attendance Collection

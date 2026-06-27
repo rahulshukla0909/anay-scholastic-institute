@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   FileText, 
@@ -986,6 +986,344 @@ const mathChapterQuestions: { [chapterName: string]: ChapterGroup[] } = {
         }
       ]
     }
+  ],
+  'Quadratic Equations': [
+    {
+      year: '2019',
+      questions: [
+        {
+          id: 'quad-2019-1',
+          type: 'blank',
+          text: 'A quadratic equation ax² + bx + c = 0 has no real root if ______________.\nएक द्विघात समीकरण ax² + bx + c = 0 का कोई वास्तविक मूल नहीं होता है यदि ______________।',
+          answer: 'b² - 4ac < 0',
+          solution: 'A quadratic equation ax² + bx + c = 0 has no real roots if its discriminant D = b² - 4ac is less than 0 (i.e., b² - 4ac < 0).\nद्विघात समीकरण ax² + bx + c = 0 के कोई वास्तविक मूल नहीं होते यदि इसका विविक्तकर D = b² - 4ac शून्य से छोटा हो (अर्थात b² - 4ac < 0)।'
+        },
+        {
+          id: 'quad-2019-2',
+          type: 'blank',
+          text: 'The discriminant of the equation 3x² - 2x + 1/3 = 0 is ______________.\nसमीकरण 3x² - 2x + 1/3 = 0 का विविक्तकर ______________ है।',
+          answer: '0',
+          solution: 'Here, a = 3, b = -2, c = 1/3.\nDiscriminant D = b² - 4ac = (-2)² - 4(3)(1/3) = 4 - 4 = 0.\n\nयहाँ, a = 3, b = -2, c = 1/3.\nविविक्तकर D = b² - 4ac = (-2)² - 4(3)(1/3) = 4 - 4 = 0.'
+        },
+        {
+          id: 'quad-2019-3',
+          type: 'subjective',
+          text: 'Find the roots of the following equation: x + 1/x = 3, x ≠ 0\nसमीकरण x + 1/x = 3, x ≠ 0 के मूल ज्ञात कीजिए।',
+          solution: 'Multiply by x: x² + 1 = 3x ⇒ x² - 3x + 1 = 0.\nUsing quadratic formula x = [-b ± √(b² - 4ac)] / 2a:\nx = [-(-3) ± √((-3)² - 4(1)(1))] / (2*1) = [3 ± √(9 - 4)] / 2 = (3 ± √5) / 2.\nSo roots are (3 + √5)/2 and (3 - √5)/2.\n\nx से गुणा करने पर: x² + 1 = 3x ⇒ x² - 3x + 1 = 0.\nद्विघाती सूत्र का उपयोग करने पर x = [-b ± √(b² - 4ac)] / 2a:\nx = [3 ± √5] / 2.\nअतः मूल (3 + √5)/2 और (3 - √5)/2 हैं।',
+          orQuestion: {
+            text: 'Find two consecutive odd positive integers, sum of whose squares is 290.\nदो क्रमागत विषम धनात्मक पूर्णांक ज्ञात कीजिए, जिनके वर्गों का योग 290 हो।',
+            solution: 'Let consecutive odd positive integers be x and x + 2.\nx² + (x + 2)² = 290\nx² + x² + 4x + 4 = 290\n2x² + 4x - 286 = 0 ⇒ x² + 2x - 143 = 0\n(x + 13)(x - 11) = 0.\nSince integers are positive, x = 11. Other integer = x + 2 = 13.\nConsecutive odd integers are 11 and 13.\n\nमाना दो क्रमागत विषम धनात्मक पूर्णांक x और x + 2 हैं।\nx² + (x + 2)² = 290 ⇒ 2x² + 4x + 4 = 290 ⇒ x² + 2x - 143 = 0\nगुणनखंड करने पर: (x + 13)(x - 11) = 0.\nपूर्णांक धनात्मक होने के कारण x = 11. दूसरा पूर्णांक = 13.\nअतः क्रमागत विषम धनात्मक पूर्णांक 11 और 13 हैं।'
+          }
+        }
+      ]
+    },
+    {
+      year: '2020',
+      questions: [
+        {
+          id: 'quad-2020-1',
+          type: 'blank',
+          text: 'Write the discriminant of the quadratic equation 3x² - 5x + 2 = 0.\nद्विघात समीकरण 3x² - 5x + 2 = 0 का विविक्तकर लिखिए।',
+          answer: '1',
+          solution: 'Here, a = 3, b = -5, c = 2.\nDiscriminant D = b² - 4ac = (-5)² - 4(3)(2) = 25 - 24 = 1.\n\nयहाँ, a = 3, b = -5, c = 2.\nविविक्तकर D = b² - 4ac = (-5)² - 4(3)(2) = 25 - 24 = 1.'
+        },
+        {
+          id: 'quad-2020-2',
+          type: 'subjective',
+          text: 'Using Formula method, find the roots of the following equation: 2x² - 7x + 3 = 0\nद्विघाती सूत्र का उपयोग करके, निम्न समीकरण के मूल ज्ञात कीजिए: 2x² - 7x + 3 = 0',
+          solution: 'Here, a = 2, b = -7, c = 3.\nDiscriminant D = b² - 4ac = (-7)² - 4(2)(3) = 49 - 24 = 25.\nUsing quadratic formula x = (-b ± √D) / 2a:\nx = (-(-7) ± √25) / (2 * 2) = (7 ± 5) / 4.\nRoots are x = (7 + 5)/4 = 3 and x = (7 - 5)/4 = 1/2.\n\nयहाँ, a = 2, b = -7, c = 3.\nविविक्तकर D = b² - 4ac = (-7)² - 4(2)(3) = 25.\nसूत्र से: x = (7 ± 5) / 4.\nमूल x = 3 और x = 1/2 हैं।'
+        },
+        {
+          id: 'quad-2020-3',
+          type: 'subjective',
+          text: 'Find two consecutive positive integers, sum of whose squares is 365.\nदो क्रमागत धनात्मक पूर्णांक ज्ञात कीजिए, जिनके वर्गों का योग 365 हो।',
+          solution: 'Let consecutive positive integers be x and x + 1.\nx² + (x + 1)² = 365 ⇒ x² + x² + 2x + 1 = 365 ⇒ 2x² + 2x - 364 = 0\nx² + x - 182 = 0\n(x + 14)(x - 13) = 0.\nSince integers are positive, x = 13. Other integer is 14.\nConsecutive integers are 13 and 14.\n\nमाना क्रमागत धनात्मक पूर्णांक x और x + 1 हैं।\nx² + (x + 1)² = 365 ⇒ 2x² + 2x - 364 = 0 ⇒ x² + x - 182 = 0\nगुणनखंड करने पर: (x + 14)(x - 13) = 0.\nपूर्णांक धनात्मक होने के कारण x = 13. दूसरा पूर्णांक = 14.\nअतः धनात्मक पूर्णांक 13 और 14 हैं।'
+        },
+        {
+          id: 'quad-2020-4',
+          type: 'blank',
+          text: 'Write the formula of the discriminant of the quadratic equation ax² + bx + c = 0.\nद्विघात समीकरण ax² + bx + c = 0 के विविक्तकर का सूत्र लिखिए।',
+          answer: 'b² - 4ac',
+          solution: 'The discriminant D of the quadratic equation ax² + bx + c = 0 is given by D = b² - 4ac.\nद्विघात समीकरण ax² + bx + c = 0 का विविक्तकर D = b² - 4ac होता है।'
+        },
+        {
+          id: 'quad-2020-5',
+          type: 'tf',
+          text: 'Is (x + 1)² = 2(x - 3) a quadratic equation? (Yes / No)\nक्या (x + 1)² = 2(x - 3) एक द्विघात समीकरण है? (हाँ / नहीं)',
+          answer: 'Yes',
+          solution: 'Simplify: x² + 2x + 1 = 2x - 6 ⇒ x² + 7 = 0.\nSince the highest power of x is 2, it is a quadratic equation.\n\nसरल करने पर: x² + 2x + 1 = 2x - 6 ⇒ x² + 7 = 0. चूँकि x की अधिकतम घात 2 है, अतः यह एक द्विघात समीकरण है (हाँ)।'
+        },
+        {
+          id: 'quad-2020-6',
+          type: 'subjective',
+          text: 'Find the values of k for the following quadratic equation, so that they have two equal roots: 2x² + kx + 3 = 0\nनिम्नलिखित द्विघात समीकरण के लिए k का वह मान ज्ञात कीजिए जिससे कि उसके दो बराबर मूल हों: 2x² + kx + 3 = 0',
+          solution: 'For equal roots, D = b² - 4ac = 0.\nk² - 4(2)(3) = 0 ⇒ k² - 24 = 0 ⇒ k² = 24 ⇒ k = ±√24 = ±2√6.\n\nबराबर मूलों के लिए, विविक्तकर D = b² - 4ac = 0.\nk² - 4(2)(3) = 0 ⇒ k² - 24 = 0 ⇒ k = ±2√6.',
+          orQuestion: {
+            text: 'Find the roots of the following equation: x + 1/x = 3, x ≠ 0\nसमीकरण x + 1/x = 3, x ≠ 0 के मूल ज्ञात कीजिए।',
+            solution: 'Multiply by x: x² + 1 = 3x ⇒ x² - 3x + 1 = 0.\nUsing quadratic formula: x = [3 ± √5] / 2.\n\nx से गुणा करने पर: x² - 3x + 1 = 0.\nद्विघाती समीकरण सूत्र से: x = [3 ± √5] / 2.'
+          }
+        }
+      ]
+    },
+    {
+      year: '2021',
+      questions: [
+        {
+          id: 'quad-2021-1',
+          type: 'mcq',
+          text: 'If the discriminant of the quadratic equation ax² + bx + c = 0 is zero, then the quadratic equation has:\nयदि द्विघात समीकरण ax² + bx + c = 0 का विविक्तकर शून्य है, तो द्विघात समीकरण के:',
+          options: [
+            'two distinct real roots / दो भिन्न वास्तविक मूल',
+            'two equal real roots / दो बराबर वास्तविक मूल',
+            'no real roots / कोई वास्तविक मूल नहीं',
+            'None of these / इनमें से कोई नहीं'
+          ],
+          answer: 'two equal real roots / दो बराबर वास्तविक मूल',
+          solution: 'When discriminant D = 0, the quadratic equation has two equal and real roots.\nजब विविक्तकर D = 0 होता है, तो द्विघात समीकरण के दो बराबर वास्तविक मूल होते हैं।'
+        },
+        {
+          id: 'quad-2021-2',
+          type: 'blank',
+          text: 'Any quadratic equation can have at most ______________ roots.\nकिसी भी द्विघात समीकरण के अधिकतम ______________ मूल हो सकते हैं।',
+          answer: '2',
+          solution: 'The degree of a quadratic equation is 2, so it can have at most 2 roots.\nद्विघात समीकरण की घात 2 होती है, इसलिए इसके अधिकतम 2 मूल हो सकते हैं।'
+        },
+        {
+          id: 'quad-2021-3',
+          type: 'subjective',
+          text: 'Find the roots of the quadratic equation x² - 3x - 10 = 0 by factorization method.\nगुणनखंड विधि द्वारा द्विघात समीकरण x² - 3x - 10 = 0 के मूल ज्ञात कीजिए।',
+          solution: 'x² - 5x + 2x - 10 = 0 ⇒ x(x - 5) + 2(x - 5) = 0 ⇒ (x - 5)(x + 2) = 0.\nx = 5 or x = -2.\nRoots of equation are 5 and -2.\n\nx² - 5x + 2x - 10 = 0 ⇒ (x - 5)(x + 2) = 0.\nx = 5, -2.\nअतः समीकरण के मूल 5 और -2 हैं।',
+          orQuestion: {
+            text: 'Find the discriminant of the quadratic equation 2x² - 4x + 3 = 0 and hence find the nature of its roots.\nद्विघात समीकरण 2x² - 4x + 3 = 0 का विविक्तकर ज्ञात कीजिए और फिर इसके मूलों की प्रकृति बताइए।',
+            solution: 'Here, a = 2, b = -4, c = 3.\nD = b² - 4ac = (-4)² - 4(2)(3) = 16 - 24 = -8.\nSince D < 0, the equation has no real roots (imaginary roots).\n\nयहाँ, a = 2, b = -4, c = 3.\nविविक्तकर D = b² - 4ac = (-4)² - 4(2)(3) = -8.\nचूँकि D < 0 है, अतः समीकरण के कोई वास्तविक मूल नहीं हैं (अवास्तविक/काल्पनिक मूल)।'
+          }
+        }
+      ]
+    },
+    {
+      year: '2022',
+      questions: [
+        {
+          id: 'quad-2022-1',
+          type: 'mcq',
+          text: 'The discriminant of the quadratic equation x² - 4x + 4 = 0 is:\nद्विघात समीकरण x² - 4x + 4 = 0 का विविक्तकर है:',
+          options: ['4', '2', '0', '1'],
+          answer: '0',
+          solution: 'Here, a = 1, b = -4, c = 4.\nDiscriminant D = b² - 4ac = (-4)² - 4(1)(4) = 16 - 16 = 0.\n\nयहाँ, a = 1, b = -4, c = 4.\nविविक्तकर D = b² - 4ac = (-4)² - 4(1)(4) = 0. सही विकल्प (c) है।'
+        },
+        {
+          id: 'quad-2022-2',
+          type: 'blank',
+          text: 'If a = bq, then what is the relation between a and b?\nयदि a = bq हो, तो a और b में क्या संबंध है?',
+          answer: 'b is a factor of a',
+          solution: 'If a = bq, it means b divides a completely. Therefore, b is a factor of a (or a is a multiple of b).\n\nयदि a = bq है, इसका अर्थ है कि b, a को पूर्णतः विभाजित करता है। अतः b, a का एक गुणनखंड (factor) है।'
+        },
+        {
+          id: 'quad-2022-3',
+          type: 'subjective',
+          text: 'Find the roots of the equation 2x² + x - 6 = 0 by factorisation.\nगुणनखंडन विधि द्वारा समीकरण 2x² + x - 6 = 0 के मूल ज्ञात कीजिए।',
+          solution: '2x² + 4x - 3x - 6 = 0 ⇒ 2x(x + 2) - 3(x + 2) = 0 ⇒ (2x - 3)(x + 2) = 0.\nRoots are x = 3/2 and x = -2.\n\n2x² + 4x - 3x - 6 = 0 ⇒ (2x - 3)(x + 2) = 0.\nमूल x = 3/2 और x = -2 हैं।',
+          orQuestion: {
+            text: 'Find the nature of roots of the quadratic equation 2x² - 3x + 5 = 0.\nद्विघात समीकरण 2x² - 3x + 5 = 0 के मूलों की प्रकृति ज्ञात कीजिए।',
+            solution: 'Here, a = 2, b = -3, c = 5.\nD = b² - 4ac = (-3)² - 4(2)(5) = 9 - 40 = -31.\nSince D < 0, the equation has no real roots.\n\nयहाँ, a = 2, b = -3, c = 5.\nD = (-3)² - 4(2)(5) = -31.\nचूँकि D < 0 है, अतः समीकरण के कोई वास्तविक मूल नहीं हैं।'
+          }
+        },
+        {
+          id: 'quad-2022-4',
+          type: 'blank',
+          text: 'The formula for the discriminant of the quadratic equation ax² + bx + c = 0 is D = ______________.\nद्विघात समीकरण ax² + bx + c = 0 के विविक्तकर का सूत्र D = ______________ है।',
+          answer: 'b² - 4ac',
+          solution: 'The discriminant is given by the formula D = b² - 4ac.\n\nविविक्तकर का सूत्र D = b² - 4ac है।'
+        },
+        {
+          id: 'quad-2022-5',
+          type: 'subjective',
+          text: 'Solve the equation 6x² - x - 2 = 0.\nसमीकरण 6x² - x - 2 = 0 को हल कीजिए।',
+          solution: '6x² - 4x + 3x - 2 = 0 ⇒ 2x(3x - 2) + 1(3x - 2) = 0 ⇒ (2x + 1)(3x - 2) = 0.\nRoots are x = -1/2 and x = 2/3.\n\n6x² - 4x + 3x - 2 = 0 ⇒ (2x + 1)(3x - 2) = 0.\nमूल x = -1/2 और x = 2/3 हैं।',
+          orQuestion: {
+            text: 'Find the value of k so that the quadratic equation kx(x-2) + 6 = 0 has two equal roots.\nk का ऐसा मान ज्ञात कीजिए कि द्विघात समीकरण kx(x-2) + 6 = 0 के दो बराबर मूल हों।',
+            solution: 'The equation is kx² - 2kx + 6 = 0.\nHere a = k, b = -2k, c = 6.\nFor equal roots, D = b² - 4ac = 0 ⇒ (-2k)² - 4(k)(6) = 0\n4k² - 24k = 0 ⇒ 4k(k - 6) = 0.\nSince a = k ≠ 0, k cannot be 0. Therefore, k = 6.\n\nसमीकरण: kx² - 2kx + 6 = 0. a = k, b = -2k, c = 6.\nबराबर मूलों के लिए: (-2k)² - 4(k)(6) = 0 ⇒ 4k(k - 6) = 0.\nचूँकि a = k ≠ 0 है, अतः k ≠ 0. इसलिए k = 6.'
+          }
+        }
+      ]
+    },
+    {
+      year: '2023',
+      questions: [
+        {
+          id: 'quad-2023-1',
+          type: 'mcq',
+          text: 'Write the standard form of a quadratic equation:\nद्विघात समीकरण का मानक रूप लिखिए:',
+          options: [
+            'a²x + bx + c = 0',
+            'ax² + bx + c',
+            'ax² + bx + c = 0',
+            'a²x + bx + c² = 0'
+          ],
+          answer: 'ax² + bx + c = 0',
+          solution: 'The standard form of a quadratic equation is ax² + bx + c = 0, where a, b, c are real numbers and a ≠ 0. Correct option is (c).\nद्विघात समीकरण का मानक रूप ax² + bx + c = 0 होता है, जहाँ a, b, c वास्तविक संख्याएँ हैं और a ≠ 0. सही विकल्प (c) है।'
+        },
+        {
+          id: 'quad-2023-2',
+          type: 'blank',
+          text: 'Sridharacharya derived a formula, now known as the ______________.\nश्रीधराचार्य ने एक सूत्र प्रतिपादित किया था, जिसे अब ______________ के रूप में जाना जाता है।',
+          answer: 'quadratic formula',
+          solution: 'The formula is known as the Quadratic Formula (or Sridharacharya formula) for finding roots.\n\nश्रीधराचार्य द्वारा प्रतिपादित सूत्र को द्विघाती सूत्र (Quadratic Formula) कहा जाता है।'
+        },
+        {
+          id: 'quad-2023-3',
+          type: 'blank',
+          text: 'Write the formula of discriminant for quadratic equation ax² + bx + c = 0.\nद्विघात समीकरण ax² + bx + c = 0 के विविक्तकर का सूत्र लिखिए।',
+          answer: 'b² - 4ac',
+          solution: 'D = b² - 4ac.\n\nD = b² - 4ac है।'
+        },
+        {
+          id: 'quad-2023-4',
+          type: 'subjective',
+          text: 'Check whether x² - 2x = -2(3 - x) is a quadratic equation.\nजांच कीजिए कि क्या x² - 2x = -2(3 - x) एक द्विघात समीकरण है।',
+          solution: 'Simplify: x² - 2x = -6 + 2x ⇒ x² - 4x + 6 = 0.\nThis is of the form ax² + bx + c = 0 where a = 1 ≠ 0. Therefore, it is a quadratic equation.\n\nसरल करने पर: x² - 2x = -6 + 2x ⇒ x² - 4x + 6 = 0.\nयह ax² + bx + c = 0 के रूप का है जहाँ a = 1 ≠ 0 है। अतः यह एक द्विघात समीकरण है।',
+          orQuestion: {
+            text: 'Find the discriminant of the quadratic equation 2x² - 4x + 3 = 0.\nद्विघात समीकरण 2x² - 4x + 3 = 0 का विविक्तकर ज्ञात कीजिए।',
+            solution: 'Here, a = 2, b = -4, c = 3.\nDiscriminant D = b² - 4ac = (-4)² - 4(2)(3) = 16 - 24 = -8.\n\nविविक्तकर D = b² - 4ac = (-4)² - 4(2)(3) = -8.'
+          }
+        }
+      ]
+    },
+    {
+      year: '2024',
+      questions: [
+        {
+          id: 'quad-2024-1',
+          type: 'mcq',
+          text: 'A quadratic equation ax² + bx + c = 0 has no real roots if:\nद्विघात समीकरण ax² + bx + c = 0 के कोई वास्तविक मूल नहीं होते हैं, यदि:',
+          options: [
+            'b² + 4ac > 0',
+            'b² - 4ac = 0',
+            'b² - 4ac > 0',
+            'b² - 4ac < 0'
+          ],
+          answer: 'b² - 4ac < 0',
+          solution: 'No real roots exist when discriminant D = b² - 4ac < 0. Correct option is (d).\nकोई वास्तविक मूल नहीं होते यदि विविक्तकर D = b² - 4ac < 0 हो। सही विकल्प (d) है।'
+        },
+        {
+          id: 'quad-2024-2',
+          type: 'blank',
+          text: 'The quadratic formula to solve the quadratic equation ax² + bx + c = 0 is x = ______________.\nद्विघात समीकरण ax² + bx + c = 0 को हल करने का द्विघाती सूत्र x = ______________ है।',
+          answer: '(-b ± √(b² - 4ac)) / 2a',
+          solution: 'The formula is x = [-b ± √(b² - 4ac)] / 2a.\n\nयह सूत्र x = [-b ± √(b² - 4ac)] / 2a है।'
+        },
+        {
+          id: 'quad-2024-3',
+          type: 'subjective',
+          text: 'Check whether x² - 2x = -2(3 - x) is a quadratic equation.\nजांच कीजिए कि क्या x² - 2x = -2(3 - x) एक द्विघात समीकरण है।',
+          solution: 'Simplify: x² - 2x = -6 + 2x ⇒ x² - 4x + 6 = 0.\nThis is of the form ax² + bx + c = 0, so it is a quadratic equation.\n\nसरल करने पर: x² - 4x + 6 = 0. यह एक द्विघात समीकरण है।',
+          orQuestion: {
+            text: 'Find the roots of the quadratic equation 6x² - x - 2 = 0.\nद्विघात समीकरण 6x² - x - 2 = 0 के मूल ज्ञात कीजिए।',
+            solution: 'Factorizing: 6x² - 4x + 3x - 2 = 0 ⇒ 2x(3x - 2) + 1(3x - 2) = 0 ⇒ (2x + 1)(3x - 2) = 0.\nRoots are x = -1/2, 2/3.\n\nगुणनखंड करने पर: (2x + 1)(3x - 2) = 0. मूल x = -1/2, 2/3 हैं।'
+          }
+        }
+      ]
+    },
+    {
+      year: '2025',
+      questions: [
+        {
+          id: 'quad-2025-1',
+          type: 'mcq',
+          text: 'The quadratic equation ax² + bx + c = 0 has real and equal roots if:\nद्विघात समीकरण ax² + bx + c = 0 के वास्तविक और बराबर मूल होते हैं यदि:',
+          options: [
+            'b² + 4ac > 0',
+            'b² - 4ac = 0',
+            'b² - 4ac > 0',
+            'b² - 4ac < 0'
+          ],
+          answer: 'b² - 4ac = 0',
+          solution: 'For real and equal roots, the discriminant D = b² - 4ac must be zero. Correct option is (b).\nवास्तविक और बराबर मूल होने के लिए विविक्तकर D = b² - 4ac = 0 होना चाहिए। सही विकल्प (b) है।'
+        },
+        {
+          id: 'quad-2025-2',
+          type: 'blank',
+          text: 'Write the standard form of a quadratic equation.\nद्विघात समीकरण का मानक रूप लिखिए।',
+          answer: 'ax² + bx + c = 0',
+          solution: 'The standard form is ax² + bx + c = 0 where a ≠ 0.\n\nमानक रूप ax² + bx + c = 0 है जहाँ a ≠ 0.'
+        },
+        {
+          id: 'quad-2025-3',
+          type: 'subjective',
+          text: 'Find the roots of the equation 2x² - 5x + 3 = 0 by factorisation.\nगुणनखंडन विधि द्वारा समीकरण 2x² - 5x + 3 = 0 के मूल ज्ञात कीजिए।',
+          solution: '2x² - 2x - 3x + 3 = 0 ⇒ 2x(x - 1) - 3(x - 1) = 0 ⇒ (2x - 3)(x - 1) = 0.\nRoots are x = 1 and x = 3/2.\n\nगुणनखंड करने पर: (2x - 3)(x - 1) = 0. मूल x = 1 और x = 3/2 हैं।',
+          orQuestion: {
+            text: 'Find two consecutive positive integers, sum of whose squares is 365.\nदो क्रमागत धनात्मक पूर्णांक ज्ञात कीजिए, जिनके वर्गों का योग 365 हो।',
+            solution: 'Let numbers be x and x + 1. x² + (x + 1)² = 365 ⇒ x² + x - 182 = 0 ⇒ (x + 14)(x - 13) = 0.\nx = 13. Consecutive integers are 13 and 14.\n\nमाना पूर्णांक x और x + 1 हैं। x² + (x + 1)² = 365 ⇒ x² + x - 182 = 0 ⇒ (x + 14)(x - 13) = 0. x = 13, अतः पूर्णांक 13 और 14 हैं।'
+          }
+        }
+      ]
+    },
+    {
+      year: '2026',
+      questions: [
+        {
+          id: 'quad-2026-1',
+          type: 'mcq',
+          text: 'Discriminant of the quadratic equation ax² + bx + c = 0, a ≠ 0 is:\nद्विघाती समीकरण ax² + bx + c = 0, a ≠ 0 का विविक्तकर है:',
+          options: [
+            'b² + 4ac',
+            'b² - 4ac',
+            'b² - 4a',
+            'b - 4ac'
+          ],
+          answer: 'b² - 4ac',
+          solution: 'The discriminant represents D = b² - 4ac. Correct option is (b).\nद्विघात समीकरण का विविक्तकर D = b² - 4ac होता है। सही विकल्प (b) है।'
+        },
+        {
+          id: 'quad-2026-2',
+          type: 'blank',
+          text: 'Write the formula to find the roots of quadratic equation ax² + bx + c = 0, a ≠ 0.\nद्विघात समीकरण ax² + bx + c = 0, a ≠ 0 के मूल ज्ञात करने का सूत्र लिखिए।',
+          answer: 'x = (-b ± √(b² - 4ac)) / 2a',
+          solution: 'The quadratic formula is x = [-b ± √(b² - 4ac)] / 2a.\n\nद्विघाती सूत्र x = [-b ± √(b² - 4ac)] / 2a है।'
+        },
+        {
+          id: 'quad-2026-3',
+          type: 'subjective',
+          text: 'Find the roots of the equation x² + x - 12 = 0 by factorisation.\nगुणनखंड विधि द्वारा समीकरण x² + x - 12 = 0 के मूल ज्ञात कीजिए।',
+          solution: 'x² + 4x - 3x - 12 = 0 ⇒ x(x + 4) - 3(x + 4) = 0 ⇒ (x - 3)(x + 4) = 0.\nRoots are x = 3 and x = -4.\n\nगुणनखंड करने पर: (x - 3)(x + 4) = 0. मूल x = 3 और x = -4 हैं।',
+          orQuestion: {
+            text: 'Find the value of k for quadratic equation 3x² + kx + 3 = 0 has two equal roots.\nद्विघात समीकरण 3x² + kx + 3 = 0 में k का ऐसा मान ज्ञात कीजिए जिसके लिए उसके दो बराबर मूल हों।',
+            solution: 'a = 3, b = k, c = 3.\nFor equal roots, D = b² - 4ac = 0 => k² - 4(3)(3) = 0 => k² - 36 = 0 => k² = 36 => k = ±6.\n\nबराबर मूलों के लिए: D = k² - 4(3)(3) = 0 => k² = 36 => k = ±6.'
+          }
+        }
+      ]
+    },
+    {
+      year: '2026 Standard',
+      questions: [
+        {
+          id: 'quad-2026s-1',
+          type: 'mcq',
+          text: 'The discriminant of the quadratic equation 2x² - 4x + 3 = 0 is:\nद्विघाती समीकरण 2x² - 4x + 3 = 0 का विविक्तकर है:',
+          options: ['8', '40', '-8', '16'],
+          answer: '-8',
+          solution: 'Here, a = 2, b = -4, c = 3.\nDiscriminant D = b² - 4ac = (-4)² - 4(2)(3) = 16 - 24 = -8. Correct option is (c).\n\nविविक्तकर D = b² - 4ac = (-4)² - 4(2)(3) = -8 है। सही विकल्प (c) है।'
+        },
+        {
+          id: 'quad-2026s-2',
+          type: 'blank',
+          text: 'Write the formula of the discriminant of the quadratic equation ax² + bx + c = 0.\nद्विघाती समीकरण ax² + bx + c = 0 के विविक्तकर का सूत्र लिखिए।',
+          answer: 'b² - 4ac',
+          solution: 'D = b² - 4ac.\n\nD = b² - 4ac.'
+        },
+        {
+          id: 'quad-2026s-3',
+          type: 'subjective',
+          text: 'Find the roots of the equation 2x² - x + 1/8 = 0.\nसमीकरण 2x² - x + 1/8 = 0 के मूल ज्ञात कीजिए।',
+          solution: 'Multiply by 8: 16x² - 8x + 1 = 0.\nFactorizing: (4x - 1)² = 0 ⇒ 4x - 1 = 0 ⇒ x = 1/4.\nRoots are 1/4 and 1/4.\n\n8 से गुणा करने पर: 16x² - 8x + 1 = 0.\nगुणनखंडन: (4x - 1)² = 0 ⇒ x = 1/4.\nसमीकरण के मूल 1/4 और 1/4 हैं।',
+          orQuestion: {
+            text: 'Find the value of k for quadratic equation 2x² + kx + 3 = 0 has two equal roots.\nद्विघात समीकरण 2x² + kx + 3 = 0 में k का ऐसा मान ज्ञात कीजिए जिससे इसके दो बराबर मूल हों।',
+            solution: 'For equal roots, D = b² - 4ac = 0.\nk² - 4(2)(3) = 0 ⇒ k² - 24 = 0 ⇒ k² = 24 ⇒ k = ±2√6.\n\nबराबर मूलों के लिए: D = k² - 24 = 0 => k = ±2√6.'
+          }
+        }
+      ]
+    }
   ]
 };
 
@@ -1042,8 +1380,18 @@ const renderQuestionGraph = (type?: string) => {
   return null;
 };
 
-export const Downloads: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'blueprint' | 'pyq'>('blueprint');
+interface DownloadsProps {
+  practiceHubMode?: boolean;
+}
+
+export const Downloads: React.FC<DownloadsProps> = ({ practiceHubMode = false }) => {
+  const [activeTab, setActiveTab] = useState<'blueprint' | 'pyq'>(practiceHubMode ? 'pyq' : 'blueprint');
+
+  useEffect(() => {
+    if (practiceHubMode) {
+      setActiveTab('pyq');
+    }
+  }, [practiceHubMode]);
   const [downloadingId, setDownloadingId] = useState<string | null>(null);
   const [downloadedIds, setDownloadedIds] = useState<string[]>([]);
   const [activeSubjectId, setActiveSubjectId] = useState<'hindi' | 'social_science' | 'science' | 'math' | 'sanskrit' | null>(null);
@@ -1538,50 +1886,65 @@ export const Downloads: React.FC = () => {
             className="inline-flex items-center gap-2 px-4 py-1.5 bg-brand-orange/10 text-brand-orange text-xs font-black tracking-widest uppercase rounded-full mb-4 border border-brand-orange/20"
           >
             <Sparkles size={14} />
-            <span>Syllabus & Material Portal</span>
+            <span>{practiceHubMode ? 'Anay Practice Hub / अनाय प्रैक्टिस हब' : 'Syllabus & Material Portal'}</span>
           </motion.div>
           <h1 className="text-4xl md:text-5xl font-black text-brand-navy tracking-tight mb-3 uppercase">
-            Downloads <span className="text-brand-orange">/</span> डाउनलोड्स
+            {practiceHubMode ? (
+              <>Practice Hub <span className="text-brand-orange">/</span> प्रैक्टिस हब</>
+            ) : (
+              <>Downloads <span className="text-brand-orange">/</span> डाउनलोड्स</>
+            )}
           </h1>
           <p className="text-slate-500 font-bold max-w-xl mx-auto text-base">
-            Bilingual educational blueprints and previous board exam papers with solutions.
-            <span className="block text-brand-orange mt-1">विशेष पाठ्यक्रम ब्लूप्रिंट और पिछले वर्षों के परीक्षा पत्र</span>
+            {practiceHubMode ? (
+              <>
+                Chapter-wise Previous Year Board Questions & Solutions for Class 10th.
+                <span className="block text-brand-orange mt-1">कक्षा 10वीं के लिए अध्यायवार पुराने बोर्ड प्रश्न और उत्तर</span>
+              </>
+            ) : (
+              <>
+                Bilingual educational blueprints and previous board exam papers with solutions.
+                <span className="block text-brand-orange mt-1">विशेष पाठ्यक्रम ब्लूप्रिंट और पिछले वर्षों के परीक्षा पत्र</span>
+              </>
+            )}
           </p>
         </div>
 
         {/* CUSTOM SEGMENTED TAB SELECTOR WITH BEAUTIFUL TRANSITION */}
-        <div className="flex justify-center mb-10">
-          <div className="bg-white p-1.5 rounded-2xl md:rounded-3xl shadow-xl border border-slate-100 flex gap-2">
-            <button
-              onClick={() => {
-                setActiveTab('blueprint');
-                setSelectedPyqSubject(null);
-              }}
-              className={`px-5 py-3 rounded-xl md:rounded-2xl text-xs md:text-sm font-black uppercase tracking-wider transition-all cursor-pointer flex items-center gap-2 ${
-                activeTab === 'blueprint'
-                  ? 'bg-brand-navy text-white shadow-lg'
-                  : 'text-slate-500 hover:text-brand-navy hover:bg-slate-50'
-              }`}
-            >
-              <BookOpen size={16} />
-              <span>Syllabus Blueprint / ब्लूप्रिंट class 10th</span>
-            </button>
-            <button
-              onClick={() => {
-                setActiveTab('pyq');
-                setSelectedPyqSubject(null);
-              }}
-              className={`px-5 py-3 rounded-xl md:rounded-2xl text-xs md:text-sm font-black uppercase tracking-wider transition-all cursor-pointer flex items-center gap-2 ${
-                activeTab === 'pyq'
-                  ? 'bg-brand-navy text-white shadow-lg'
-                  : 'text-slate-500 hover:text-brand-navy hover:bg-slate-50'
-              }`}
-            >
-              <FileQuestion size={16} className={activeTab === 'pyq' ? 'text-brand-orange animate-pulse' : ''} />
-              <span>Previous Papers / पुराने पेपर class 10th</span>
-            </button>
+        {!practiceHubMode && (
+          <div className="flex justify-center mb-10">
+            <div className="bg-white p-1.5 rounded-2xl md:rounded-3xl shadow-xl border border-slate-100 flex gap-2">
+              <button
+                onClick={() => {
+                  setActiveTab('blueprint');
+                  setSelectedPyqSubject(null);
+                }}
+                className={`px-5 py-3 rounded-xl md:rounded-2xl text-xs md:text-sm font-black uppercase tracking-wider transition-all cursor-pointer flex items-center gap-2 ${
+                  activeTab === 'blueprint'
+                    ? 'bg-brand-navy text-white shadow-lg'
+                    : 'text-slate-500 hover:text-brand-navy hover:bg-slate-50'
+                }`}
+              >
+                <BookOpen size={16} />
+                <span>Syllabus Blueprint / ब्लूप्रिंट class 10th</span>
+              </button>
+              <button
+                onClick={() => {
+                  setActiveTab('pyq');
+                  setSelectedPyqSubject(null);
+                }}
+                className={`px-5 py-3 rounded-xl md:rounded-2xl text-xs md:text-sm font-black uppercase tracking-wider transition-all cursor-pointer flex items-center gap-2 ${
+                  activeTab === 'pyq'
+                    ? 'bg-brand-navy text-white shadow-lg'
+                    : 'text-slate-500 hover:text-brand-navy hover:bg-slate-50'
+                }`}
+              >
+                <FileQuestion size={16} className={activeTab === 'pyq' ? 'text-brand-orange animate-pulse' : ''} />
+                <span>Previous Papers / पुराने पेपर class 10th</span>
+              </button>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* CONDITIONAL RENDERING OF BOTH TAB WORKFLOWS */}
         <AnimatePresence mode="wait">
@@ -2044,13 +2407,17 @@ export const Downloads: React.FC = () => {
                     <div className="relative z-10 max-w-2xl space-y-4">
                       <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-brand-orange/20 border border-brand-orange/30 rounded-full text-xs font-black text-brand-orange uppercase tracking-wider">
                         <Sparkles size={12} className="animate-pulse" />
-                        <span>Class 10th Board Portal</span>
+                        <span>{practiceHubMode ? 'Class 10th Practice Hub' : 'Class 10th Board Portal'}</span>
                       </div>
                       <h2 className="text-4xl md:text-5xl font-black tracking-tight leading-none text-white font-sans">
-                        Class 10th <span className="text-brand-orange">Previous Papers</span>
+                        Class 10th <span className="text-brand-orange">{practiceHubMode ? 'Practice Hub' : 'Previous Papers'}</span>
                       </h2>
                       <p className="text-sm md:text-base font-bold text-slate-300 leading-relaxed font-sans">
-                        कक्षा 10वीं के सभी विषयों के पिछले वर्षों के बोर्ड प्रश्न पत्र, मॉडल समाधान एवं अभ्यास पत्र यहाँ संकलित किए जा रहे हैं। अपनी पसंद के विषय को नीचे चुनें।
+                        {practiceHubMode ? (
+                          "कक्षा 10वीं के सभी विषयों के पिछले वर्षों के बोर्ड प्रश्न (Chapter-wise PYQs), समाधान और ऑनलाइन अभ्यास सेट्स यहाँ उपलब्ध हैं। कृपया अपना विषय चुनें।"
+                        ) : (
+                          "कक्षा 10वीं के सभी विषयों के पिछले वर्षों के बोर्ड प्रश्न पत्र, मॉडल समाधान एवं अभ्यास पत्र यहाँ संकलित किए जा रहे हैं। अपनी पसंद के विषय को नीचे चुनें।"
+                        )}
                       </p>
                     </div>
                   </div>
