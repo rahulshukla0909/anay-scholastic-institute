@@ -40,20 +40,6 @@ interface StudentResult {
 
 const RESULTS_DATA: StudentResult[] = [
   {
-    id: '1',
-    name: 'Ayush',
-    math: { score: '45/45', numericScore: 45, maxScore: 45 },
-    science: { score: '42.5/45', numericScore: 42.5, maxScore: 45 },
-    hindi: { score: '23/24', numericScore: 23, maxScore: 24 },
-    english: { score: '40/42', numericScore: 40, maxScore: 42 },
-    socialScience: { score: '43/45', numericScore: 43, maxScore: 45 },
-    total: 193.5,
-    percentage: 96.27,
-    grade: 'A+',
-    remark: 'Excellent! Keep it up.',
-    rank: 1
-  },
-  {
     id: '2',
     name: 'Dev',
     math: { score: '43.5/45', numericScore: 43.5, maxScore: 45 },
@@ -63,6 +49,20 @@ const RESULTS_DATA: StudentResult[] = [
     socialScience: { score: '43/45', numericScore: 43, maxScore: 45 },
     total: 192,
     percentage: 95.52,
+    grade: 'A+',
+    remark: 'Excellent! Keep it up.',
+    rank: 1
+  },
+  {
+    id: '1',
+    name: 'Ayush',
+    math: { score: '42/45', numericScore: 42, maxScore: 45 },
+    science: { score: '42.5/45', numericScore: 42.5, maxScore: 45 },
+    hindi: { score: '23/24', numericScore: 23, maxScore: 24 },
+    english: { score: '40/42', numericScore: 40, maxScore: 42 },
+    socialScience: { score: '43/45', numericScore: 43, maxScore: 45 },
+    total: 190.5,
+    percentage: 94.78,
     grade: 'A+',
     remark: 'Excellent! Keep it up.',
     rank: 2
@@ -470,7 +470,7 @@ export const WeeklyResults: React.FC = () => {
               🥈
             </div>
             <div className="w-16 h-16 bg-slate-50 border border-slate-100 rounded-full flex items-center justify-center font-extrabold text-2xl text-slate-700 shadow-inner mb-4 mt-2">
-              D
+              {podiumStudents.second.name.charAt(0)}
             </div>
             <h3 className="text-2xl font-black text-brand-navy mb-1">{podiumStudents.second.name}</h3>
             <span className="text-xs font-black uppercase text-slate-400 tracking-wider">Rank 2 / द्वितीय स्थान</span>
@@ -495,7 +495,7 @@ export const WeeklyResults: React.FC = () => {
               <Crown className="text-white animate-bounce" size={28} />
             </div>
             <div className="w-20 h-20 bg-white/10 border border-white/20 rounded-full flex items-center justify-center font-black text-3xl text-brand-orange shadow-inner mb-4 mt-2">
-              A
+              {podiumStudents.first.name.charAt(0)}
             </div>
             <h3 className="text-3xl font-black mb-1">{podiumStudents.first.name}</h3>
             <span className="text-xs font-black uppercase text-brand-orange tracking-widest flex items-center gap-1.5">
@@ -522,7 +522,7 @@ export const WeeklyResults: React.FC = () => {
               🥉
             </div>
             <div className="w-16 h-16 bg-amber-50/50 border border-amber-100 rounded-full flex items-center justify-center font-extrabold text-2xl text-amber-700 shadow-inner mb-4 mt-2">
-              Y
+              {podiumStudents.third.name.charAt(0)}
             </div>
             <h3 className="text-2xl font-black text-brand-navy mb-1">{podiumStudents.third.name}</h3>
             <span className="text-xs font-black uppercase text-slate-400 tracking-wider">Rank 3 / तृतीय स्थान</span>
